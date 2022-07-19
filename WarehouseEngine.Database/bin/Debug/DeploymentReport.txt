@@ -1,0 +1,67 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Create
+       [dbo].[Address] (Table)
+       [dbo].[Company] (Table)
+       [dbo].[Customer] (Table)
+       [dbo].[Employee] (Table)
+       [dbo].[Employee].[IX_Employee01] (Index)
+       [dbo].[Employee].[IX_Employee02] (Index)
+       [dbo].[Item] (Table)
+       [dbo].[Order] (Table)
+       [dbo].[OrderWarehouseItem] (Table)
+       [dbo].[OrderWarehouseItem].[IX_OrderWarehouseItem01] (Index)
+       [dbo].[OrderWarehouseItem].[IX_OrderWarehouseItem02] (Index)
+       [dbo].[OrderWarehouseItemOutOfStock] (Table)
+       [dbo].[OrderWarehouseItemOutOfStock].[IX_OrderWarehouseItemOutOfStock01] (Index)
+       [dbo].[OrderWarehouseItemOutOfStock].[IX_OrderWarehouseItemOutOfStock02] (Index)
+       [dbo].[Position] (Table)
+       [dbo].[PurchaseOrder] (Table)
+       [dbo].[PurchaseOrderWarehouseItem] (Table)
+       [dbo].[PurchaseOrderWarehouseItem].[IX_PurchaseOrderWarehouseItem01] (Index)
+       [dbo].[PurchaseOrderWarehouseItem].[IX_PurchaseOrderWarehouseItem02] (Index)
+       [dbo].[Vendor] (Table)
+       [dbo].[VendorItem] (Table)
+       [dbo].[VendorItem].[IX_VendorItem01] (Index)
+       [dbo].[VendorItem].[IX_VendorItem02] (Index)
+       [dbo].[Warehouse] (Table)
+       [dbo].[WarehouseItem] (Table)
+       [dbo].[WarehouseItem].[IX_WarehouseItem01] (Index)
+       [dbo].[WarehouseItem].[IX_WarehouseItem02] (Index)
+       [dbo].[DF_Address_CreateDate] (Default Constraint)
+       [dbo].[DF_Company_CreateDate] (Default Constraint)
+       [dbo].[DF_Customer_CreateDate] (Default Constraint)
+       [dbo].[DF_Item_CreateDate] (Default Constraint)
+       [dbo].[DF_Order_CreateDate] (Default Constraint)
+       [dbo].[DF_OrderWarehouseItem_CreateDate] (Default Constraint)
+       [dbo].[DF_OrderWarehouseItemOutOfStock_CreateDate] (Default Constraint)
+       [dbo].[DF_Position_CreateDate] (Default Constraint)
+       [dbo].[DF_PurchaseOrder_CreateDate] (Default Constraint)
+       [dbo].[DF_Vendor_CreateDate] (Default Constraint)
+       [dbo].[DF_Warehouse_CreateDate] (Default Constraint)
+       [dbo].[DF_WarehouseItem_CreateDate] (Default Constraint)
+       [dbo].[FK_Employee_Position] (Foreign Key)
+       [dbo].[FK_Employee_SupervisorEmployee] (Foreign Key)
+       [dbo].[FK_Order_Customer] (Foreign Key)
+       [dbo].[FK_OrderWarehouseItem_Order] (Foreign Key)
+       [dbo].[FK_OrderWarehouseItem_Warehouse] (Foreign Key)
+       [dbo].[FK_OrderWarehouseItemOutOfStock_Order] (Foreign Key)
+       [dbo].[FK_OrderWarehouseItemOutOfStock_WarehouseItemOutOfStock] (Foreign Key)
+       [dbo].[FK_PurchaseOrderWarehouseItem_PurchaseOrder] (Foreign Key)
+       [dbo].[FK_PurchaseOrderWarehouseItem_WarehouseItem] (Foreign Key)
+       [dbo].[FK_VendorItem_Vendor] (Foreign Key)
+       [dbo].[FK_VendorItem_Item] (Foreign Key)
+       [dbo].[FK_WarehouseItem_Warehouse] (Foreign Key)
+       [dbo].[FK_WarehouseItem_Item] (Foreign Key)
+       [dbo].[CHK_WarehouseItem_QuantityIsNotNegative] (Check Constraint)
+
+** Supporting actions

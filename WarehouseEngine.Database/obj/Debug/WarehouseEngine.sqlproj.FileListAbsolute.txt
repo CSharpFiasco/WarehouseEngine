@@ -1,0 +1,6 @@
+C:\Users\carlo\source\repos\WarehouseEngine\WarehouseEngine\bin\Debug\WarehouseEngine.dacpac
+C:\Users\carlo\source\repos\WarehouseEngine\WarehouseEngine\bin\Debug\WarehouseEngine.dll
+C:\Users\carlo\source\repos\WarehouseEngine\WarehouseEngine\bin\Debug\WarehouseEngine.pdb
+C:\Users\carlo\source\repos\WarehouseEngine\WarehouseEngine\obj\Debug\WarehouseEngine.sqlproj.AssemblyReference.cache
+C:\Users\carlo\source\repos\WarehouseEngine\WarehouseEngine\obj\Debug\WarehouseEngine.dll
+C:\Users\carlo\source\repos\WarehouseEngine\WarehouseEngine\obj\Debug\WarehouseEngine.pdb

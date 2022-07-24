@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WarehouseEngine.Application\WarehouseEngine.Application.csproj" />
     <ProjectReference Include="..\WarehouseEngine.Core\WarehouseEngine.Core.csproj" />
   </ItemGroup>
 

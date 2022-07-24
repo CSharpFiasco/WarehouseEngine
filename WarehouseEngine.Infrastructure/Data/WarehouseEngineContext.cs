@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WarehouseEngine.Core.Entities;
 
 namespace WarehouseEngine.Infrastructure.Data;

@@ -6,6 +6,6 @@ public partial class OrderWarehouseItem
     public int WarehouseItemId { get; set; }
     public int Quantity { get; set; }
 
-    public virtual Order Order { get; set; } = null!;
-    public virtual WarehouseItem WarehouseItem { get; set; } = null!;
+    public virtual Order? Order { get; set; }
+    public virtual WarehouseItem? WarehouseItem { get; set; }
 }

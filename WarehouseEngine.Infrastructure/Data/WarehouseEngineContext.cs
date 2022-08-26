@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Core.Entities;
 
 namespace WarehouseEngine.Infrastructure.Data;
 
-public partial class WarehouseEngineContext : DbContext
+public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
 {
     public WarehouseEngineContext(DbContextOptions<WarehouseEngineContext> options)
         : base(options)
@@ -309,4 +310,6 @@ public partial class WarehouseEngineContext : DbContext
                 .HasConstraintName("FK_WarehouseItem_Warehouse");
         });
     }
+
+    public Task<int> SaveChangesAsync() => base.SaveChangesAsync();
 }

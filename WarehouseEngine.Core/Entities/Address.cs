@@ -10,11 +10,11 @@ public partial class Address
     }
 
     public int Id { get; set; }
-    public string Address1 { get; set; } = null!;
-    public string Address2 { get; set; } = null!;
-    public string City { get; set; } = null!;
-    public string State { get; set; } = null!;
-    public string Zip { get; set; } = null!;
+    public required string Address1 { get; set; }
+    public required string Address2 { get; set; }
+    public required string City { get; set; }
+    public required string State { get; set; }
+    public required string Zip { get; set; }
 
     public virtual ICollection<Contact> Contact { get; set; }
     public virtual ICollection<Customer> Customer { get; set; }

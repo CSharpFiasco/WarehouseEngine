@@ -11,8 +11,8 @@ public partial class Item
     }
 
     public int Id { get; set; }
-    public string Sku { get; set; } = null!;
-    public string Description { get; set; } = null!;
+    public required string Sku { get; set; }
+    public required string Description { get; set; }
     public bool IsActive { get; set; }
 
     public virtual ICollection<WarehouseItem> WarehouseItem { get; set; }

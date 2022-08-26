@@ -9,7 +9,7 @@ public partial class PurchaseOrder
 
     public int Id { get; set; }
     public DateTime OrderDate { get; set; }
-    public string OrderNumber { get; set; } = null!;
+    public required string OrderNumber { get; set; }
     public byte Status { get; set; }
 
     public virtual ICollection<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; set; }

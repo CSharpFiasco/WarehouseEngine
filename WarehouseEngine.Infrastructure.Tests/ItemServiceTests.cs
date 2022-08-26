@@ -6,11 +6,11 @@ using WarehouseEngine.Infrastructure.Implementations;
 
 namespace WarehouseEngine.Infrastructure.Tests;
 
-public class ItemRepositoryTests
+public class ItemServiceTests
 {
     private readonly SqliteConnection _connection;
     private readonly DbContextOptions<WarehouseEngineContext> _contextOptions;
-    public ItemRepositoryTests()
+    public ItemServiceTests()
     {
         // Create and open a connection. This creates the SQLite in-memory database, which will persist until the connection is closed
         // at the end of the test (see Dispose below).
@@ -33,16 +33,13 @@ public class ItemRepositoryTests
             Sku = "Sku1"
         };
 
-        var sut = new ItemRepository(context);
+        var sut = new ItemService(context);
 
         await sut.AddAsync(item);
-        await context.SaveChangesAsync();
 
         Assert.NotEmpty(context.Item);
 
     }
 
     WarehouseEngineContext CreateContext() => new WarehouseEngineContext(_contextOptions);
-
-    private void Dispose() => _connection.Dispose();
 }

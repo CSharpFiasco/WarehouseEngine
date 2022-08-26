@@ -13,8 +13,8 @@ public partial class Order
     public int AddressId { get; set; }
     public byte Status { get; set; }
 
-    public virtual Address Address { get; set; } = null!;
-    public virtual Customer Customer { get; set; } = null!;
+    public virtual Address? Address { get; set; }
+    public virtual Customer? Customer { get; set; }
     public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; set; }
 
     public virtual ICollection<WarehouseItem> WarehouseItem { get; set; }

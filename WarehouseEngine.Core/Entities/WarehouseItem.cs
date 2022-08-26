@@ -15,8 +15,8 @@ public partial class WarehouseItem
     public int Quantity { get; set; }
     public decimal? Price { get; set; }
 
-    public virtual Item Item { get; set; } = null!;
-    public virtual Warehouse Warehouse { get; set; } = null!;
+    public virtual Item? Item { get; set; }
+    public virtual Warehouse? Warehouse { get; set; }
     public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; set; }
     public virtual ICollection<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; set; }
 

@@ -11,10 +11,10 @@ public partial class Customer
     }
 
     public int Id { get; set; }
-    public string Name { get; set; } = null!;
+    public required string Name { get; set; }
     public int AddressId { get; set; }
 
-    public virtual Address Address { get; set; } = null!;
+    public virtual Address? Address { get; set; }
     public virtual ICollection<Order> Order { get; set; }
 
     public virtual ICollection<Contact> Contact { get; set; }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WarehouseEngine.Application.Interfaces;
-using WarehouseEngine.Core.Entities;
+using WarehouseEngine.Domain.Entities;
 
 namespace WarehouseEngine.Infrastructure.Data;
 

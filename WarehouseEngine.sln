@@ -7,7 +7,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WarehouseEngine.Database", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1CE43DA-50A7-426C-9DC0-2F3E2D3D4394}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Core", "WarehouseEngine.Core\WarehouseEngine.Core.csproj", "{14C6CC92-D6CD-4C5E-98B6-AB37D0D9373D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Domain", "WarehouseEngine.Domain\WarehouseEngine.Domain.csproj", "{14C6CC92-D6CD-4C5E-98B6-AB37D0D9373D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Infrastructure", "WarehouseEngine.Infrastructure\WarehouseEngine.Infrastructure.csproj", "{EAD57AE7-F0AC-46BE-BEF3-A97BA8691B33}"
 EndProject
@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Application
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{595DB01B-82D0-44E8-87E3-B94A57AE5199}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseEngine.Infrastructure.Tests", "WarehouseEngine.Infrastructure.Tests\WarehouseEngine.Infrastructure.Tests.csproj", "{4B54FE5B-FAB7-42DD-BC73-A5094569C84B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Infrastructure.Tests", "WarehouseEngine.Infrastructure.Tests\WarehouseEngine.Infrastructure.Tests.csproj", "{4B54FE5B-FAB7-42DD-BC73-A5094569C84B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

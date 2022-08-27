@@ -1,4 +1,4 @@
-﻿namespace WarehouseEngine.Core.Entities;
+﻿namespace WarehouseEngine.Domain.Entities;
 
 public partial class Address
 {

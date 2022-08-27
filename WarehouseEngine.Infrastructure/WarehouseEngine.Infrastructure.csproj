@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
     <Folder Include="Implementations\" />
   </ItemGroup>
 
@@ -17,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WarehouseEngine.Application\WarehouseEngine.Application.csproj" />
-    <ProjectReference Include="..\WarehouseEngine.Core\WarehouseEngine.Core.csproj" />
+    <ProjectReference Include="..\WarehouseEngine.Domain\WarehouseEngine.Domain.csproj" />
   </ItemGroup>
 
 </Project>

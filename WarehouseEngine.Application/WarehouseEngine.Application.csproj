@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WarehouseEngine.Core\WarehouseEngine.Core.csproj" />
+    <ProjectReference Include="..\WarehouseEngine.Domain\WarehouseEngine.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

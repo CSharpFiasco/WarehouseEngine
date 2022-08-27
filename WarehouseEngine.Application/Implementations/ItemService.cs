@@ -1,5 +1,5 @@
 ﻿using WarehouseEngine.Application.Interfaces;
-using WarehouseEngine.Core.Entities;
+using WarehouseEngine.Domain.Entities;
 
 namespace WarehouseEngine.Infrastructure.Implementations;
 public class ItemService : IItemService

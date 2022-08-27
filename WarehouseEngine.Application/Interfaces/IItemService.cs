@@ -1,4 +1,4 @@
-﻿using WarehouseEngine.Core.Entities;
+﻿using WarehouseEngine.Domain.Entities;
 
 namespace WarehouseEngine.Application.Interfaces;
 public interface IItemService

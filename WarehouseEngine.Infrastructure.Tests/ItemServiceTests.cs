@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using WarehouseEngine.Core.Entities;
+using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Infrastructure.Data;
 using WarehouseEngine.Infrastructure.Implementations;
 

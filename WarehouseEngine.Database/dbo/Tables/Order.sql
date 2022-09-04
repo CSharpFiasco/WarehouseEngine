@@ -2,6 +2,7 @@
     [Id]         INT      NOT NULL IDENTITY(1, 1),
     [CustomerId] INT      NOT NULL,
     [AddressId]  INT      NOT NULL,
+    [OrderDate]  DATE     NOT NULL,
     [Status]     TINYINT  NOT NULL,
     CONSTRAINT [PK_Order] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Order_Customer] FOREIGN KEY ([CustomerId]) REFERENCES [Customer]([Id]),

@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
@@ -6,7 +8,7 @@ using WarehouseEngine.Domain.Entities;
 namespace WarehouseEngine.Infrastructure.Data;
 
 [ExcludeFromCodeCoverage]
-public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
+public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, IWarehouseEngineContext
 {
     public WarehouseEngineContext()
     {
@@ -33,9 +35,11 @@ public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
     public virtual DbSet<Warehouse> Warehouse { get; set; } = null!;
     public virtual DbSet<WarehouseItem> WarehouseItem { get; set; } = null!;
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        modelBuilder.Entity<Contact>(entity =>
+        base.OnModelCreating(builder);
+
+        builder.Entity<Contact>(entity =>
         {
             entity.HasOne(d => d.Address)
                 .WithMany(p => p.Contact)
@@ -43,7 +47,7 @@ public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
                 .HasConstraintName("FK_Contact_Address");
         });
 
-        modelBuilder.Entity<Customer>(entity =>
+        builder.Entity<Customer>(entity =>
         {
             entity.HasOne(d => d.Address)
                 .WithMany(p => p.Customer)
@@ -69,7 +73,7 @@ public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
                     });
         });
 
-        modelBuilder.Entity<Employee>(entity =>
+        builder.Entity<Employee>(entity =>
         {
             entity.Property(e => e.SocialSecuritySerialNumber).IsFixedLength();
 
@@ -86,7 +90,7 @@ public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
                 .HasConstraintName("FK_Employee_SupervisorEmployee");
         });
 
-        modelBuilder.Entity<Order>(entity =>
+        builder.Entity<Order>(entity =>
         {
             entity.HasOne(d => d.Address)
                 .WithMany(p => p.Order)
@@ -101,7 +105,7 @@ public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
                 .HasConstraintName("FK_Order_Customer");
         });
 
-        modelBuilder.Entity<OrderWarehouseItem>(entity =>
+        builder.Entity<OrderWarehouseItem>(entity =>
         {
             entity.HasKey(e => new { e.OrderId, e.WarehouseItemId });
 
@@ -118,7 +122,7 @@ public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
                 .HasConstraintName("FK_OrderWarehouseItem_Warehouse");
         });
 
-        modelBuilder.Entity<OrderWarehouseItemOutOfStock>(entity =>
+        builder.Entity<OrderWarehouseItemOutOfStock>(entity =>
         {
             entity.HasKey(e => new { e.OrderId, e.WarehouseItemId });
 
@@ -135,7 +139,7 @@ public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
                 .HasConstraintName("FK_OrderWarehouseItemOutOfStock_WarehouseItemOutOfStock");
         });
 
-        modelBuilder.Entity<PurchaseOrderWarehouseItem>(entity =>
+        builder.Entity<PurchaseOrderWarehouseItem>(entity =>
         {
             entity.HasKey(e => new { e.PurchaseOrderId, e.WarehouseItemId });
 
@@ -152,7 +156,7 @@ public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
                 .HasConstraintName("FK_PurchaseOrderWarehouseItem_WarehouseItem");
         });
 
-        modelBuilder.Entity<Vendor>(entity =>
+        builder.Entity<Vendor>(entity =>
         {
             entity.HasMany(d => d.Item)
                 .WithMany(p => p.Vendor)
@@ -172,7 +176,7 @@ public partial class WarehouseEngineContext : DbContext, IWarehouseEngineContext
                     });
         });
 
-        modelBuilder.Entity<WarehouseItem>(entity =>
+        builder.Entity<WarehouseItem>(entity =>
         {
             entity.HasOne(d => d.Item)
                 .WithMany(p => p.WarehouseItem)

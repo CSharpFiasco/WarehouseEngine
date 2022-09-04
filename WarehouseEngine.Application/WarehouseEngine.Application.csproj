@@ -10,8 +10,4 @@
     <ProjectReference Include="..\WarehouseEngine.Domain\WarehouseEngine.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Implementations\" />
-  </ItemGroup>
-
 </Project>

@@ -1,45 +1,32 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using WarehouseEngine.Domain.Entities;
-using WarehouseEngine.Infrastructure.Data;
+﻿using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Infrastructure.Implementations;
+using WarehouseEngine.Infrastructure.Tests.Helpers;
 
 namespace WarehouseEngine.Infrastructure.Tests;
 
-public class ItemServiceTests
+public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
 {
-    private readonly SqliteConnection _connection;
-    private readonly DbContextOptions<WarehouseEngineContext> _contextOptions;
-    public ItemServiceTests()
-    {
-        // Create and open a connection. This creates the SQLite in-memory database, which will persist until the connection is closed
-        // at the end of the test (see Dispose below).
-        _connection = new SqliteConnection("Filename=:memory:");
-        _connection.Open();
-
-        // These options will be used by the context instances in this test suite, including the connection opened above.
-        _contextOptions = new DbContextOptionsBuilder<WarehouseEngineContext>()
-            .UseSqlite(_connection)
-            .Options;
-    }
+    public ItemServiceTests(TestDatabaseFixture fixture)
+    => Fixture = fixture;
+    public TestDatabaseFixture Fixture { get; }
 
     [Fact]
     public async Task AddAsync_SingleItem_AddsSingleItem()
     {
-        using var context = CreateContext();
+        using var context = Fixture.CreateContext();
         context.Database.EnsureCreated();
+
+        var newSku = "TestAddAsync";
+
         var item = new Item
         {
             Description = "Test",
-            Sku = "Sku1"
+            Sku = newSku
         };
 
         var sut = new ItemService(context);
-
         await sut.AddAsync(item);
 
-        Assert.NotEmpty(context.Item);
+        Assert.NotEmpty(context.Item.Where(i => i.Sku == newSku));
     }
-
-    WarehouseEngineContext CreateContext() => new WarehouseEngineContext(_contextOptions);
 }

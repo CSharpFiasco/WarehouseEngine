@@ -22,8 +22,9 @@ public class ItemServiceTests
             .UseSqlite(_connection)
             .Options;
     }
+
     [Fact]
-    public async Task AddAsync()
+    public async Task AddAsync_SingleItem_AddsSingleItem()
     {
         using var context = CreateContext();
         context.Database.EnsureCreated();
@@ -38,7 +39,6 @@ public class ItemServiceTests
         await sut.AddAsync(item);
 
         Assert.NotEmpty(context.Item);
-
     }
 
     WarehouseEngineContext CreateContext() => new WarehouseEngineContext(_contextOptions);

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WarehouseEngine.Domain.Entities;
 
-[Index("OrderId", Name = "IX_OrderWarehouseItem01")]
-[Index("WarehouseItemId", Name = "IX_OrderWarehouseItem02")]
-public partial class OrderWarehouseItem
+[Index("OrderId", Name = "IX_OrderWarehouseItemOutOfStock01")]
+[Index("WarehouseItemId", Name = "IX_OrderWarehouseItemOutOfStock02")]
+public partial class OrderWarehouseItemOutOfStock
 {
     [Key]
     public int OrderId { get; set; }
@@ -15,10 +15,10 @@ public partial class OrderWarehouseItem
     public int Quantity { get; set; }
 
     [ForeignKey("OrderId")]
-    [InverseProperty("OrderWarehouseItem")]
+    [InverseProperty("OrderWarehouseItemOutOfStock")]
     public virtual Order? Order { get; set; }
 
     [ForeignKey("WarehouseItemId")]
-    [InverseProperty("OrderWarehouseItem")]
+    [InverseProperty("OrderWarehouseItemOutOfStock")]
     public virtual WarehouseItem? WarehouseItem { get; set; }
 }

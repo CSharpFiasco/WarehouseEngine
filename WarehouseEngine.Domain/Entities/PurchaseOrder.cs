@@ -1,4 +1,8 @@
-﻿namespace WarehouseEngine.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace WarehouseEngine.Domain.Entities;
 
 public partial class PurchaseOrder
 {
@@ -7,10 +11,15 @@ public partial class PurchaseOrder
         PurchaseOrderWarehouseItem = new HashSet<PurchaseOrderWarehouseItem>();
     }
 
+    [Key]
     public int Id { get; set; }
+    [Column(TypeName = "date")]
     public DateTime OrderDate { get; set; }
+    [StringLength(255)]
+    [Unicode(false)]
     public required string OrderNumber { get; set; }
     public byte Status { get; set; }
 
+    [InverseProperty("PurchaseOrder")]
     public virtual ICollection<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; set; }
 }

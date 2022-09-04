@@ -139,6 +139,14 @@ csharp_style_expression_bodied_local_functions = false:silent
 csharp_style_prefer_null_check_over_type_check = true:suggestion
 csharp_style_prefer_parameter_null_checking = true:suggestion
 csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+# Set diagnostics to warnings
+dotnet_diagnostic.IDE0001.severity = suggestion
+dotnet_diagnostic.IDE0002.severity = suggestion
+dotnet_diagnostic.IDE0005.severity = suggestion
+dotnet_diagnostic.IDE0006.severity = suggestion
+dotnet_diagnostic.IDE0059.severity = suggestion
+dotnet_diagnostic.IDE0063.severity = suggestion
+dotnet_diagnostic.IDE0090.severity = none
 ###############################
 # VB Coding Conventions       #
 ###############################

@@ -6,14 +6,16 @@ namespace WarehouseEngine.Infrastructure.Tests;
 
 public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
 {
+    private readonly TestDatabaseFixture _fixture;
     public ItemServiceTests(TestDatabaseFixture fixture)
-    => Fixture = fixture;
-    public TestDatabaseFixture Fixture { get; }
+    {
+        _fixture = fixture;
+    }
 
     [Fact]
     public async Task AddAsync_SingleItem_AddsSingleItem()
     {
-        using var context = Fixture.CreateContext();
+        using var context = _fixture.CreateContext();
         context.Database.EnsureCreated();
 
         var newSku = "TestAddAsync";

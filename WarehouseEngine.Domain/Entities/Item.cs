@@ -14,9 +14,11 @@ public partial class Item
 
     [Key]
     public int Id { get; set; }
+    [Required]
     [StringLength(12)]
     [Unicode(false)]
     public required string Sku { get; set; }
+    [Required]
     [StringLength(120)]
     [Unicode(false)]
     public required string Description { get; set; }

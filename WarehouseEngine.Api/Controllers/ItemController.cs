@@ -4,8 +4,8 @@ using WarehouseEngine.Domain.Entities;
 
 namespace WarehouseEngine.Api.Controllers;
 [ApiController]
-[Route("Item")]
-public class ItemController : Controller
+[Route("api/v{version:apiVersion}/[controller]")]
+public class ItemController : ControllerBase
 {
     private readonly IItemService _itemService;
     public ItemController(IItemService itemService)

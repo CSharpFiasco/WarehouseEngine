@@ -15,19 +15,23 @@ public partial class Address
 
     [Key]
     public int Id { get; set; }
+    [Required]
     [Column("Address")]
     [StringLength(80)]
     [Unicode(false)]
     public required string Address1 { get; set; }
     [StringLength(80)]
     [Unicode(false)]
-    public required string Address2 { get; set; }
+    public string? Address2 { get; set; }
+    [Required]
     [StringLength(32)]
     [Unicode(false)]
     public required string City { get; set; }
+    [Required]
     [StringLength(2)]
     [Unicode(false)]
     public required string State { get; set; }
+    [Required]
     [StringLength(11)]
     [Unicode(false)]
     public required string Zip { get; set; }

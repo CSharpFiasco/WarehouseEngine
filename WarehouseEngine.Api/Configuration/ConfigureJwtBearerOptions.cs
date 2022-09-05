@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using WarehouseEngine.Domain.Models.Login;
 
 namespace WarehouseEngine.Api.Configuration;
-public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
+public class ConfigureJwtBearerOptions : IConfigureOptions<JwtBearerOptions>
 {
     private readonly IOptions<JwtConfiguration> _configuration;
     public ConfigureJwtBearerOptions(IOptions<JwtConfiguration> configurations)
@@ -38,10 +38,5 @@ public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions
             IssuerSigningKey = authSigningKey,
             LifetimeValidator = Validator
         };
-    }
-
-    public void Configure(string? name, JwtBearerOptions options)
-    {
-        Configure(options);
     }
 }

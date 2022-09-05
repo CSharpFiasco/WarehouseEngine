@@ -1,5 +1,7 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Models.Login;
@@ -8,28 +10,47 @@ namespace WarehouseEngine.Api.Controllers;
 
 [ApiController]
 [AllowAnonymous]
-public class AuthenticateController : Controller
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
+public class AuthenticateController : ControllerBase
 {
+    private readonly UserManager<IdentityUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IJwtService _jwtService;
-    public AuthenticateController(IJwtService jwtService)
+    public AuthenticateController(
+        UserManager<IdentityUser> userManager,
+        RoleManager<IdentityRole> roleManager,
+        IJwtService jwtService)
     {
+        _userManager = userManager;
+        _roleManager = roleManager;
         _jwtService = jwtService;
     }
 
     [HttpPost]
-    [Route("login")]
-    public IActionResult Login([FromBody] Login model)
+    public async Task<IActionResult> Login([FromBody] Login model)
     {
-        var authClaims = new List<Claim>
+        var user = await _userManager.FindByNameAsync(model.Username);
+        if (user is not null && user.UserName is not null && await _userManager.CheckPasswordAsync(user, model.Password))
+        {
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, "MyName"),
-                    new Claim(ClaimTypes.Role, UserRoles.User),
-                    new Claim(ClaimTypes.Role, UserRoles.Admin)
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
-        var token = _jwtService.GetNewToken(authClaims);
 
-        Response.Headers.Add("Bearer", token);
+            foreach (var userRole in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
 
-        return Ok();
+            var token = _jwtService.GetNewToken(authClaims);
+            Response.Headers.Add("Bearer", token);
+
+            return Ok();
+        }
+        return Unauthorized();
     }
 }

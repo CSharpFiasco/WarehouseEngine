@@ -1,5 +1,5 @@
-﻿using WarehouseEngine.Domain.Entities;
-using WarehouseEngine.Infrastructure.Implementations;
+﻿using WarehouseEngine.Application.Implementations;
+using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Infrastructure.Tests.Helpers;
 
 namespace WarehouseEngine.Infrastructure.Tests;

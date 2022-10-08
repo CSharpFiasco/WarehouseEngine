@@ -7,7 +7,6 @@ using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Models.Login;
 using WarehouseEngine.Infrastructure.Data;
-using WarehouseEngine.Infrastructure.Implementations;
 
 namespace WarehouseEngine.Api;
 

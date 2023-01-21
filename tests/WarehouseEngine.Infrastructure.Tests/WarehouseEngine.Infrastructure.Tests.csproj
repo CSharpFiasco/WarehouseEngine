@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WarehouseEngine.Infrastructure\WarehouseEngine.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\WarehouseEngine.Infrastructure\WarehouseEngine.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

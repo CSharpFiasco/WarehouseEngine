@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9B0E88CC-5201-4F75-A8D5-F5C700E94CC0}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		README.MD = README.MD
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Application", "WarehouseEngine.Application\WarehouseEngine.Application.csproj", "{EB60C368-B903-419E-8A41-AC832A70F750}"
@@ -22,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{595DB01B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Infrastructure.Tests", "WarehouseEngine.Infrastructure.Tests\WarehouseEngine.Infrastructure.Tests.csproj", "{4B54FE5B-FAB7-42DD-BC73-A5094569C84B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseEngine.Api", "WarehouseEngine.Api\WarehouseEngine.Api.csproj", "{9298CA01-BEC1-4883-A796-38BC88924253}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Api", "WarehouseEngine.Api\WarehouseEngine.Api.csproj", "{9298CA01-BEC1-4883-A796-38BC88924253}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

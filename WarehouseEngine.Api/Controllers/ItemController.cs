@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
 
 namespace WarehouseEngine.Api.Controllers;
 [ApiController]
+[Authorize]
 [Route("api/v{version:apiVersion}/[controller]")]
 public class ItemController : ControllerBase
 {
@@ -11,6 +13,14 @@ public class ItemController : ControllerBase
     public ItemController(IItemService itemService)
     {
         _itemService = itemService;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get(int id)
+    {
+        var item = await _itemService.GetByIdAsync(id);
+
+        return Ok(item);
     }
 
     [HttpPost]

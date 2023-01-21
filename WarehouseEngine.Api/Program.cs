@@ -6,7 +6,7 @@ using WarehouseEngine.Api.Configuration;
 using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Models.Login;
-using WarehouseEngine.Infrastructure.Data;
+using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Api;
 
@@ -15,50 +15,60 @@ public static class Program
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        var services = builder.Services;
+        var env = builder.Environment;
 
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        });
+        builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+              .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+              .AddJsonFile($"appsettings.local.json", optional: true, reloadOnChange: true);
 
         var connectionString = builder.Configuration.GetConnectionString("WarehouseEngine");
         if (connectionString is null) throw new ArgumentException("Connection string is not in the app settings");
 
-        builder.Services.AddDbContext<IWarehouseEngineContext, WarehouseEngineContext>(options => options.UseSqlServer(connectionString));
+        services.AddDbContext<IWarehouseEngineContext, WarehouseEngineContext>(options => options.UseSqlServer(connectionString));
 
         // For Identity
-        builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+        services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<WarehouseEngineContext>()
             .AddDefaultTokenProviders();
 
-        // Add services to the container.
-        builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection(nameof(JwtConfiguration)));
-        builder.Services.ConfigureOptions<ConfigureJwtBearerOptions>();
-        builder.Services.ConfigureOptions<ConfigureSwaggerGenOptions>();
+#if DEBUG
+        services.AddCors(opt => opt.AddPolicy("localhost", policy => policy.WithOrigins("https://localhost:4200")));
+#endif
 
-        builder.Services.AddScoped<IJwtService, JwtService>();
-        builder.Services.AddScoped<IItemService, ItemService>();
+        // Add services to the container.
+        services.Configure<JwtConfiguration>(builder.Configuration.GetSection(nameof(JwtConfiguration)));
+        services.ConfigureOptions<ConfigureJwtBearerOptions>();
+        services.ConfigureOptions<ConfigureSwaggerGenOptions>();
+
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<IItemService, ItemService>();
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer();
 
         // Registers IApiVersionDescriptionProvider for swagger gen and swagger ui
-        builder.Services.AddApiVersioning(options =>
+        services.AddApiVersioning(options =>
         {
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
             options.ReportApiVersions = true;
         });
 
-        builder.Services.AddVersionedApiExplorer(options =>
+        services.AddVersionedApiExplorer(options =>
         {
             options.GroupNameFormat = "'v'VVV";
             options.SubstituteApiVersionInUrl = true;
         });
 
-        builder.Services.AddControllers();
+        services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
 
         var app = builder.Build();
         await SeedData(app.Services);

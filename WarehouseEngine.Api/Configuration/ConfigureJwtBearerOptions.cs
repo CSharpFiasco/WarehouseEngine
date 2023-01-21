@@ -5,14 +5,18 @@ using Microsoft.IdentityModel.Tokens;
 using WarehouseEngine.Domain.Models.Login;
 
 namespace WarehouseEngine.Api.Configuration;
-public class ConfigureJwtBearerOptions : IConfigureOptions<JwtBearerOptions>
+public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private readonly IOptions<JwtConfiguration> _configuration;
+    private readonly JwtConfiguration _configuration;
     public ConfigureJwtBearerOptions(IOptions<JwtConfiguration> configurations)
     {
-        _configuration = configurations;
+        _configuration = configurations.Value;
     }
 
+    public void Configure(string? name, JwtBearerOptions options)
+    {
+        Configure(options);
+    }
     public void Configure(JwtBearerOptions options)
     {
         static bool Validator(DateTime? before, DateTime? expired, SecurityToken token, TokenValidationParameters parameters)
@@ -20,16 +24,16 @@ public class ConfigureJwtBearerOptions : IConfigureOptions<JwtBearerOptions>
             return expired != null && DateTime.UtcNow < expired;
         }
 
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.Value.Secret));
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.Secret));
 
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = "https://example.com",
+            ValidIssuer = _configuration.ValidIssuer,
 
             ValidateAudience = true,
-            ValidAudience = "https://warehouseengine.example.com",
+            ValidAudience = _configuration.ValidAudience,
 
             ValidateLifetime = true,
 

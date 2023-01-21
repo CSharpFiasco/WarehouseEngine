@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
 
-namespace WarehouseEngine.Infrastructure.Data;
+namespace WarehouseEngine.Infrastructure.DataContext;
 
 [ExcludeFromCodeCoverage]
 public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, IWarehouseEngineContext

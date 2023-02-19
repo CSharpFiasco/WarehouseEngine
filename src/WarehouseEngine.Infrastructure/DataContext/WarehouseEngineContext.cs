@@ -19,7 +19,6 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
     {
     }
 
-    public virtual DbSet<Address> Address { get; set; } = null!;
     public virtual DbSet<Company> Company { get; set; } = null!;
     public virtual DbSet<Contact> Contact { get; set; } = null!;
     public virtual DbSet<Customer> Customer { get; set; } = null!;
@@ -41,19 +40,24 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 
         builder.Entity<Contact>(entity =>
         {
-            entity.HasOne(d => d.Address)
-                .WithMany(p => p.Contact)
-                .HasForeignKey(d => d.AddressId)
-                .HasConstraintName("FK_Contact_Address");
+            entity.OwnsOne(d => d.Address);
         });
 
         builder.Entity<Customer>(entity =>
         {
-            entity.HasOne(d => d.Address)
-                .WithMany(p => p.Customer)
-                .HasForeignKey(d => d.AddressId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Customer_Address");
+            var billingAddress = entity.OwnsOne(d => d.BillingAddress);
+            billingAddress.Property(a => a.Address1).HasColumnName("BillingAddress1");
+            billingAddress.Property(a => a.Address2).HasColumnName("BillingAddress2");
+            billingAddress.Property(a => a.City).HasColumnName("BillingCity");
+            billingAddress.Property(a => a.State).HasColumnName("BillingState");
+            billingAddress.Property(a => a.ZipCode).HasColumnName("BillingZipCode");
+
+            var shippingAddress = entity.OwnsOne(d => d.ShippingAddress);
+            shippingAddress.Property(a => a.Address1).HasColumnName("ShippingAddress1");
+            shippingAddress.Property(a => a.Address2).HasColumnName("ShippingAddress2");
+            shippingAddress.Property(a => a.City).HasColumnName("ShippingCity");
+            shippingAddress.Property(a => a.State).HasColumnName("ShippingState");
+            shippingAddress.Property(a => a.ZipCode).HasColumnName("ShippingZipCode");
 
             entity.HasMany(d => d.Contact)
                 .WithMany(p => p.Customer)
@@ -92,17 +96,18 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 
         builder.Entity<Order>(entity =>
         {
-            entity.HasOne(d => d.Address)
-                .WithMany(p => p.Order)
-                .HasForeignKey(d => d.AddressId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Order_Address");
-
             entity.HasOne(d => d.Customer)
                 .WithMany(p => p.Order)
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Customer");
+
+            var shippingAddress = entity.OwnsOne(d => d.ShippingAddress);
+            shippingAddress.Property(a => a.Address1).HasColumnName("ShippingAddress1");
+            shippingAddress.Property(a => a.Address2).HasColumnName("ShippingAddress2");
+            shippingAddress.Property(a => a.City).HasColumnName("ShippingCity");
+            shippingAddress.Property(a => a.State).HasColumnName("ShippingState");
+            shippingAddress.Property(a => a.ZipCode).HasColumnName("ShippingZipCode");
         });
 
         builder.Entity<OrderWarehouseItem>(entity =>

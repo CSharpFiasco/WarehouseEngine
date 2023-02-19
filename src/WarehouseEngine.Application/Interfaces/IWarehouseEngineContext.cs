@@ -4,7 +4,6 @@ using WarehouseEngine.Domain.Entities;
 namespace WarehouseEngine.Application.Interfaces;
 public interface IWarehouseEngineContext
 {
-    DbSet<Address> Address { get; set; }
     DbSet<Company> Company { get; set; }
     DbSet<Contact> Contact { get; set; }
     DbSet<Customer> Customer { get; set; }

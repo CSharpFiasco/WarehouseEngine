@@ -1,5 +1,9 @@
-﻿namespace WarehouseEngine.Infrastructure.Tests;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 
+namespace WarehouseEngine.Infrastructure.Tests;
+
+[ExcludeFromCodeCoverage]
 public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
 {
     private readonly TestDatabaseFixture _fixture;
@@ -12,7 +16,7 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     public async Task GetItemByIdAsync_SingleItem_AddSingleItem()
     {
         using var context = _fixture.CreateContext();
-        context.Database.BeginTransaction();
+        using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestAddAsync";
 
@@ -39,7 +43,7 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     public async Task AddAsync_SingleItem_AddSingleItem()
     {
         using var context = _fixture.CreateContext();
-        context.Database.BeginTransaction();
+        using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestAddAsync";
 
@@ -54,5 +58,28 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
 
         context.ChangeTracker.Clear();
         Assert.Single(context.Item.Where(i => i.Sku == newSku));
+    }
+
+    [Fact]
+    public async Task UpdateAsync_SingleItem_Fields()
+    {
+        using var context = _fixture.CreateContext();
+        using var _ = context.Database.BeginTransaction();
+
+        const string newSku = "TestSku";
+
+        var item = await context.Item.SingleAsync(i => i.Id == 1);
+
+        item.Sku = newSku;
+        item.Description = "TestDescriptionUpdateAsync";
+        item.IsActive = false;
+
+        var sut = new ItemService(context);
+        await sut.UpdateAsync(1, item);
+
+        context.ChangeTracker.Clear();
+        Assert.Equal("TestSku", item.Sku);
+        Assert.Equal("TestDescriptionUpdateAsync", item.Description);
+        Assert.False(item.IsActive);
     }
 }

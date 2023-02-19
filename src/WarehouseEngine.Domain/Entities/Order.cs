@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using WarehouseEngine.Domain.ValueObjects;
 
 namespace WarehouseEngine.Domain.Entities;
 
-[Index("AddressId", Name = "IX_Order01")]
 public partial class Order
 {
     public Order()
@@ -16,12 +15,9 @@ public partial class Order
     [Key]
     public int Id { get; set; }
     public int CustomerId { get; set; }
-    public int AddressId { get; set; }
     public byte Status { get; set; }
 
-    [ForeignKey("AddressId")]
-    [InverseProperty("Order")]
-    public virtual Address? Address { get; set; }
+    public required Address ShippingAddress { get; set; }
 
     [ForeignKey("CustomerId")]
     [InverseProperty("Order")]

@@ -3,7 +3,7 @@ using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Infrastructure.Tests.Fixtures;
 
-public sealed class TestDatabaseFixture : IDisposable
+public sealed class TestDatabaseFixture
 {
     private readonly string ConnectionString = @$"Server=(localdb)\mssqllocaldb;Database=WarehouseTestDatabase;Trusted_Connection=True;MultipleActiveResultSets=true";
 
@@ -43,16 +43,4 @@ public sealed class TestDatabaseFixture : IDisposable
                 .UseSqlServer(ConnectionString)
                 .Options);
 
-    public void Dispose()
-    {
-        lock (_lock)
-        {
-            if (_databaseInitialized)
-            {
-                using var context = CreateContext();
-                context.Database.EnsureDeleted();
-            }
-        }
-        GC.SuppressFinalize(this);
-    }
 }

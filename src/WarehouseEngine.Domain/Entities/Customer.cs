@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using WarehouseEngine.Domain.ValueObjects;
 
 namespace WarehouseEngine.Domain.Entities;
 
-[Index("AddressId", Name = "IX_Customer01")]
 public partial class Customer
 {
     public Customer()
@@ -18,11 +18,9 @@ public partial class Customer
     [StringLength(80)]
     [Unicode(false)]
     public required string Name { get; set; }
-    public int AddressId { get; set; }
 
-    [ForeignKey("AddressId")]
-    [InverseProperty("Customer")]
-    public virtual Address? Address { get; set; }
+    public Address? BillingAddress { get; set; }
+    public required Address ShippingAddress { get; set; }
     [InverseProperty("Customer")]
     public virtual ICollection<Order> Order { get; set; }
 

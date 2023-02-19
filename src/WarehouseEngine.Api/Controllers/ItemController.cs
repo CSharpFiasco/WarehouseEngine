@@ -4,6 +4,7 @@ using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
 
 namespace WarehouseEngine.Api.Controllers;
+
 [ApiController]
 [Authorize]
 [Route("api/v{version:apiVersion}/[controller]")]
@@ -16,7 +17,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get(int id)
+    public async Task<ActionResult<Item>> Get(int id)
     {
         var item = await _itemService.GetByIdAsync(id);
 
@@ -24,7 +25,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(Item item)
+    public async Task<ActionResult<Item>> Create(Item item)
     {
         await _itemService.AddAsync(item);
 

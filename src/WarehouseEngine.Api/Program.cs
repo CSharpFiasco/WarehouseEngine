@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using WarehouseEngine.Api.Configuration;
 using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Application.Interfaces;
@@ -22,9 +23,8 @@ public static class Program
               .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
               .AddJsonFile($"appsettings.local.json", optional: true, reloadOnChange: true);
 
-        var connectionString = builder.Configuration.GetConnectionString("WarehouseEngine");
-        if (connectionString is null) throw new ArgumentException("Connection string is not in the app settings");
-
+        var connectionString = builder.Configuration.GetConnectionString("WarehouseEngine")
+            ?? throw new ArgumentException("Connection string is not in the app settings");
         services.AddDbContext<IWarehouseEngineContext, WarehouseEngineContext>(options => options.UseSqlServer(connectionString));
 
         // For Identity
@@ -43,6 +43,7 @@ public static class Program
 
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IItemService, ItemService>();
+        services.AddScoped<ICustomerService, CustomerService>();
 
         services.AddAuthentication(options =>
         {
@@ -68,7 +69,32 @@ public static class Program
         services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(option =>
+        {
+            option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Please enter a valid token",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                BearerFormat = "JWT",
+                Scheme = "Bearer"
+            });
+            option.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type=ReferenceType.SecurityScheme,
+                            Id="Bearer"
+                        }
+                    },
+                    new string[]{}
+                }
+            });
+        });
 
         var app = builder.Build();
         await SeedData(app.Services);

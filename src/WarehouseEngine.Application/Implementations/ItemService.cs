@@ -24,9 +24,28 @@ public class ItemService : IItemService
 
     public async Task AddAsync(Item item)
     {
-        if (_context.Item.SingleOrDefault(i => item.Id == i.Id) is not null)
+        if (await _context.Item.AnyAsync(i => item.Id == i.Id))
             throw new EntityAlreadyExistsException<Item>();
         await _context.Item.AddAsync(item);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(int id, Item item)
+    {
+        var entityToUpdate = await _context.Item.SingleOrDefaultAsync(i => id == i.Id);
+        if (entityToUpdate is null)
+            throw new EntityDoesNotExistException<Item>();
+
+        entityToUpdate.IsActive = item.IsActive;
+        entityToUpdate.Sku = item.Sku;
+        entityToUpdate.Description = item.Description;
+
+        _context.Item.Update(entityToUpdate);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _context.Item.Where(e => e.Id == id).ExecuteDeleteAsync();
     }
 }

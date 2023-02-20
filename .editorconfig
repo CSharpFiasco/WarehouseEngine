@@ -80,6 +80,7 @@ dotnet_diagnostic.CA1823.severity = warning
 dotnet_diagnostic.CA1827.severity = suggestion
 dotnet_diagnostic.CA1828.severity = suggestion
 dotnet_diagnostic.CA1829.severity = warning
+dotnet_diagnostic.CA1849.severity = suggestion
 ###############################
 # C# Coding Conventions       #
 ###############################

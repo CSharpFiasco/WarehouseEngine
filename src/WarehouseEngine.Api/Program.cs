@@ -123,7 +123,7 @@ public static class Program
 
         app.MapControllers();
 
-        app.Run();
+        await app.RunAsync();
     }
 
     public static async Task SeedData(IServiceProvider services)

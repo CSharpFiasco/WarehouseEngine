@@ -91,7 +91,7 @@ public static class Program
                             Id="Bearer"
                         }
                     },
-                    new string[]{}
+                    Array.Empty<string>()
                 }
             });
         });

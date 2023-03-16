@@ -1,4 +1,6 @@
-﻿namespace WarehouseEngine.Domain.Helpers;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace WarehouseEngine.Domain.Helpers;
 public abstract class ValueObject
 {
     protected static bool EqualOperator(ValueObject? left, ValueObject? right)
@@ -35,8 +37,8 @@ public abstract class ValueObject
             .Select(x => x != null ? x.GetHashCode() : 0)
             .Aggregate((x, y) => x ^ y);
     }
-    // Other utility methods
 
+    [SuppressMessage("Blocker Code Smell", "S3875:\"operator==\" should not be overloaded on reference types", Justification = "ValueObject is exception to this per MS docs. https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/implement-value-objects#value-object-implementation-in-c")]
     public static bool operator ==(ValueObject one, ValueObject two)
     {
         return EqualOperator(one, two);

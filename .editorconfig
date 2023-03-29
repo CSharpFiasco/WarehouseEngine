@@ -160,6 +160,7 @@ dotnet_diagnostic.IDE0059.severity = suggestion
 dotnet_diagnostic.IDE0063.severity = suggestion
 dotnet_diagnostic.IDE0090.severity = none
 dotnet_diagnostic.CA2000.severity = warning
+dotnet_diagnostic.CA2013.severity = warning
 csharp_style_prefer_top_level_statements = true:silent
 dotnet_diagnostic.CA2016.severity = suggestion
 csharp_style_prefer_index_operator = true:suggestion

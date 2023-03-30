@@ -19,7 +19,7 @@ public class CustomerController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<Customer>> Get(int id)
     {
-        var customer = await _customerService.GetByIdAsync(id);
+        Customer? customer = await _customerService.GetByIdAsync(id);
 
         return Ok(customer);
     }

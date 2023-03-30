@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
+using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Infrastructure.Tests;
 
@@ -15,7 +16,7 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task GetItemByIdAsync_SingleItem_AddSingleItem()
     {
-        await using var context = _fixture.CreateContext();
+        await using WarehouseEngineContext context = _fixture.CreateContext();
         await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestAddAsync";
@@ -29,11 +30,11 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
         await context.AddAsync(item);
         await context.SaveChangesAsync();
 
-        var expectedId = item.Id;
+        int expectedId = item.Id;
         context.ChangeTracker.Clear();
 
         var sut = new ItemService(context);
-        var result = await sut.GetByIdAsync(expectedId);
+        Item result = await sut.GetByIdAsync(expectedId);
 
         context.ChangeTracker.Clear();
         Assert.Equal(expectedId, result.Id);
@@ -42,7 +43,7 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task AddAsync_SingleItem_AddSingleItem()
     {
-        await using var context = _fixture.CreateContext();
+        await using WarehouseEngineContext context = _fixture.CreateContext();
         await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestAddAsync";
@@ -63,12 +64,12 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task UpdateAsync_SingleItem_Fields()
     {
-        await using var context = _fixture.CreateContext();
+        await using WarehouseEngineContext context = _fixture.CreateContext();
         await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestSku";
 
-        var item = await context.Item.SingleAsync(i => i.Id == 1);
+        Item item = await context.Item.SingleAsync(i => i.Id == 1);
 
         item.Sku = newSku;
         item.Description = "TestDescriptionUpdateAsync";

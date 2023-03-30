@@ -14,7 +14,7 @@ public class ItemService : IItemService
 
     public async Task<Item> GetByIdAsync(int id)
     {
-        var item = await _context.Item.AsNoTracking()
+        Item? item = await _context.Item.AsNoTracking()
             .SingleOrDefaultAsync(i => i.Id == id);
 
         return item is not null
@@ -32,7 +32,7 @@ public class ItemService : IItemService
 
     public async Task UpdateAsync(int id, Item item)
     {
-        var entityToUpdate = await _context.Item.SingleOrDefaultAsync(i => id == i.Id);
+        Item? entityToUpdate = await _context.Item.SingleOrDefaultAsync(i => id == i.Id);
         if (entityToUpdate is null)
             throw new EntityDoesNotExistException<Item>();
 

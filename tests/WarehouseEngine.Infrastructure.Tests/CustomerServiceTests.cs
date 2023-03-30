@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using WarehouseEngine.Domain.ValueObjects;
+using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Infrastructure.Tests;
 
@@ -15,12 +16,12 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task GetByIdAsync_SingleCustomer_ReturnsSingleCustomer()
     {
-        await using var context = _fixture.CreateContext();
+        await using WarehouseEngineContext context = _fixture.CreateContext();
         await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestName";
 
-        var customer = new Customer
+        Customer customer = new()
         {
             Name = newSku,
             ShippingAddress = new Address("test1", "test2", "test3", "test4", "test5")
@@ -42,12 +43,12 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task AddAsync_SingleCustomer_BillingAddressIsMissing_DoesNotThrow()
     {
-        await using var context = _fixture.CreateContext();
+        await using WarehouseEngineContext context = _fixture.CreateContext();
         await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestName";
 
-        var customer = new Customer
+        Customer customer = new()
         {
             Id = 0,
             Name = newSku,
@@ -65,12 +66,12 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task AddAsync_SingleCustomer_ShippingAddressIsMissing_ThrowsException()
     {
-        await using var context = _fixture.CreateContext();
+        await using WarehouseEngineContext context = _fixture.CreateContext();
         await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestName";
 
-        var customer = new Customer
+        Customer customer = new()
         {
             Name = newSku,
             BillingAddress = new Address("test1", "test2", "test3", "test4", "test5"),

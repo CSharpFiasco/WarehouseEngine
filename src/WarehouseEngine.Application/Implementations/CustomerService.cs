@@ -15,7 +15,8 @@ public class CustomerService : ICustomerService
 
     public async Task<Customer> GetByIdAsync(int id)
     {
-        var entity = await _context.Customer.AsNoTracking()
+        Customer? entity = await _context.Customer
+            .AsNoTracking()
             .SingleOrDefaultAsync(i => i.Id == id);
 
         return entity is not null
@@ -39,7 +40,8 @@ public class CustomerService : ICustomerService
 
     public async Task UpdateAsync(int id, Customer entity)
     {
-        var entityToUpdate = await _context.Customer.SingleOrDefaultAsync(e => id == e.Id);
+        Customer? entityToUpdate = await _context.Customer
+            .SingleOrDefaultAsync(e => id == e.Id);
         if (entityToUpdate is null)
             throw new EntityDoesNotExistException<Customer>();
 
@@ -53,6 +55,8 @@ public class CustomerService : ICustomerService
 
     public async Task DeleteAsync(int id)
     {
-        await _context.Customer.Where(e => e.Id == id).ExecuteDeleteAsync();
+        await _context.Customer
+            .Where(e => e.Id == id)
+            .ExecuteDeleteAsync();
     }
 }

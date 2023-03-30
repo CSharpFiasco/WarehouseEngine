@@ -16,13 +16,12 @@ public sealed class TestDatabaseFixture
         {
             if (!_databaseInitialized)
             {
-                using (var context = CreateContext())
-                {
-                    context.Database.EnsureDeleted();
-                    context.Database.EnsureCreated();
-                    SeedDatabase(context);
-                    context.SaveChanges();
-                }
+                using WarehouseEngineContext context = CreateContext();
+
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+                SeedDatabase(context);
+                context.SaveChanges();
 
                 _databaseInitialized = true;
             }

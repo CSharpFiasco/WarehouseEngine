@@ -19,7 +19,7 @@ public class ItemController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<Item>> Get(int id)
     {
-        var item = await _itemService.GetByIdAsync(id);
+        Item? item = await _itemService.GetByIdAsync(id);
 
         return Ok(item);
     }

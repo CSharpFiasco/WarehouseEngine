@@ -30,10 +30,10 @@ public class AuthenticateController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Login([FromBody] Login model)
     {
-        var user = await _userManager.FindByNameAsync(model.Username);
+        IdentityUser? user = await _userManager.FindByNameAsync(model.Username);
         if (user is not null && user.UserName is not null && await _userManager.CheckPasswordAsync(user, model.Password))
         {
-            var userRoles = await _userManager.GetRolesAsync(user);
+            IList<string> userRoles = await _userManager.GetRolesAsync(user);
 
             var authClaims = new List<Claim>
                 {
@@ -46,7 +46,7 @@ public class AuthenticateController : ControllerBase
                 authClaims.Add(new Claim(ClaimTypes.Role, userRole));
             }
 
-            var token = _jwtService.GetNewToken(authClaims);
+            string token = _jwtService.GetNewToken(authClaims);
             Response.Headers.Add("Bearer", token);
 
             return Ok();

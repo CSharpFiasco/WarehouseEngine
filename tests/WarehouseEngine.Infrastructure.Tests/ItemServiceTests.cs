@@ -15,8 +15,8 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task GetItemByIdAsync_SingleItem_AddSingleItem()
     {
-        using var context = _fixture.CreateContext();
-        using var _ = context.Database.BeginTransaction();
+        await using var context = _fixture.CreateContext();
+        await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestAddAsync";
 
@@ -42,8 +42,8 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task AddAsync_SingleItem_AddSingleItem()
     {
-        using var context = _fixture.CreateContext();
-        using var _ = context.Database.BeginTransaction();
+        await using var context = _fixture.CreateContext();
+        await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestAddAsync";
 
@@ -63,8 +63,8 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task UpdateAsync_SingleItem_Fields()
     {
-        using var context = _fixture.CreateContext();
-        using var _ = context.Database.BeginTransaction();
+        await using var context = _fixture.CreateContext();
+        await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestSku";
 

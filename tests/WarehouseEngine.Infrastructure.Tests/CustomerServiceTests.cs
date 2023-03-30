@@ -15,8 +15,8 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task GetByIdAsync_SingleCustomer_ReturnsSingleCustomer()
     {
-        using var context = _fixture.CreateContext();
-        using var _ = context.Database.BeginTransaction();
+        await using var context = _fixture.CreateContext();
+        await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestName";
 
@@ -42,8 +42,8 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task AddAsync_SingleCustomer_BillingAddressIsMissing_DoesNotThrow()
     {
-        using var context = _fixture.CreateContext();
-        using var _ = context.Database.BeginTransaction();
+        await using var context = _fixture.CreateContext();
+        await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestName";
 
@@ -65,8 +65,8 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
     [Fact]
     public async Task AddAsync_SingleCustomer_ShippingAddressIsMissing_ThrowsException()
     {
-        using var context = _fixture.CreateContext();
-        using var _ = context.Database.BeginTransaction();
+        await using var context = _fixture.CreateContext();
+        await using var _ = context.Database.BeginTransaction();
 
         const string newSku = "TestName";
 

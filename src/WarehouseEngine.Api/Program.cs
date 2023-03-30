@@ -109,7 +109,7 @@ public static class Program
                 var provider = scope.ServiceProvider.GetRequiredService<IApiVersionDescriptionProvider>();
                 var apiVersions = provider.ApiVersionDescriptions.Select(d => d.GroupName);
 
-                foreach (var version in apiVersions)
+                foreach (string version in apiVersions)
                 {
                     options.SwaggerEndpoint($"/swagger/{version}/swagger.json", version.ToUpperInvariant());
                 }
@@ -138,10 +138,10 @@ public static class Program
             Email = "demo@carlosmartos.com",
             UserName = "demo"
         };
-        var demoUserId = await userManager.FindByNameAsync(demoUser.UserName);
+        IdentityUser? demoUserId = await userManager.FindByNameAsync(demoUser.UserName);
         if (demoUserId is not null) return;
 
-        var result = await userManager.CreateAsync(demoUser, "P@ssword1");
+        IdentityResult result = await userManager.CreateAsync(demoUser, "P@ssword1");
         if (!result.Succeeded) throw new ArgumentException(result.ToString());
 #endif
     }

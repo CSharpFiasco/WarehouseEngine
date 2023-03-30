@@ -41,7 +41,7 @@ public class AuthenticateController : ControllerBase
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-            foreach (var userRole in userRoles)
+            foreach (string userRole in userRoles)
             {
                 authClaims.Add(new Claim(ClaimTypes.Role, userRole));
             }

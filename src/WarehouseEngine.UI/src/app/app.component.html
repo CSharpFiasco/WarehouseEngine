@@ -1,0 +1,6 @@
+<ng-container *ngIf="loggedIn$ | async; else myElse">
+  <mat-spinner></mat-spinner>
+</ng-container>
+<ng-template #myElse>
+  <app-login></app-login>
+</ng-template>

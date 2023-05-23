@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
     MatFormFieldModule,
+    MatCardModule,
     MatInputModule,
     ReactiveFormsModule
   ],

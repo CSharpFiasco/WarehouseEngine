@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -7,8 +7,18 @@ import { FormControl, Validators } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  protected username = new FormControl<string>('', [Validators.required]);
-  protected password = new FormControl<string>('', [Validators.required]);
+  protected credentials = new FormGroup(
+    {
+      username: new FormControl<string>('', {
+        nonNullable: true,
+        validators: [Validators.required]
+      }),
+      password: new FormControl<string>('', {
+        nonNullable: true,
+        validators: [Validators.required]
+      })
+    }
+  );
   
   constructor(){
     

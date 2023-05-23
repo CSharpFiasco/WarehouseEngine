@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { LoginStatus } from './types/login-status.type';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,5 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  protected loggedIn$: Observable<void> = new Observable<void>();
+  protected loggedIn$: BehaviorSubject<LoginStatus | undefined> = new BehaviorSubject<LoginStatus | undefined>(undefined);
 }

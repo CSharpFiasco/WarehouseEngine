@@ -1,0 +1,10 @@
+$mat-required-field-height: 22.4px;
+#credentials-form {
+  background-color: #fff;
+  padding: 2rem;
+  padding-bottom: calc(2rem - $mat-required-field-height);
+
+  mat-form-field {
+    display: block;
+  }
+}

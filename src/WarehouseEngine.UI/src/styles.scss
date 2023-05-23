@@ -1,14 +1,29 @@
+@use "@angular/material" as mat;
+
+@include mat.core();
+
 * {
   box-sizing: border-box;
 }
 
+html, body { height: 100%; }
+
 body {
   margin: 0;
-  background-color: #ccc;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   table {
     border-collapse: collapse;
   }
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@mixin _theme-property($theme, $property, $hue) {
+  $primary: map.get($theme, primary);
+  $accent: map.get($theme, accent);
+  $warn: map.get($theme, warn);
+  $background: map.get($theme, background);
+  $foreground: map.get($theme, foreground);
+
+  body {
+    background-color: $primary;
+  }
+}

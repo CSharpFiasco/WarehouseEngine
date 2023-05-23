@@ -1,26 +1,24 @@
-<form>
-  <div>
+<mat-card id="credentials-form" [formGroup]="credentials">
+  <mat-card-content>
     <mat-form-field appearance="fill">
       <mat-label>Enter your user name</mat-label>
       <input
         matInput
         placeholder="my-username"
-        [formControl]="username"
+        [formControl]="credentials.controls.username"
         required
       />
-      <mat-error *ngIf="username.errors?.['required']">required</mat-error>
+      <mat-error *ngIf="credentials.controls.username.errors?.['required']">required</mat-error>
     </mat-form-field>
-  </div>
-  <div>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" color="primary">
       <mat-label>Enter your password</mat-label>
       <input
         matInput
         placeholder="my-password"
-        [formControl]="password"
+        [formControl]="credentials.controls.password"
         required
       />
-      <mat-error *ngIf="password.errors?.['required']">required</mat-error>
+      <mat-error *ngIf="credentials.controls.password.errors?.['required']">required</mat-error>
     </mat-form-field>
-  </div>
-</form>
+  </mat-card-content>
+</mat-card>

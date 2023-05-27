@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+
+@use 'sass:map';
+@use './app/pages/login/login.component.theme' as login;
+
+@mixin theme($theme) {
+    $primary: map.get($theme, primary);
+
+    @include login.theme($theme)
+}

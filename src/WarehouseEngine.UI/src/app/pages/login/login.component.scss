@@ -1,8 +1,17 @@
 $mat-required-field-height: 22.4px;
+
+:host {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
 #credentials-form {
-  background-color: #fff;
   padding: 2rem;
   padding-bottom: calc(2rem - $mat-required-field-height);
+  max-width: 330px;
+  width: 100%;
 
   mat-form-field {
     display: block;

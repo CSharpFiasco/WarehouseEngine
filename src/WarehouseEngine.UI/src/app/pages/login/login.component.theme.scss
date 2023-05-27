@@ -1,0 +1,18 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin theme($theme) {
+  $primary: map.get($theme, primary);
+  $accent: map.get($theme, accent);
+  $warn: map.get($theme, warn);
+  $background: map.get($theme, background);
+  $foreground: map.get($theme, foreground);
+
+  app-login {
+    background: mat.get-color-from-palette($accent);
+  }
+
+  #credentials-form {
+    background: mat.get-color-from-palette($primary);
+  }
+}

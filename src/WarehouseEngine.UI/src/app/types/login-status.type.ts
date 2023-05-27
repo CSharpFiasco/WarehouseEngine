@@ -1,1 +1,1 @@
-export type LoginStatus = 'success' | 'error' | 'loading'
+export type LoginStatus = 'success' | 'error' | 'loading';

@@ -1,0 +1,1 @@
+export type DefaultTheme = 'deeppurple-amber' | 'indigo-pink' | 'pink-bluegrey' | 'purple-green';

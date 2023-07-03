@@ -3,7 +3,7 @@
 @use '../../app-theme';
 
 // Define the light theme.
-$primary: mat.define-palette(mat.$indigo-palette);
+$primary: mat.define-palette(mat.$indigo-palette, 500, A100, A400);
 $accent:  mat.define-palette(mat.$pink-palette, A200, A100, A400);
 $theme: mat.define-light-theme((
   color: (

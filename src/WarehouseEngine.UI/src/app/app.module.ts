@@ -10,17 +10,32 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { ThemeService } from './services/theme/theme.service';
-import { Observable } from 'rxjs';
 import { StyleManagerService } from './services/style-manager/style-manager.service';
+import { TopNavComponent } from './components/top-nav/top-nav.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { NavigationFacade } from './store/sidenav/facade';
+import { navigationReducer } from './store/sidenav/reducers';
+import { StoreModule } from '@ngrx/store';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
+import { authReducer } from './store/auth/reducers';
+
 
 function initializeAppFactory(themeService: ThemeService): void {
-  themeService.setTheme('deeppurple-amber')
+  themeService.setTheme('deeppurple-amber');
  }
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    TopNavComponent,
+    SidenavComponent
   ],
   imports: [
     BrowserModule,
@@ -29,11 +44,20 @@ function initializeAppFactory(themeService: ThemeService): void {
     MatFormFieldModule,
     MatCardModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatListModule,
+    RouterModule,
+    StoreModule.forRoot({ navigation: navigationReducer, auth: authReducer }),
+    AppRoutingModule,
   ],
   providers: [
     ThemeService,
     StyleManagerService,
+    NavigationFacade
     // {
     //   provide: APP_INITIALIZER,
     //   deps: [ThemeService],

@@ -13,6 +13,10 @@ $mat-required-field-height: 22.4px;
   max-width: 330px;
   width: 100%;
 
+  mat-card-title {
+    padding-bottom: 1rem;
+  }
+
   mat-form-field {
     display: block;
   }

@@ -21,10 +21,9 @@ import { StoreModule } from '@ngrx/store';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
-import { authReducer } from './store/auth/reducers';
-
+import { loggingInReducer } from './store/auth/reducers';
+import { HttpClientModule } from '@angular/common/http';
 
 function initializeAppFactory(themeService: ThemeService): void {
   themeService.setTheme('deeppurple-amber');
@@ -50,9 +49,9 @@ function initializeAppFactory(themeService: ThemeService): void {
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
-    RouterModule,
-    StoreModule.forRoot({ navigation: navigationReducer, auth: authReducer }),
     AppRoutingModule,
+    StoreModule.forRoot({ navigation: navigationReducer, auth: loggingInReducer }),
+    HttpClientModule
   ],
   providers: [
     ThemeService,

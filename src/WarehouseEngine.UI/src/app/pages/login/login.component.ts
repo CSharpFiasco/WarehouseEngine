@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { LoginService } from 'src/app/services/login/login.service';
 
 @Component({
   selector: 'app-login',
@@ -19,4 +20,15 @@ export class LoginComponent {
       })
     }
   );
+
+  constructor(private readonly loginService: LoginService){}
+
+  protected login(): void {
+    if(!this.credentials.valid) return;
+
+    this.loginService.login$(
+      this.credentials.controls.username.value,
+      this.credentials.controls.password.value
+    ).subscribe();
+  }
 }

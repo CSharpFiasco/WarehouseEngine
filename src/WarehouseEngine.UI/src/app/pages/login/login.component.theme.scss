@@ -6,7 +6,7 @@
   $accent: map.get($theme, accent);
 
   app-login {
-    background: mat.get-color-from-palette($accent, A100);
+    background: mat.get-color-from-palette($accent, 700);
 
     #credentials-form {
       mat-card-title {

@@ -23,5 +23,6 @@
       />
       <mat-error *ngIf="credentials.controls.password.errors?.['required']">required</mat-error>
     </mat-form-field>
+    <button mat-flat-button color="accent" (click)="login()">Login</button>
   </mat-card-content>
 </mat-card>

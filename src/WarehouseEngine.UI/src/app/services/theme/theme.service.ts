@@ -1,20 +1,19 @@
 import { Injectable } from "@angular/core";
 import { StyleManagerService } from "../style-manager/style-manager.service";
-import { DefaultTheme } from "src/app/types/default-theme";
+import { Theme } from "src/app/types/default-theme";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable()
 export class ThemeService {
-  private theme: DefaultTheme = 'deeppurple-amber';
+  private readonly defaultTheme: Theme = 'deeppurple-amber';
+  public readonly currentTheme$ = new BehaviorSubject<Theme>(this.defaultTheme);
 
   constructor(
-    private styleManager: StyleManagerService
+    private readonly styleManager: StyleManagerService
   ) {}
 
-  // getThemeOptions(): Observable<Array<Option>> {
-  //   return this.http.get<Array<Option>>("assets/options.json");
-  // }
-
-  setTheme(themeToSet: DefaultTheme) {
+  setTheme(themeToSet: Theme) {
+    this.currentTheme$.next(themeToSet);
     this.styleManager.setStyle(
       "theme",
       `${themeToSet}.css`

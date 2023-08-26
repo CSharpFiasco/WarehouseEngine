@@ -8,19 +8,49 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span>My App</span>
-  <span class="example-spacer"></span>
+  <span class="spacer"></span>
   <button
     mat-icon-button
     class="example-icon favorite-icon"
-    aria-label="Example icon-button with heart icon"
+    aria-label="Color palette button to choose theme"
+    [matMenuTriggerFor]="menu"
   >
-    <mat-icon>favorite</mat-icon>
+    <mat-icon>palette</mat-icon>
   </button>
-  <button
-    mat-icon-button
-    class="example-icon"
-    aria-label="Example icon-button with share icon"
-  >
-    <mat-icon>share</mat-icon>
-  </button>
+  <mat-menu #menu="matMenu">
+    <ng-container *ngIf="currentTheme$ | async as currentTheme">
+      <button
+        mat-menu-item
+        [disabled]="currentTheme === 'indigo-pink'"
+        (click)="updateTheme('indigo-pink')"
+      >
+        <mat-icon>light_mode</mat-icon>
+        <span>Indigo/Pink</span>
+      </button>
+      <button
+        mat-menu-item
+        [disabled]="currentTheme === 'deeppurple-amber'"
+        (click)="updateTheme('deeppurple-amber')"
+      >
+        <mat-icon>light_mode</mat-icon>
+        <span>Deep Purple/Amber</span>
+      </button>
+      <button
+        mat-menu-item
+        [disabled]="currentTheme === 'purple-green'"
+        (click)="updateTheme('purple-green')"
+      >
+        <mat-icon>dark_mode</mat-icon>
+        <span>Purple/Green</span>
+      </button>
+      <button
+        mat-menu-item
+        [disabled]="currentTheme === 'pink-bluegrey'"
+        (click)="updateTheme('pink-bluegrey')"
+      >
+        <mat-icon>dark_mode</mat-icon>
+        <span>Pink/Blue Grey</span>
+      </button>
+    </ng-container>
+  </mat-menu>
 </mat-toolbar>

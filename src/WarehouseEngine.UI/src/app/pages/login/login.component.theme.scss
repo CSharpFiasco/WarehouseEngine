@@ -5,8 +5,12 @@
   $primary: map.get($theme, primary);
   $accent: map.get($theme, accent);
 
+  $color-config: mat.get-color-config($theme);
+  
+  $on-surface: map.get($color-config, 'on-surface');
+
   app-login {
-    background: mat.get-color-from-palette($accent, 700);
+    background: $on-surface;
 
     #credentials-form {
       mat-card-title {

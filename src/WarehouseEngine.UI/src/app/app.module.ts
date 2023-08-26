@@ -24,10 +24,7 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { AppRoutingModule } from './app-routing.module';
 import { loggingInReducer } from './store/auth/reducers';
 import { HttpClientModule } from '@angular/common/http';
-
-function initializeAppFactory(themeService: ThemeService): void {
-  themeService.setTheme('deeppurple-amber');
- }
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -51,7 +48,8 @@ function initializeAppFactory(themeService: ThemeService): void {
     MatListModule,
     AppRoutingModule,
     StoreModule.forRoot({ navigation: navigationReducer, auth: loggingInReducer }),
-    HttpClientModule
+    HttpClientModule,
+    MatMenuModule
   ],
   providers: [
     ThemeService,

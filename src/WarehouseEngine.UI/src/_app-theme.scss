@@ -1,12 +1,12 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 
-@use 'sass:map';
-@use './app/pages/login/login.component.theme' as login;
-@use './app/components/sidenav/sidenav.component.theme' as sidenav;
+@use "sass:map";
+@use "./app/pages/login/login.component.theme" as login;
+@use "./app/components/sidenav/sidenav.component.theme" as sidenav;
 
 @mixin theme($theme) {
-    $primary: map.get($theme, primary);
+  $primary: map.get($theme, primary);
 
-    @include login.theme($theme);
-    @include sidenav.theme($theme);
+  @include login.theme($theme);
+  @include sidenav.theme($theme);
 }

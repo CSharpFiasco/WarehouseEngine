@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { ThemeService } from 'src/app/services/theme/theme.service';
 import { NavigationFacade } from 'src/app/store/sidenav/facade';
+import { Theme } from 'src/app/types/default-theme';
 
 @Component({
   selector: 'app-top-nav',
@@ -7,9 +9,16 @@ import { NavigationFacade } from 'src/app/store/sidenav/facade';
   styleUrls: ['./top-nav.component.scss']
 })
 export class TopNavComponent {
-  constructor(private readonly navigationFacade: NavigationFacade){}
+  protected readonly currentTheme$ = this.themeService.currentTheme$;
+  constructor(private readonly navigationFacade: NavigationFacade,
+    private readonly themeService: ThemeService
+    ){}
 
-  handleClick = () => {
+  protected handleClick = () => {
     this.navigationFacade.toggleSideNav();
   };
+
+  updateTheme(theme: Theme){
+    this.themeService.setTheme(theme);
+  }
 }

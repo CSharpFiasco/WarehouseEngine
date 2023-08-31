@@ -15,7 +15,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "outputPath": "dist/warehouse-engine.ui",
             "index": "src/index.html",
@@ -105,36 +105,7 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              {
-                "inject": false,
-                "input": "src/styles/custom-themes/pink-bluegrey.scss",
-                "bundleName": "pink-bluegrey"
-              },
-              {
-                "inject": false,
-                "input": "src/styles/custom-themes/deeppurple-amber.scss",
-                "bundleName": "deeppurple-amber"
-              },
-              {
-                "inject": false,
-                "input": "src/styles/custom-themes/indigo-pink.scss",
-                "bundleName": "indigo-pink"
-              },
-              {
-                "inject": false,
-                "input": "src/styles/custom-themes/purple-green.scss",
-                "bundleName": "purple-green"
-              },
-              "src/styles.scss"
-            ],
-            "scripts": [],
-            "karmaConfig": "karma.conf.js"
+            "tsConfig": "tsconfig.spec.json"
           }
         }
       }

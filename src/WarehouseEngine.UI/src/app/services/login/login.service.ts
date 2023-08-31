@@ -8,8 +8,6 @@ import { Observable, catchError, throwError } from 'rxjs';
 })
 export class LoginService {
 
-  // private readonly loginSubject;
-
   constructor(private readonly httpClient: HttpClient) { }
 
   login$(username: string, password: string): Observable<JwtTokenResponse> {

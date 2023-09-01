@@ -7,15 +7,16 @@ import { BehaviorSubject } from "rxjs";
   providedIn: 'root'
 })
 export class ThemeService {
-  private readonly defaultTheme: Theme = 'deeppurple-amber';
-  public readonly currentTheme$ = new BehaviorSubject<Theme>(this.defaultTheme);
+  private readonly defaultTheme: Theme = 'indigo-pink';
+  private readonly currentThemeSubject = new BehaviorSubject<Theme>(this.defaultTheme);
+  public readonly currentTheme$ = this.currentThemeSubject.asObservable();
 
   constructor(
     private readonly styleManager: StyleManagerService
   ) {}
 
   setTheme(themeToSet: Theme) {
-    this.currentTheme$.next(themeToSet);
+    this.currentThemeSubject.next(themeToSet);
     this.styleManager.setStyle(
       "theme",
       `${themeToSet}.css`

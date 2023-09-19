@@ -5,7 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { tap } from 'rxjs';
 import { LoginService } from 'src/app/services/login/login.service';
+import type { JwtTokenResponse } from 'src/app/types/jwt';
 
 @Component({
   selector: 'app-login',
@@ -22,13 +24,15 @@ import { LoginService } from 'src/app/services/login/login.service';
   standalone: true
 })
 export class LoginComponent {
+  private readonly demoUsername = 'demo';
+  private readonly demoPassword = 'P@ssword1';
   protected credentials = new FormGroup(
     {
-      username: new FormControl<string>('', {
+      username: new FormControl<string>(this.demoUsername, {
         nonNullable: true,
         validators: [Validators.required]
       }),
-      password: new FormControl<string>('', {
+      password: new FormControl<string>(this.demoPassword, {
         nonNullable: true,
         validators: [Validators.required]
       })
@@ -43,6 +47,16 @@ export class LoginComponent {
     this.loginService.login$(
       this.credentials.controls.username.value,
       this.credentials.controls.password.value
-    ).subscribe();
+    )
+    .pipe(
+      tap((res: JwtTokenResponse) => {
+        if(res.type === 'Success'){
+          const jwt = res.jwt
+        }else{
+          
+        }
+      })
+    )
+    .subscribe();
   }
 }

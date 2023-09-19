@@ -1,18 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
-import { toggleSideNav } from './actions';
+import * as SidenavActions from './sidenav.actions';
 
 export interface NavigationState {
-  sideNavOpen: boolean;
+  isSideNavOpen: boolean;
 }
 
 export const initialState: NavigationState = {
-  sideNavOpen: false,
+  isSideNavOpen: false,
 };
 
 export const navigationReducer = createReducer(
   initialState,
-  on(toggleSideNav, (state) => ({
+  on(SidenavActions.toggleSidenav, (state) => ({
     ...state,
-    sideNavOpen: !state.sideNavOpen,
+    isSideNavOpen: !state.isSideNavOpen,
   }))
 );

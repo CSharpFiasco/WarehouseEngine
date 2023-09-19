@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NavigationFacade } from 'src/app/store/sidenav/facade';
+import { LayoutFacade } from 'src/app/store/layout/facade';
 
 @Component({
   selector: 'app-sidenav',
@@ -17,5 +17,5 @@ import { NavigationFacade } from 'src/app/store/sidenav/facade';
 })
 export class SidenavComponent {
   protected sideNavOpen$ = this.navigationFacade.sideNavOpen$;
-  constructor(private readonly navigationFacade: NavigationFacade){}
+  constructor(private readonly navigationFacade: LayoutFacade){}
 }

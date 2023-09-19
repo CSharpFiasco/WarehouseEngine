@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LoginStatus } from './types/login-status.type';
+import type { LoginStatus } from './types/login-status.type';
 import { ThemeService } from './services/theme/theme.service';
 import { CommonModule } from '@angular/common';
 import { TopNavComponent } from './components/top-nav/top-nav.component';

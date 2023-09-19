@@ -19,6 +19,7 @@
         matInput
         placeholder="my-password"
         [formControl]="credentials.controls.password"
+        type="password"
         required
       />
       <mat-error *ngIf="credentials.controls.password.errors?.['required']">required</mat-error>

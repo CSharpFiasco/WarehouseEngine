@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TopNavComponent } from './top-nav.component';
-import { NavigationFacade } from 'src/app/store/sidenav/facade';
+import { LayoutFacade } from 'src/app/store/layout/facade';
 import { LoginService } from 'src/app/services/login/login.service';
 import { ThemeService } from 'src/app/services/theme/theme.service';
 
@@ -20,7 +20,7 @@ describe('TopNavComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: NavigationFacade, useClass: FacadeStub },
+        { provide: LayoutFacade, useClass: FacadeStub },
         { provide: ThemeService, useClass: ThemeServiceStub },
       ],
       imports: [TopNavComponent]

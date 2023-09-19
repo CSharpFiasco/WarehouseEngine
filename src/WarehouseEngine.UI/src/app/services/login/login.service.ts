@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { JwtTokenResponse } from 'src/app/types/jwt';
+import type { JwtTokenResponse } from 'src/app/types/jwt';
 import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable({

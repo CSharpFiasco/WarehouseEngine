@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidenavComponent } from './sidenav.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NavigationFacade } from 'src/app/store/sidenav/facade';
+import { LayoutFacade } from 'src/app/store/layout/facade';
 
 class FacadeStub {
 
@@ -15,7 +15,7 @@ describe('SidenavComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: NavigationFacade, useClass: FacadeStub }
+        { provide: LayoutFacade, useClass: FacadeStub }
       ],
       imports: [
         NoopAnimationsModule,

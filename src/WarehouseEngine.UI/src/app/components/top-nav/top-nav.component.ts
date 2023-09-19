@@ -5,8 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ThemeService } from 'src/app/services/theme/theme.service';
-import { NavigationFacade } from 'src/app/store/sidenav/facade';
-import { Theme } from 'src/app/types/default-theme';
+import { LayoutFacade } from 'src/app/store/layout/facade';
+import type { Theme } from 'src/app/types/default-theme';
 
 @Component({
   selector: 'app-top-nav',
@@ -23,7 +23,7 @@ import { Theme } from 'src/app/types/default-theme';
 })
 export class TopNavComponent {
   protected readonly currentTheme$ = this.themeService.currentTheme$;
-  constructor(private readonly navigationFacade: NavigationFacade,
+  constructor(private readonly navigationFacade: LayoutFacade,
     private readonly themeService: ThemeService
     ){}
 

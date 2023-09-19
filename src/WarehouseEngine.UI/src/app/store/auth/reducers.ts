@@ -13,7 +13,7 @@ export const loggingInReducer = createReducer(
     AuthActions.setJwtToken,
     (state: JwtState, { jwt }: { jwt: string }): JwtState => ({
       ...state,
-      jwt: 'jwt'
+      jwt: jwt
     })
   )
 );

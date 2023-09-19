@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { StyleManagerService } from "../style-manager/style-manager.service";
-import { Theme } from "src/app/types/default-theme";
+import type { Theme } from "src/app/types/default-theme";
 import { BehaviorSubject } from "rxjs";
 
 @Injectable({

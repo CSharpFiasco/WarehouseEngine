@@ -6,8 +6,6 @@ import { Component } from '@angular/core';
 import { TopNavComponent } from './components/top-nav/top-nav.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { LoginComponent } from './pages/login/login.component';
-import { BehaviorSubject } from 'rxjs';
-import { LoginStatus } from './types/login-status.type';
 
 @Component({
   selector: 'app-top-nav, mat-spinner',

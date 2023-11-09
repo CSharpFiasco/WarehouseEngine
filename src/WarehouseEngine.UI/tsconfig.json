@@ -23,6 +23,7 @@
     "allowJs": true,
     "useDefineForClassFields": false,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",

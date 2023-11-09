@@ -10,7 +10,6 @@ using WarehouseEngine.Domain.Models.Login;
 namespace WarehouseEngine.Api.Controllers;
 
 [ApiController]
-[AllowAnonymous]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 public class AuthenticateController : ControllerBase
@@ -18,17 +17,21 @@ public class AuthenticateController : ControllerBase
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IJwtService _jwtService;
+    private readonly HttpContext _httpContext;
     public AuthenticateController(
         UserManager<IdentityUser> userManager,
         RoleManager<IdentityRole> roleManager,
-        IJwtService jwtService)
+        IJwtService jwtService,
+        HttpContext httpContext)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _jwtService = jwtService;
+        _httpContext = httpContext;
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] Login model)
     {
         IdentityUser? user = await _userManager.FindByNameAsync(model.Username);
@@ -53,5 +56,18 @@ public class AuthenticateController : ControllerBase
             return Ok();
         }
         return Unauthorized();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RefreshToken()
+    {
+        //user
+        _httpContext.Request.Headers.TryGetValue("Authorization", out var headerAuth);
+        var token = headerAuth.FirstOrDefault();
+
+        if (token == null)
+        {
+            //return
+        }
     }
 }

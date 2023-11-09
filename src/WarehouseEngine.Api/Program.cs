@@ -34,7 +34,7 @@ public static class Program
             .AddDefaultTokenProviders();
 
 #if DEBUG
-        services.AddCors(opt => opt.AddPolicy("localhost", policy => policy.WithOrigins("https://localhost:4200")));
+        services.AddCors(opt => opt.AddPolicy("localhost", policy => policy.WithOrigins("http://localhost:4201", "https://localhost:4201").AllowAnyHeader().AllowAnyMethod()));
 #endif
 
         // Add services to the container.
@@ -121,6 +121,10 @@ public static class Program
 
 
         app.MapControllers();
+
+#if DEBUG
+        app.UseCors("localhost");
+#endif
 
         await app.RunAsync();
     }

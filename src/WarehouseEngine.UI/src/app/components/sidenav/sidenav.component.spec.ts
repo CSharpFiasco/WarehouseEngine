@@ -10,7 +10,7 @@ describe('SidenavComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: LayoutFacade, useClass: {} }],
+      providers: [{ provide: LayoutFacade, useValue: {} }],
       imports: [NoopAnimationsModule, SidenavComponent],
     });
     fixture = TestBed.createComponent(SidenavComponent);

@@ -8,11 +8,11 @@ import type { Config } from 'jest';
 const config: Config = {
   verbose: true,
   cacheDirectory: '.angular/.jest/cache',
-  collectCoverage: true,
-  coverageDirectory: './coverage',
-  coverageProvider: 'v8',
-  coverageReporters: ['text-summary', 'html'],
-  reporters: ['summary', 'default'],
+  // collectCoverage: true,
+  // coverageDirectory: './coverage',
+  // coverageProvider: 'v8',
+  // coverageReporters: ['text-summary', 'html'],
+  // reporters: ['summary', 'default'],
 };
 
 module.exports = config;

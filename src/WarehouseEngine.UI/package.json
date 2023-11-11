@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "analyze": "ng build --stats-json && webpack-bundle-analyzer dist/warehouse-engine.ui/stats.json",
-    "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
+    "prettify": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
   },
   "private": true,
   "dependencies": {

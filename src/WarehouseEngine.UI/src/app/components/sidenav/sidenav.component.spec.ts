@@ -4,23 +4,14 @@ import { SidenavComponent } from './sidenav.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutFacade } from 'src/app/store/layout/facade';
 
-class FacadeStub {
-
-}
-
 describe('SidenavComponent', () => {
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        { provide: LayoutFacade, useClass: FacadeStub }
-      ],
-      imports: [
-        NoopAnimationsModule,
-        SidenavComponent
-      ]
+      providers: [{ provide: LayoutFacade, useClass: {} }],
+      imports: [NoopAnimationsModule, SidenavComponent],
     });
     fixture = TestBed.createComponent(SidenavComponent);
     component = fixture.componentInstance;

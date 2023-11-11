@@ -12,26 +12,21 @@ import type { Theme } from 'src/app/types/default-theme';
   selector: 'app-top-nav',
   templateUrl: './top-nav.component.html',
   styleUrls: ['./top-nav.component.scss'],
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatButtonModule
-  ],
+  imports: [CommonModule, MatIconModule, MatToolbarModule, MatMenuModule, MatButtonModule],
   standalone: true,
 })
 export class TopNavComponent {
   protected readonly currentTheme$ = this.themeService.currentTheme$;
-  constructor(private readonly navigationFacade: LayoutFacade,
+  constructor(
+    private readonly navigationFacade: LayoutFacade,
     private readonly themeService: ThemeService
-    ){}
+  ) {}
 
   protected toggleSideNav = () => {
     this.navigationFacade.toggleSideNav();
   };
 
-  protected updateTheme(theme: Theme){
+  protected updateTheme(theme: Theme) {
     this.themeService.setTheme(theme);
   }
 }

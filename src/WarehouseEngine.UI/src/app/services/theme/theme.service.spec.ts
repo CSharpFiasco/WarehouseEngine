@@ -8,12 +8,9 @@ describe('ThemeService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        ThemeService,
-        StyleManagerService
-      ]
+      providers: [ThemeService, StyleManagerService],
     });
-    TestBed.inject(StyleManagerService)
+    TestBed.inject(StyleManagerService);
     service = TestBed.inject(ThemeService);
   });
 

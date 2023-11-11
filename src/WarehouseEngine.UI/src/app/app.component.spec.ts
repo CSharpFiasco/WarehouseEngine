@@ -11,26 +11,20 @@ import { LoginComponent } from './pages/login/login.component';
   selector: 'app-top-nav, mat-spinner',
   standalone: true,
 })
-class StubComponent {
-
-}
+class StubComponent {}
 @Component({
   selector: 'app-sidenav',
   template: '<ng-content></ng-content>',
   standalone: true,
 })
-class SideNavStubComponent {
-
-}
+class SideNavStubComponent {}
 
 @Component({
   selector: 'app-login',
   template: '<span>The login component exists!</span>',
   standalone: true,
 })
-class LoginMockComponent {
-
-}
+class LoginMockComponent {}
 
 describe('AppComponent', () => {
   let app: AppComponent;
@@ -42,32 +36,18 @@ describe('AppComponent', () => {
       setTheme: jest.fn(),
     };
     await TestBed.configureTestingModule({
-      providers: [
-        { provide: ThemeService, useValue: themeServiceSpy }
-      ],
-      imports: [
-        NoopAnimationsModule,
-        AppComponent
-      ],
+      providers: [{ provide: ThemeService, useValue: themeServiceSpy }],
+      imports: [NoopAnimationsModule, AppComponent],
     })
-    .overrideComponent(AppComponent, {
-      add: {
-        imports: [
-          StubComponent,
-          SideNavStubComponent,
-          LoginMockComponent
-        ]
-
-      },
-      remove: {
-        imports: [
-          TopNavComponent,
-          SidenavComponent,
-          LoginComponent
-        ]
-      }
-    })
-    .compileComponents();
+      .overrideComponent(AppComponent, {
+        add: {
+          imports: [StubComponent, SideNavStubComponent, LoginMockComponent],
+        },
+        remove: {
+          imports: [TopNavComponent, SidenavComponent, LoginComponent],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
     app = fixture.componentInstance;

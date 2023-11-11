@@ -11,8 +11,8 @@ const config: Config = {
   collectCoverage: true,
   coverageDirectory: './coverage',
   coverageProvider: 'v8',
-  coverageReporters: ["text-summary", "html"],
-  reporters: ["summary", "default"],
+  coverageReporters: ['text-summary', 'html'],
+  reporters: ['summary', 'default'],
 };
 
 module.exports = config;

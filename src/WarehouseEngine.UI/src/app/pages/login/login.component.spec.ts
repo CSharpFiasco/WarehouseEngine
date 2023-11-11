@@ -6,15 +6,11 @@ import { Component } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
-  selector: 'mat-card, mat-card-header, mat-card-title, mat-card-content, mat-form-field, mat-label'
+  selector: 'mat-card, mat-card-header, mat-card-title, mat-card-content, mat-form-field, mat-label',
 })
-class StubComponent {
+class StubComponent {}
 
-}
-
-class StudentsServiceStub {
-
-}
+class StudentsServiceStub {}
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -22,15 +18,9 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [
-        { provide: LoginService, useClass: StudentsServiceStub },
-      ],
-      imports: [
-        NoopAnimationsModule,
-        LoginComponent
-      ]
-    })
-    .compileComponents();
+      providers: [{ provide: LoginService, useClass: StudentsServiceStub }],
+      imports: [NoopAnimationsModule, LoginComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;

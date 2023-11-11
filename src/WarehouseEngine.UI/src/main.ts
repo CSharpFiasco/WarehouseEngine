@@ -13,19 +13,20 @@ import { LoginService } from './app/services/login/login.service';
 import { HttpClientModule } from '@angular/common/http';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
-
-bootstrapApplication(AppComponent,
-  {
-    providers: [
-    importProvidersFrom(StoreModule.forRoot({ navigation: navigationReducer, auth: loggingInReducer })),
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(
+      StoreModule.forRoot({
+        navigation: navigationReducer,
+        auth: loggingInReducer,
+      })
+    ),
     importProvidersFrom(BrowserAnimationsModule),
     importProvidersFrom(HttpClientModule),
     ThemeService,
     StyleManagerService,
     LayoutFacade,
     LoginService,
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
-]
-  }
-  )
-  .catch(err => console.error(err));
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+  ],
+}).catch((err) => console.error(err));

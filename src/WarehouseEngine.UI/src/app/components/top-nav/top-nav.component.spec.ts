@@ -5,13 +5,9 @@ import { LayoutFacade } from 'src/app/store/layout/facade';
 import { LoginService } from 'src/app/services/login/login.service';
 import { ThemeService } from 'src/app/services/theme/theme.service';
 
-class FacadeStub {
+class FacadeStub {}
 
-}
-
-class ThemeServiceStub {
-
-}
+class ThemeServiceStub {}
 
 describe('TopNavComponent', () => {
   let component: TopNavComponent;
@@ -23,7 +19,7 @@ describe('TopNavComponent', () => {
         { provide: LayoutFacade, useClass: FacadeStub },
         { provide: ThemeService, useClass: ThemeServiceStub },
       ],
-      imports: [TopNavComponent]
+      imports: [TopNavComponent],
     });
     fixture = TestBed.createComponent(TopNavComponent);
     component = fixture.componentInstance;

@@ -1,15 +1,15 @@
 export type JwtTokenResponseOk = {
-    type: 'Success',
-    jwt: string
+  type: 'Success';
+  jwt: string;
 };
 
 export type JwtTokenResponseUnauthorized = {
-    type: 'Unauthorized'
+  type: 'Unauthorized';
 };
 
 export type JwtTokenResponseError = {
-    type: 'Failed',
-    error: string
+  type: 'Failed';
+  error: string;
 };
 
 export type JwtTokenResponse = JwtTokenResponseOk | JwtTokenResponseUnauthorized | JwtTokenResponseError;

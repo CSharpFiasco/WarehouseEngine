@@ -12,19 +12,15 @@ import { LoginComponent } from './pages/login/login.component';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [
-    CommonModule,
-    TopNavComponent,
-    SidenavComponent,
-    LoginComponent,
-    MatProgressSpinnerModule
-  ],
+  imports: [CommonModule, TopNavComponent, SidenavComponent, LoginComponent, MatProgressSpinnerModule],
   standalone: true,
 })
 export class AppComponent {
-  protected loggedIn$: BehaviorSubject<LoginStatus | undefined> = new BehaviorSubject<LoginStatus | undefined>(undefined);
-  
-  constructor(themeService: ThemeService){
+  protected loggedIn$: BehaviorSubject<LoginStatus | undefined> = new BehaviorSubject<LoginStatus | undefined>(
+    undefined
+  );
+
+  constructor(themeService: ThemeService) {
     themeService.setTheme('indigo-pink');
   }
 }

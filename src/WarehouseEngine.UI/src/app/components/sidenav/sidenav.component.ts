@@ -8,14 +8,10 @@ import { LayoutFacade } from 'src/app/store/layout/facade';
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
-  imports: [
-    CommonModule,
-    MatSidenavModule,
-    MatListModule,
-  ],
-  standalone: true
+  imports: [CommonModule, MatSidenavModule, MatListModule],
+  standalone: true,
 })
 export class SidenavComponent {
   protected sideNavOpen$ = this.navigationFacade.sideNavOpen$;
-  constructor(private readonly navigationFacade: LayoutFacade){}
+  constructor(private readonly navigationFacade: LayoutFacade) {}
 }

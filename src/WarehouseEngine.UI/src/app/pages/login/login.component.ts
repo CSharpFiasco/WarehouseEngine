@@ -13,50 +13,38 @@ import type { JwtTokenResponse } from 'src/app/types/jwt';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatInputModule,
-    MatButtonModule,
-  ],
-  standalone: true
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule],
+  standalone: true,
 })
 export class LoginComponent {
   private readonly demoUsername = 'demo';
   private readonly demoPassword = 'P@ssword1';
-  protected credentials = new FormGroup(
-    {
-      username: new FormControl<string>(this.demoUsername, {
-        nonNullable: true,
-        validators: [Validators.required]
-      }),
-      password: new FormControl<string>(this.demoPassword, {
-        nonNullable: true,
-        validators: [Validators.required]
-      })
-    }
-  );
+  protected credentials = new FormGroup({
+    username: new FormControl<string>(this.demoUsername, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    password: new FormControl<string>(this.demoPassword, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+  });
 
-  constructor(private readonly loginService: LoginService){}
+  constructor(private readonly loginService: LoginService) {}
 
   protected login(): void {
-    if(!this.credentials.valid) return;
+    if (!this.credentials.valid) return;
 
-    this.loginService.login$(
-      this.credentials.controls.username.value,
-      this.credentials.controls.password.value
-    )
-    .pipe(
-      tap((res: JwtTokenResponse) => {
-        if(res.type === 'Success'){
-          const jwt = res.jwt
-        }else{
-          
-        }
-      })
-    )
-    .subscribe();
+    this.loginService
+      .login$(this.credentials.controls.username.value, this.credentials.controls.password.value)
+      .pipe(
+        tap((res: JwtTokenResponse) => {
+          if (res.type === 'Success') {
+            const jwt = res.jwt;
+          } else {
+          }
+        })
+      )
+      .subscribe();
   }
 }

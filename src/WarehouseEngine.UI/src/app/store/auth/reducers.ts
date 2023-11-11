@@ -4,7 +4,7 @@ import * as AuthActions from './actions';
 type JwtState = { jwt: string | null };
 
 const initialJwtState: JwtState = {
-  jwt: null
+  jwt: null,
 };
 
 export const loggingInReducer = createReducer(
@@ -13,7 +13,7 @@ export const loggingInReducer = createReducer(
     AuthActions.setJwtToken,
     (state: JwtState, { jwt }: { jwt: string }): JwtState => ({
       ...state,
-      jwt: jwt
+      jwt: jwt,
     })
   )
 );

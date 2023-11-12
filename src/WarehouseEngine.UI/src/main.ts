@@ -12,6 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginService } from './app/services/login/login.service';
 import { HttpClientModule } from '@angular/common/http';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { routes } from './app/app.routing';
+import { provideRouter } from '@angular/router';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -28,5 +30,6 @@ bootstrapApplication(AppComponent, {
     LayoutFacade,
     LoginService,
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideRouter(routes),
   ],
 }).catch((err) => console.error(err));

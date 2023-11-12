@@ -1,9 +1,11 @@
 ﻿using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 using WarehouseEngine.Api.Configuration;
 using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Application.Interfaces;
@@ -34,7 +36,7 @@ public static class Program
             .AddDefaultTokenProviders();
 
 #if DEBUG
-        services.AddCors(opt => opt.AddPolicy("localhost", policy => policy.WithOrigins("http://localhost:4201", "https://localhost:4201").AllowAnyHeader().AllowAnyMethod()));
+        services.AddCors(opt => opt.AddPolicy("localhost", policy => policy.WithOrigins("http://localhost:4201", "https://localhost:4201").AllowAnyHeader().AllowAnyMethod().WithExposedHeaders("bearer")));
 #endif
 
         // Add services to the container.
@@ -93,7 +95,11 @@ public static class Program
                     Array.Empty<string>()
                 }
             });
+
+            option.ExampleFilters();
         });
+
+        services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
 
         var app = builder.Build();
         await SeedData(app.Services);

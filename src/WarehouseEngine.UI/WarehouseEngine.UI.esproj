@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.111-alpha">
   <PropertyGroup>
-    <StartupCommand>npm start</StartupCommand>
+    <ShouldRunNpmInstall Condition="Exists('$(MSBuildProjectDirectory)\node_modules')">false</ShouldRunNpmInstall>
+    <!-- https://learn.microsoft.com/en-us/visualstudio/javascript/javascript-project-system-msbuild-reference?view=vs-2022 -->
+    <StartupCommand>npm run start:vs</StartupCommand>
     <!-- Allows the build (or compile) script located on package.json to run on Build -->
     <ShouldRunBuildScript>false</ShouldRunBuildScript>
     <!-- Folder where production build objects will be placed -->

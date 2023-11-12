@@ -26,6 +26,8 @@ export class LoginService {
     const isUnauthorized = response.status === 401;
     if (isUnauthorized) return { type: 'Unauthorized' };
 
+    console.log(response.headers.keys());
+
     const bearerToken = response.headers.get('Bearer');
     if (bearerToken === null) {
       return { type: 'Failed', error: 'Failed to retrieve bearer token' };
@@ -33,6 +35,7 @@ export class LoginService {
 
     return { type: 'Success', jwt: bearerToken };
   }
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.

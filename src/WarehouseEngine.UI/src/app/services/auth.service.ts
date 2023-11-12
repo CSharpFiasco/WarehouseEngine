@@ -10,7 +10,7 @@ export class AuthService {
     sessionStorage.setItem(this.jwtKey, jwtToken);
   }
 
-  public getJwtToken() {
-    sessionStorage.getItem(this.jwtKey);
+  public getJwtToken(): string | null {
+    return sessionStorage.getItem(this.jwtKey);
   }
 }

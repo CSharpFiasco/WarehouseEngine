@@ -51,7 +51,7 @@ public class AuthenticateController : ControllerBase
             }
 
             string token = _jwtService.GetNewToken(authClaims);
-            Response.Headers.Add("Bearer", token);
+            Response.Headers.Append("Bearer", token);
 
             return Ok();
         }

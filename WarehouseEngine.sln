@@ -21,13 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Infrastruct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Api", "src\WarehouseEngine.Api\WarehouseEngine.Api.csproj", "{9298CA01-BEC1-4883-A796-38BC88924253}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1CE43DA-50A7-426C-9DC0-2F3E2D3D4394}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{595DB01B-82D0-44E8-87E3-B94A57AE5199}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarehouseEngine.Domain.Tests", "tests\WarehouseEngine.Domain.Tests\WarehouseEngine.Domain.Tests.csproj", "{000AE932-71A3-470A-BFE2-8DA4D6A0E502}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "WarehouseEngine.UI", "src\WarehouseEngine.UI\WarehouseEngine.UI.esproj", "{98A17F17-FA68-4C10-BC2F-54CC71A083CC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1CE43DA-50A7-426C-9DC0-2F3E2D3D4394}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{595DB01B-82D0-44E8-87E3-B94A57AE5199}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

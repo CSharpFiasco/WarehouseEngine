@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -16,11 +16,10 @@ import type { Theme } from 'src/app/types/default-theme';
   standalone: true,
 })
 export class TopNavComponent {
+  private readonly navigationFacade: LayoutFacade = inject(LayoutFacade);
+  private readonly themeService: ThemeService = inject(ThemeService);
+
   protected readonly currentTheme$ = this.themeService.currentTheme$;
-  constructor(
-    private readonly navigationFacade: LayoutFacade,
-    private readonly themeService: ThemeService
-  ) {}
 
   protected toggleSideNav = () => {
     this.navigationFacade.toggleSideNav();

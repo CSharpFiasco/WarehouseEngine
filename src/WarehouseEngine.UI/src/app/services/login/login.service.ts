@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import type { JwtTokenResponse } from 'src/app/types/jwt';
-import { Observable, catchError, map, tap, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  constructor(private readonly httpClient: HttpClient) {}
+  private readonly httpClient: HttpClient = inject(HttpClient);
 
   login$(username: string, password: string): Observable<JwtTokenResponse> {
     return this.httpClient

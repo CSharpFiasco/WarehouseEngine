@@ -3,13 +3,13 @@
     <mat-card-title>Login</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Enter your user name</mat-label>
       <input
         matInput
         placeholder="my-username"
-        [formControl]="credentials.controls.username"
         required
+        [formControl]="credentials.controls.username"
       />
       <mat-error *ngIf="credentials.controls.username.errors?.['required']">required</mat-error>
     </mat-form-field>
@@ -18,9 +18,9 @@
       <input
         matInput
         placeholder="my-password"
-        [formControl]="credentials.controls.password"
         type="password"
         required
+        [formControl]="credentials.controls.password"
       />
       <mat-error *ngIf="credentials.controls.password.errors?.['required']">required</mat-error>
     </mat-form-field>

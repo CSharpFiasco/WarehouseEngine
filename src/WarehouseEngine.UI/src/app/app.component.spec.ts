@@ -6,6 +6,12 @@ import { Component } from '@angular/core';
 import { TopNavComponent } from './components/top-nav/top-nav.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { LoginComponent } from './pages/login/login.component';
+import { provideRouter } from '@angular/router';
+import { RouterTestingHarness } from '@angular/router/testing';
+import { provideLocationMocks } from '@angular/common/testing';
+import { routes } from './app.routing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-top-nav, mat-spinner',
@@ -29,15 +35,23 @@ class LoginMockComponent {}
 describe('AppComponent', () => {
   let app: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  let themeServiceSpy: Partial<ThemeService>;
+  let themeServiceSpy: jasmine.SpyObj<ThemeService>;
+
+  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let fixtureNativeElement: HTMLElement;
+  let harness: RouterTestingHarness;
 
   beforeEach(async () => {
-    themeServiceSpy = {
-      setTheme: jest.fn(),
-    };
+    themeServiceSpy = jasmine.createSpyObj<ThemeService>('ThemeService', ['setTheme']);
+    authServiceSpy = jasmine.createSpyObj<AuthService>('AuthService', ['getJwtToken', 'setJwtToken']);
     await TestBed.configureTestingModule({
-      providers: [{ provide: ThemeService, useValue: themeServiceSpy }],
-      imports: [NoopAnimationsModule, AppComponent],
+      providers: [
+        { provide: ThemeService, useValue: themeServiceSpy },
+        { provide: AuthService, useValue: authServiceSpy },
+        provideRouter(routes),
+        provideLocationMocks(),
+      ],
+      imports: [NoopAnimationsModule, AppComponent, HttpClientTestingModule],
     })
       .overrideComponent(AppComponent, {
         add: {
@@ -50,7 +64,11 @@ describe('AppComponent', () => {
       .compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
+    harness = await RouterTestingHarness.create();
+    fixtureNativeElement = fixture.nativeElement;
+
     app = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
@@ -59,9 +77,26 @@ describe('AppComponent', () => {
   });
 
   describe('Given we are not logged in', () => {
+    beforeEach(async () => {
+      authServiceSpy.getJwtToken.and.returnValue(null);
+      await harness.navigateByUrl('/');
+    });
+
     it('should render login by default', () => {
-      const compiled = fixture.nativeElement as HTMLElement;
-      expect(compiled.querySelector('span')?.textContent).toContain('The login component exists!');
+      const loginEl = fixtureNativeElement.querySelector('app-login');
+      expect(loginEl).not.toBeNull();
+    });
+  });
+
+  describe('Given we are logged in', () => {
+    beforeEach(async () => {
+      authServiceSpy.getJwtToken.and.returnValue('I am a jwt token');
+      await harness.navigateByUrl('/');
+    });
+
+    it('should render home', () => {
+      const loginEl = fixtureNativeElement.querySelector('app-home');
+      expect(loginEl).not.toBeNull();
     });
   });
 });

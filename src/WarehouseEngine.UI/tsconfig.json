@@ -20,7 +20,8 @@
         "module": "ESNext",
         "moduleResolution": "Bundler",
         "noUncheckedIndexedAccess": true,
-        "allowJs": true,
+        // Turned off due to: https://github.com/angular/angular-cli/issues/25936
+        // "allowJs": true,
         "useDefineForClassFields": false,
         "skipLibCheck": true,
         "skipDefaultLibCheck": true,
@@ -34,5 +35,6 @@
         "strictInjectionParameters": true,
         "strictInputAccessModifiers": true,
         "strictTemplates": true
-    }
+    },
+    "exclude": ["node_modules/*", "dist/*", "./.angular"]
 }

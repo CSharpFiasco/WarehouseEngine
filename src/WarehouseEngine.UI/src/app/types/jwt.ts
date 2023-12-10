@@ -12,4 +12,4 @@ export type JwtTokenResponseError = {
   error: string;
 };
 
-export type JwtTokenResponse = JwtTokenResponseOk | JwtTokenResponseUnauthorized | JwtTokenResponseError;
+export type JwtTokenResponse = Readonly<JwtTokenResponseOk | JwtTokenResponseUnauthorized | JwtTokenResponseError>;

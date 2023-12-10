@@ -36,7 +36,7 @@ public static class Program
             .AddDefaultTokenProviders();
 
 #if DEBUG
-        services.AddCors(opt => opt.AddPolicy("localhost", policy => policy.WithOrigins("http://localhost:4201", "https://localhost:4201").AllowAnyHeader().AllowAnyMethod().WithExposedHeaders("bearer")));
+        services.AddCors(opt => opt.AddPolicy("localhost", policy => policy.WithOrigins("http://localhost:4201", "https://localhost:4201", "http://127.0.0.1:4201", "https://127.0.0.1:4201").AllowAnyHeader().AllowAnyMethod().WithExposedHeaders("bearer")));
 #endif
 
         // Add services to the container.

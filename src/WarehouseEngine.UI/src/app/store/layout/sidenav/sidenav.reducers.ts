@@ -1,9 +1,9 @@
 import { createReducer, on } from '@ngrx/store';
 import * as SidenavActions from './sidenav.actions';
 
-export interface NavigationState {
-  isSideNavOpen: boolean;
-}
+export type NavigationState = {
+  readonly isSideNavOpen: boolean;
+};
 
 export const initialState: NavigationState = {
   isSideNavOpen: false,

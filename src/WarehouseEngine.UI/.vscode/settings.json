@@ -1,4 +1,3 @@
 {
-    "typescript.tsdk": "node_modules\\typescript\\lib",
-    "jest.rootPath": "dist/test-out"
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, type OnInit } from '@angular/core';
+import { Component, inject, type OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -9,7 +9,7 @@ import { tap } from 'rxjs';
 import { LoginService } from 'src/app/services/login/login.service';
 import type { JwtTokenResponse } from 'src/app/types/jwt';
 import { AuthService } from '../../services/auth.service';
-import { RouterModule, Router, RouterOutlet, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,12 @@ import { RouterModule, Router, RouterOutlet, RouterLink } from '@angular/router'
   standalone: true,
 })
 export class LoginComponent implements OnInit {
+  private readonly loginService: LoginService = inject(LoginService);
+  private readonly authService: AuthService = inject(AuthService);
+  private readonly router: Router = inject(Router);
+
   private readonly demoUsername = 'demo';
+  // deepcode ignore NoHardcodedPasswords: This is demo credentials only
   private readonly demoPassword = 'P@ssword1';
   protected credentials = new FormGroup({
     username: new FormControl<string>(this.demoUsername, {
@@ -32,14 +37,9 @@ export class LoginComponent implements OnInit {
     }),
   });
 
-  constructor(
-    private readonly loginService: LoginService,
-    private readonly authService: AuthService,
-    private readonly router: Router
-  ) {}
-
   ngOnInit(): void {
-    if (this.authService.getJwtToken()) {
+    if (this.authService.getJwtToken() != null) {
+      console.log('gotten token');
     }
   }
 
@@ -55,8 +55,7 @@ export class LoginComponent implements OnInit {
             const jwt = res.jwt;
             this.authService.setJwtToken(jwt);
             this.router.navigate(['/']);
-          } else {
-          }
+          } // todo: handle else
         })
       )
       .subscribe();

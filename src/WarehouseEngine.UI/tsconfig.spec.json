@@ -3,9 +3,7 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
         "outDir": "./out-tsc/spec",
-        // https://github.com/thymikee/jest-preset-angular/issues/288
-        "emitDecoratorMetadata": true,
-        "sourceMap": true
+        "types": ["jasmine"]
     },
     "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

@@ -25,3 +25,17 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## ESLint Plugins
+
+### eslint:recommended
+https://eslint.org/docs/latest/rules/
+
+### @typescript-eslint/recommended
+https://typescript-eslint.io/rules/
+
+### @angular-eslint/template/recommended and @angular-eslint/template/accessibility
+https://github.com/angular-eslint/angular-eslint/blob/main/packages/eslint-plugin-template/README.md
+
+### plugin:@angular-eslint/recommended
+https://github.com/angular-eslint/angular-eslint/tree/main/packages/eslint-plugin

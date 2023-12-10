@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { toggleSidenav } from './sidenav/sidenav.actions';
 import { selectSideNavOpen } from './sidenav/sidenav.selectors';
 
 @Injectable()
 export class LayoutFacade {
-  readonly sideNavOpen$ = this.store.pipe(select(selectSideNavOpen));
+  private readonly store: Store = inject(Store);
 
-  constructor(private readonly store: Store) {}
+  public readonly sideNavOpen$ = this.store.pipe(select(selectSideNavOpen));
 
-  toggleSideNav(): void {
+  public toggleSideNav(): void {
     this.store.dispatch(toggleSidenav());
   }
 }

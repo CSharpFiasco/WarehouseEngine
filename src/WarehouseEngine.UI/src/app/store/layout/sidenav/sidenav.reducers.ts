@@ -5,12 +5,12 @@ export type NavigationState = {
   readonly isSideNavOpen: boolean;
 };
 
-export const initialState: NavigationState = {
+export const initialNavigationState: NavigationState = {
   isSideNavOpen: false,
 };
 
-export const navigationReducer = createReducer(
-  initialState,
+export const navigationReducer = createReducer<NavigationState>(
+  initialNavigationState,
   on(SidenavActions.toggleSidenav, (state) => ({
     ...state,
     isSideNavOpen: !state.isSideNavOpen,

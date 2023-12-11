@@ -13,4 +13,8 @@ export class AuthService {
   public getJwtToken(): string | null {
     return sessionStorage.getItem(this.jwtKey);
   }
+
+  public unsetJwtToken(): void {
+    sessionStorage.removeItem(this.jwtKey);
+  }
 }

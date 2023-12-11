@@ -1,6 +1,7 @@
 {
     "root": true,
     "ignorePatterns": ["projects/**/*"],
+    "plugins": ["unused-imports"],
     "overrides": [
         {
             "files": ["*.ts"],
@@ -45,7 +46,14 @@
                 "@angular-eslint/prefer-output-readonly": "error",
                 "@angular-eslint/prefer-standalone-component": "warn",
                 "@angular-eslint/no-pipe-impure": "error",
-                "@angular-eslint/no-conflicting-lifecycle": "warn"
+                "@angular-eslint/no-conflicting-lifecycle": "warn",
+
+                "@typescript-eslint/no-unused-vars": "off", // disable the base rule as the following no-unused can report and fix errors
+                "unused-imports/no-unused-imports": "error",
+                "unused-imports/no-unused-vars": [
+                    "warn",
+                    { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+                ]
             }
         },
         {

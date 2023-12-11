@@ -7,7 +7,7 @@
             <a mat-list-item routerLink="/profile">Profile</a>
             <mat-divider></mat-divider>
             <a mat-list-item routerLink="/settings">Settings</a>
-            <a mat-list-item routerLink="/logout">Logout</a>
+            <a tabindex="0" mat-list-item (keyup)="logoutOnKeyup($event)" (click)="logout()">Logout</a>
           </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content>

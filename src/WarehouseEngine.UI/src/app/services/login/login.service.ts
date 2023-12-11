@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import type { JwtTokenResponse } from 'src/app/types/jwt';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +24,9 @@ export class LoginService {
 
   private handleLoginResponse(response: HttpResponse<JwtTokenResponse>): JwtTokenResponse {
     const isUnauthorized = response.status === 401;
-    if (isUnauthorized) return { type: 'Unauthorized' };
-
-    console.log(response.headers.keys());
+    if (isUnauthorized) {
+      return { type: 'Unauthorized' };
+    }
 
     const bearerToken = response.headers.get('Bearer');
     if (bearerToken === null) {
@@ -36,7 +36,7 @@ export class LoginService {
     return { type: 'Success', jwt: bearerToken };
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse): Observable<JwtTokenResponse> {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);
@@ -46,6 +46,6 @@ export class LoginService {
       console.error(`Backend returned code ${error.status}, body was: `, error.error);
     }
     // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
+    return of({ type: 'Failed', error: 'Something bad happened; please try again later.' });
   }
 }

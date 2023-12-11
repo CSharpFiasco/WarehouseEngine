@@ -1,8 +1,7 @@
 <app-top-nav></app-top-nav>
 <app-sidenav>
-  <router-outlet></router-outlet>
-  <!--<ng-container *ngIf="{ value: loggedIn$ | async } as status">
-    <mat-spinner *ngIf="status.value === 'loading'"></mat-spinner>
-    <app-login *ngIf="status.value !== 'loading'"></app-login>
-  </ng-container>-->
+  <ng-container *ngIf="{ value: loginStatus$ | async } as status">
+    <mat-spinner *ngIf="status.value === 'logging in'"></mat-spinner>
+    <router-outlet *ngIf="status.value !== 'logging in'"></router-outlet>
+  </ng-container>
 </app-sidenav>

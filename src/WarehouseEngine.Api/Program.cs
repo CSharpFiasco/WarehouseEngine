@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using WarehouseEngine.Api.Configuration;
@@ -56,12 +57,10 @@ public static class Program
         services.AddApiVersioning(options =>
         {
             options.AssumeDefaultVersionWhenUnspecified = true;
-            options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            options.DefaultApiVersion = new ApiVersion(1, 0);
             options.ReportApiVersions = true;
-        });
-
-        services.AddVersionedApiExplorer(options =>
-        {
+        })
+        .AddApiExplorer(options => {
             options.GroupNameFormat = "'v'VVV";
             options.SubstituteApiVersionInUrl = true;
         });

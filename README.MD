@@ -22,3 +22,7 @@ May need to do following commands
 `dotnet dev-certs https --trust`
 
 `dotnet dev-certs https --check`
+
+## todo
+
+1. Add global exception handling

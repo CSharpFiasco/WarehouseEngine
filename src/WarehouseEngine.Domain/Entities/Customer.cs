@@ -21,6 +21,7 @@ public partial class Customer
 
     public Address? BillingAddress { get; set; }
     public required Address ShippingAddress { get; set; }
+    public required DateTime DateCreated { get; set; }
     [InverseProperty("Customer")]
     public virtual ICollection<Order> Order { get; set; }
 

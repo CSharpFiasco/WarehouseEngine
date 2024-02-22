@@ -19,6 +19,15 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
     {
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+            optionsBuilder.UseSqlServer($"Server=localhost;Database=WarehouseEngine;Trusted_Connection=True;MultipleActiveResultSets=true");
+        }
+    }
+
     public virtual DbSet<Company> Company { get; set; } = null!;
     public virtual DbSet<Contact> Contact { get; set; } = null!;
     public virtual DbSet<Customer> Customer { get; set; } = null!;
@@ -40,24 +49,30 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 
         builder.Entity<Contact>(entity =>
         {
-            entity.OwnsOne(d => d.Address);
+            entity.OwnsOne(d => d.Address, (e) => {
+                e.Property(a => a.Address1).HasColumnName("Address1").IsRequired();
+                e.Property(a => a.Address2).HasColumnName("Address2");
+                e.Property(a => a.City).HasColumnName("City").IsRequired();
+                e.Property(a => a.State).HasColumnName("State").IsRequired();
+                e.Property(a => a.ZipCode).HasColumnName("ZipCode").IsRequired();
+            });
         });
 
         builder.Entity<Customer>(entity =>
         {
             var billingAddress = entity.OwnsOne(d => d.BillingAddress);
-            billingAddress.Property(a => a.Address1).HasColumnName("BillingAddress1");
+            billingAddress.Property(a => a.Address1).HasColumnName("BillingAddress1").IsRequired();
             billingAddress.Property(a => a.Address2).HasColumnName("BillingAddress2");
-            billingAddress.Property(a => a.City).HasColumnName("BillingCity");
-            billingAddress.Property(a => a.State).HasColumnName("BillingState");
-            billingAddress.Property(a => a.ZipCode).HasColumnName("BillingZipCode");
+            billingAddress.Property(a => a.City).HasColumnName("BillingCity").IsRequired();
+            billingAddress.Property(a => a.State).HasColumnName("BillingState").IsRequired();
+            billingAddress.Property(a => a.ZipCode).HasColumnName("BillingZipCode").IsRequired();
 
             var shippingAddress = entity.OwnsOne(d => d.ShippingAddress);
-            shippingAddress.Property(a => a.Address1).HasColumnName("ShippingAddress1");
+            shippingAddress.Property(a => a.Address1).HasColumnName("ShippingAddress1").IsRequired();
             shippingAddress.Property(a => a.Address2).HasColumnName("ShippingAddress2");
-            shippingAddress.Property(a => a.City).HasColumnName("ShippingCity");
-            shippingAddress.Property(a => a.State).HasColumnName("ShippingState");
-            shippingAddress.Property(a => a.ZipCode).HasColumnName("ShippingZipCode");
+            shippingAddress.Property(a => a.City).HasColumnName("ShippingCity").IsRequired();
+            shippingAddress.Property(a => a.State).HasColumnName("ShippingState").IsRequired();
+            shippingAddress.Property(a => a.ZipCode).HasColumnName("ShippingZipCode").IsRequired();
 
             entity.HasMany(d => d.Contact)
                 .WithMany(p => p.Customer)
@@ -75,6 +90,8 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 
                         j.HasIndex(new[] { "ContactId" }, "IX_CustomerContact02");
                     });
+
+            entity.Property(e => e.DateCreated).HasDefaultValueSql("getutcdate()");
         });
 
         builder.Entity<Employee>(entity =>
@@ -103,11 +120,11 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
                 .HasConstraintName("FK_Order_Customer");
 
             var shippingAddress = entity.OwnsOne(d => d.ShippingAddress);
-            shippingAddress.Property(a => a.Address1).HasColumnName("ShippingAddress1");
+            shippingAddress.Property(a => a.Address1).HasColumnName("ShippingAddress1").IsRequired();
             shippingAddress.Property(a => a.Address2).HasColumnName("ShippingAddress2");
-            shippingAddress.Property(a => a.City).HasColumnName("ShippingCity");
-            shippingAddress.Property(a => a.State).HasColumnName("ShippingState");
-            shippingAddress.Property(a => a.ZipCode).HasColumnName("ShippingZipCode");
+            shippingAddress.Property(a => a.City).HasColumnName("ShippingCity").IsRequired();
+            shippingAddress.Property(a => a.State).HasColumnName("ShippingState").IsRequired();
+            shippingAddress.Property(a => a.ZipCode).HasColumnName("ShippingZipCode").IsRequired();
         });
 
         builder.Entity<OrderWarehouseItem>(entity =>

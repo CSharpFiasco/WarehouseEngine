@@ -1,23 +1,28 @@
-﻿using WarehouseEngine.Domain.Helpers;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+using WarehouseEngine.Domain.Helpers;
 
 namespace WarehouseEngine.Domain.ValueObjects;
 
+[Owned]
 public class Address : ValueObject
 {
-    public string Address1 { get; private set; }
-    public string? Address2 { get; private set; }
-    public string City { get; private set; }
-    public string State { get; private set; }
-    public string ZipCode { get; private set; }
+    [Required]
+    [StringLength(80)]
+    public required string Address1 { get; init; }
 
-    public Address(string address1, string? address2, string city, string state, string zipCode)
-    {
-        Address1 = address1;
-        Address2 = address2;
-        City = city;
-        State = state;
-        ZipCode = zipCode;
-    }
+    [StringLength(80)]
+    public string? Address2 { get; init; }
+
+    [Required]
+    [StringLength(32)]
+    public required string City { get; init; }
+    [Required]
+    [StringLength(2)]
+    public required string State { get; init; }
+    [Required]
+    [StringLength(11)]
+    public required string ZipCode { get; init; }
 
     protected override IEnumerable<object?> GetEqualityComponents()
     {

@@ -5,7 +5,11 @@ namespace WarehouseEngine.Infrastructure.Tests.Fixtures;
 
 public sealed class TestDatabaseFixture
 {
-    private readonly string ConnectionString = @$"Server=(localdb)\mssqllocaldb;Database=WarehouseTestDatabase;Trusted_Connection=True;MultipleActiveResultSets=true";
+    /*
+     * TODO: Pull from environment variables against an instance of SQL Server 2022
+     * VS 2022 uses SQL Serveer 2019
+     */
+    private readonly string ConnectionString = @$"Server=(localdb)\mssqllocaldb;Database=WarehouseTestDatabase;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False;Application Name=""Warehouse Engine Integration Tests""";
 
     private static readonly object _lock = new();
     private static bool _databaseInitialized = false;

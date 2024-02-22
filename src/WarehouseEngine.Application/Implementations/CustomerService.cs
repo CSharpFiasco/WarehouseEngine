@@ -24,6 +24,16 @@ public class CustomerService : ICustomerService
             : throw new EntityDoesNotExistException<Customer>();
     }
 
+    public async Task<int> GetCount() {
+        return await _context.Customer.CountAsync();
+    }
+
+    public async Task<int> GetCountByDate(DateOnly date) {
+        return await _context.Customer
+            .Where(e => e.DateCreated == date.ToDateTime(TimeOnly.MinValue))
+            .CountAsync();
+    }
+
     public async Task AddAsync(Customer entity)
     {
         if (await _context.Customer.AnyAsync(e => entity.Id == e.Id))
@@ -46,7 +56,7 @@ public class CustomerService : ICustomerService
             throw new EntityDoesNotExistException<Customer>();
 
         entityToUpdate.BillingAddress = entity.BillingAddress;
-        entityToUpdate.ShippingAddress = entity.ShippingAddress;
+        //entityToUpdate.ShippingAddress = entity.ShippingAddress;
         entityToUpdate.Name = entity.Name;
 
         _context.Customer.Update(entityToUpdate);

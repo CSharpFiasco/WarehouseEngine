@@ -24,7 +24,8 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
         Customer customer = new()
         {
             Name = newSku,
-            ShippingAddress = new Address("test1", "test2", "test3", "test4", "test5")
+            ShippingAddress = new Address { Address1 = "test1", Address2 = "test2", City = "test3", State = "TE", ZipCode = "test5" },
+            DateCreated = DateTime.UtcNow
         };
 
         await context.AddAsync(customer);
@@ -53,7 +54,8 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
             Id = 0,
             Name = newSku,
             BillingAddress = null,
-            ShippingAddress = new Address("test1", "test2", "test3", "test4", "test5")
+            ShippingAddress = new Address { Address1 = "test1", Address2 = "test2", City = "test3", State = "TE", ZipCode = "test5" },
+            DateCreated = DateTime.UtcNow
         };
 
         var sut = new CustomerService(context);
@@ -74,8 +76,9 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
         Customer customer = new()
         {
             Name = newSku,
-            BillingAddress = new Address("test1", "test2", "test3", "test4", "test5"),
-            ShippingAddress = null!
+            BillingAddress = new Address { Address1 = "test1", Address2 = "test2", City = "test3", State = "test4", ZipCode = "test5" },
+            ShippingAddress = null!,
+            DateCreated = DateTime.UtcNow
         };
 
         var sut = new CustomerService(context);

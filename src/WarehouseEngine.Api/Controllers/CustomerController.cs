@@ -24,6 +24,18 @@ public class CustomerController : ControllerBase
         return Ok(customer);
     }
 
+    [HttpGet("count")]
+    public async Task<ActionResult<int>> Count()
+    {
+        return Ok(await _customerService.GetCount());
+    }
+
+    [HttpGet("countByDate")]
+    public async Task<ActionResult<int>> CountByDate(DateOnly date)
+    {
+        return Ok(await _customerService.GetCount());
+    }
+
     [HttpPost]
     public async Task<ActionResult<Customer>> Create(Customer customer)
     {

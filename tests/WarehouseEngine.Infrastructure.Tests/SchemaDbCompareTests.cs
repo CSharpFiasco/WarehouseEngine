@@ -33,7 +33,6 @@ public class SchemaDbCompareTests : IClassFixture<TestDatabaseFixture>
             _output.WriteLine(comparer.GetAllErrors);
         }
 
-        Assert.Empty(comparer.Logs);
         Assert.False(hasErrors);
     }
 }

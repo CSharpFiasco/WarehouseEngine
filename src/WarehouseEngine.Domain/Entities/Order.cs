@@ -6,11 +6,7 @@ namespace WarehouseEngine.Domain.Entities;
 
 public partial class Order
 {
-    public Order()
-    {
-        OrderWarehouseItem = new HashSet<OrderWarehouseItem>();
-        OrderWarehouseItemOutOfStock = new HashSet<OrderWarehouseItemOutOfStock>();
-    }
+    public Order() { }
 
     [Key]
     public int Id { get; set; }
@@ -23,9 +19,4 @@ public partial class Order
     [InverseProperty("Order")]
     public virtual Customer? Customer { get; set; }
 
-    [InverseProperty("Order")]
-    public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; set; }
-
-    [InverseProperty("Order")]
-    public virtual ICollection<OrderWarehouseItemOutOfStock> OrderWarehouseItemOutOfStock { get; set; }
 }

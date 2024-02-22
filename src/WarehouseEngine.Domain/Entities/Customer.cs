@@ -10,7 +10,6 @@ public partial class Customer
     public Customer()
     {
         Order = new HashSet<Order>();
-        Contact = new HashSet<Contact>();
     }
 
     [Key]
@@ -24,8 +23,4 @@ public partial class Customer
     public required DateTime DateCreated { get; set; }
     [InverseProperty("Customer")]
     public virtual ICollection<Order> Order { get; set; }
-
-    [ForeignKey("CustomerId")]
-    [InverseProperty("Customer")]
-    public virtual ICollection<Contact> Contact { get; set; }
 }

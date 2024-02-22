@@ -34,10 +34,7 @@ public sealed class TestDatabaseFixture
 
     private static void SeedDatabase(WarehouseEngineContext context)
     {
-        context.Item.AddRange(
-            new Item { Description = "Test", Sku = "Sku1" },
-            new Item { Description = "Test", Sku = "Sku2" }
-            );
+
     }
 
     public WarehouseEngineContext CreateContext()

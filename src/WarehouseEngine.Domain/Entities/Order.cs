@@ -13,7 +13,7 @@ public partial class Order
     public int CustomerId { get; set; }
     public byte Status { get; set; }
 
-    public required Address ShippingAddress { get; set; }
+    //public required Address ShippingAddress { get; set; }
 
     [ForeignKey("CustomerId")]
     [InverseProperty("Order")]

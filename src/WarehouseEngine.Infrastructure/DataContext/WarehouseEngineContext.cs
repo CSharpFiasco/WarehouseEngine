@@ -62,12 +62,12 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Order_Customer");
 
-            var shippingAddress = entity.OwnsOne(d => d.ShippingAddress);
-            shippingAddress.Property(a => a.Address1).HasColumnName("ShippingAddress1").IsRequired();
-            shippingAddress.Property(a => a.Address2).HasColumnName("ShippingAddress2");
-            shippingAddress.Property(a => a.City).HasColumnName("ShippingCity").IsRequired();
-            shippingAddress.Property(a => a.State).HasColumnName("ShippingState").IsRequired();
-            shippingAddress.Property(a => a.ZipCode).HasColumnName("ShippingZipCode").IsRequired();
+            //var shippingAddress = entity.OwnsOne(d => d.ShippingAddress);
+            //shippingAddress.Property(a => a.Address1).HasColumnName("ShippingAddress1").IsRequired();
+            //shippingAddress.Property(a => a.Address2).HasColumnName("ShippingAddress2");
+            //shippingAddress.Property(a => a.City).HasColumnName("ShippingCity").IsRequired();
+            //shippingAddress.Property(a => a.State).HasColumnName("ShippingState").IsRequired();
+            //shippingAddress.Property(a => a.ZipCode).HasColumnName("ShippingZipCode").IsRequired();
         });
     }
 

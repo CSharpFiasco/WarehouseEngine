@@ -17,7 +17,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<Item>> Get(int id)
+    public async Task<ActionResult<Item>> Get(Guid id)
     {
         Item? item = await _itemService.GetByIdAsync(id);
 

@@ -17,12 +17,15 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     public async Task GetItemByIdAsync_SingleItem_AddSingleItem()
     {
         await using WarehouseEngineContext context = _fixture.CreateContext();
-        await using var _ = context.Database.BeginTransaction();
+        await using var _ = await context.Database.BeginTransactionAsync();
 
         const string newSku = "TestAddAsync";
 
+        Guid newGuidId = Guid.NewGuid();
+
         var item = new Item
         {
+            Id = newGuidId,
             Description = "Test",
             Sku = newSku
         };
@@ -30,26 +33,26 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
         await context.AddAsync(item);
         await context.SaveChangesAsync();
 
-        int expectedId = item.Id;
         context.ChangeTracker.Clear();
 
         var sut = new ItemService(context);
-        Item result = await sut.GetByIdAsync(expectedId);
+        Item result = await sut.GetByIdAsync(newGuidId);
 
         context.ChangeTracker.Clear();
-        Assert.Equal(expectedId, result.Id);
+        Assert.Equal(newGuidId, result.Id);
     }
 
     [Fact]
     public async Task AddAsync_SingleItem_AddSingleItem()
     {
         await using WarehouseEngineContext context = _fixture.CreateContext();
-        await using var _ = context.Database.BeginTransaction();
+        await using var _ = await context.Database.BeginTransactionAsync();
 
         const string newSku = "TestAddAsync";
 
         var item = new Item
         {
+            Id = Guid.Empty,
             Description = "Test",
             Sku = newSku
         };
@@ -65,18 +68,18 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     public async Task UpdateAsync_SingleItem_Fields()
     {
         await using WarehouseEngineContext context = _fixture.CreateContext();
-        await using var _ = context.Database.BeginTransaction();
+        await using var _ = await context.Database.BeginTransactionAsync();
 
         const string newSku = "TestSku";
 
-        Item item = await context.Item.SingleAsync(i => i.Id == 1);
+        Item item = await context.Item.SingleAsync(i => i.Id == TestDatabaseFixture.ItemId1);
 
         item.Sku = newSku;
         item.Description = "TestDescriptionUpdateAsync";
         item.IsActive = false;
 
         var sut = new ItemService(context);
-        await sut.UpdateAsync(1, item);
+        await sut.UpdateAsync(TestDatabaseFixture.ItemId1, item);
 
         context.ChangeTracker.Clear();
         Assert.Equal("TestSku", item.Sku);

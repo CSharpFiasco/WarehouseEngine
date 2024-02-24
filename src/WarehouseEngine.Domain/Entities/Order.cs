@@ -13,8 +13,8 @@ public partial class Order
     }
 
     [Key]
-    public int Id { get; set; }
-    public int CustomerId { get; set; }
+    public Guid Id { get; set; }
+    public Guid CustomerId { get; set; }
     public byte Status { get; set; }
 
     public required Address ShippingAddress { get; set; }
@@ -24,8 +24,8 @@ public partial class Order
     public virtual Customer? Customer { get; set; }
 
     [InverseProperty("Order")]
-    public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; set; }
+    public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; init; }
 
     [InverseProperty("Order")]
-    public virtual ICollection<OrderWarehouseItemOutOfStock> OrderWarehouseItemOutOfStock { get; set; }
+    public virtual ICollection<OrderWarehouseItemOutOfStock> OrderWarehouseItemOutOfStock { get; init; }
 }

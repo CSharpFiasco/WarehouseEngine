@@ -12,12 +12,12 @@ public partial class Position
     }
 
     [Key]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     [StringLength(80)]
     [Unicode(false)]
     public required string Name { get; set; }
 
     [InverseProperty("Position")]
-    public virtual ICollection<Employee> Employee { get; set; }
+    public virtual ICollection<Employee> Employee { get; init; }
 }

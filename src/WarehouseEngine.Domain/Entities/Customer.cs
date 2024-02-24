@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using WarehouseEngine.Domain.ValueObjects;
 
@@ -14,18 +15,35 @@ public partial class Customer
     }
 
     [Key]
-    public int Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
+    public required Guid Id { get; set; }
     [StringLength(80)]
     [Unicode(false)]
     public required string Name { get; set; }
 
     public Address? BillingAddress { get; set; }
+
     public required Address ShippingAddress { get; set; }
+
     public required DateTime DateCreated { get; set; }
+
+    public required string CreatedBy { get; set; }
+
+    public DateTime? DateModified { get; set; }
+
+    public string? ModifiedBy { get; set; }
+
     [InverseProperty("Customer")]
-    public virtual ICollection<Order> Order { get; set; }
+    public virtual ICollection<Order> Order { get; init; }
 
     [ForeignKey("CustomerId")]
     [InverseProperty("Customer")]
-    public virtual ICollection<Contact> Contact { get; set; }
+    public virtual ICollection<Contact> Contact { get; init; }
+}
+
+public class PostCustomerDto {
+    public required string Name { get; init; }
+    public Address? BillingAddress { get; set; }
+    public required Address ShippingAddress { get; set; }
 }

@@ -14,6 +14,9 @@ public sealed class TestDatabaseFixture
     private static readonly object _lock = new();
     private static bool _databaseInitialized = false;
 
+    public static readonly Guid ItemId1 = Guid.Parse("00000000-0000-0000-0000-000000000001");
+    public static readonly Guid ItemId2 = Guid.Parse("00000000-0000-0000-0000-000000000002");
+
     public TestDatabaseFixture()
     {
         lock (_lock)
@@ -35,8 +38,8 @@ public sealed class TestDatabaseFixture
     private static void SeedDatabase(WarehouseEngineContext context)
     {
         context.Item.AddRange(
-            new Item { Description = "Test", Sku = "Sku1" },
-            new Item { Description = "Test", Sku = "Sku2" }
+            new Item { Id = ItemId1, Description = "Test", Sku = "Sku1" },
+            new Item { Id = ItemId2, Description = "Test", Sku = "Sku2" }
             );
     }
 

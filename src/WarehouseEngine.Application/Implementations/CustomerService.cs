@@ -13,7 +13,7 @@ public class CustomerService : ICustomerService
         _context = context;
     }
 
-    public async Task<Customer> GetByIdAsync(int id)
+    public async Task<Customer> GetByIdAsync(Guid id)
     {
         Customer? entity = await _context.Customer
             .AsNoTracking()
@@ -48,7 +48,7 @@ public class CustomerService : ICustomerService
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(int id, Customer entity)
+    public async Task UpdateAsync(Guid id, Customer entity)
     {
         Customer? entityToUpdate = await _context.Customer
             .SingleOrDefaultAsync(e => id == e.Id);
@@ -56,14 +56,14 @@ public class CustomerService : ICustomerService
             throw new EntityDoesNotExistException<Customer>();
 
         entityToUpdate.BillingAddress = entity.BillingAddress;
-        //entityToUpdate.ShippingAddress = entity.ShippingAddress;
+        entityToUpdate.ShippingAddress = entity.ShippingAddress;
         entityToUpdate.Name = entity.Name;
 
         _context.Customer.Update(entityToUpdate);
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Guid id)
     {
         await _context.Customer
             .Where(e => e.Id == id)

@@ -13,7 +13,8 @@ public partial class Item
     }
 
     [Key]
-    public int Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public required Guid Id { get; set; }
     [Required]
     [StringLength(12)]
     [Unicode(false)]
@@ -25,9 +26,9 @@ public partial class Item
     public bool IsActive { get; set; }
 
     [InverseProperty("Item")]
-    public virtual ICollection<WarehouseItem> WarehouseItem { get; set; }
+    public virtual ICollection<WarehouseItem> WarehouseItem { get; init; }
 
     [ForeignKey("ItemId")]
     [InverseProperty("Item")]
-    public virtual ICollection<Vendor> Vendor { get; set; }
+    public virtual ICollection<Vendor> Vendor { get; init; }
 }

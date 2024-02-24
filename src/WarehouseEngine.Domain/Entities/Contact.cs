@@ -13,7 +13,8 @@ public partial class Contact
     }
 
     [Key]
-    public int Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public Guid Id { get; set; }
     [StringLength(80)]
     [Unicode(false)]
     public string? FirstName { get; set; }
@@ -28,5 +29,5 @@ public partial class Contact
 
     [ForeignKey("ContactId")]
     [InverseProperty("Contact")]
-    public virtual ICollection<Customer> Customer { get; set; }
+    public virtual ICollection<Customer> Customer { get; init; }
 }

@@ -9,9 +9,9 @@ namespace WarehouseEngine.Domain.Entities;
 public partial class PurchaseOrderWarehouseItem
 {
     [Key]
-    public int PurchaseOrderId { get; set; }
+    public Guid PurchaseOrderId { get; set; }
     [Key]
-    public int WarehouseItemId { get; set; }
+    public Guid WarehouseItemId { get; set; }
     public int Quantity { get; set; }
 
     [ForeignKey("PurchaseOrderId")]

@@ -12,7 +12,7 @@ public partial class PurchaseOrder
     }
 
     [Key]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     [Column(TypeName = "date")]
     public DateTime OrderDate { get; set; }
     [StringLength(255)]
@@ -21,5 +21,5 @@ public partial class PurchaseOrder
     public byte Status { get; set; }
 
     [InverseProperty("PurchaseOrder")]
-    public virtual ICollection<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; set; }
+    public virtual ICollection<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; init; }
 }

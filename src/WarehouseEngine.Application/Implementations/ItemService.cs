@@ -12,7 +12,7 @@ public class ItemService : IItemService
         _context = context;
     }
 
-    public async Task<Item> GetByIdAsync(int id)
+    public async Task<Item> GetByIdAsync(Guid id)
     {
         Item? item = await _context.Item.AsNoTracking()
             .SingleOrDefaultAsync(i => i.Id == id);
@@ -30,7 +30,7 @@ public class ItemService : IItemService
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(int id, Item item)
+    public async Task UpdateAsync(Guid id, Item item)
     {
         Item? entityToUpdate = await _context.Item.SingleOrDefaultAsync(i => id == i.Id);
         if (entityToUpdate is null)
@@ -44,7 +44,7 @@ public class ItemService : IItemService
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Guid id)
     {
         await _context.Item.Where(e => e.Id == id).ExecuteDeleteAsync();
     }

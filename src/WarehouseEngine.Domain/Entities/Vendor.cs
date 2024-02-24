@@ -12,12 +12,12 @@ public partial class Vendor
     }
 
     [Key]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     [StringLength(80)]
     [Unicode(false)]
     public string? Name { get; set; }
 
     [ForeignKey("VendorId")]
     [InverseProperty("Vendor")]
-    public virtual ICollection<Item> Item { get; set; }
+    public virtual ICollection<Item> Item { get; init; }
 }

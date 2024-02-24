@@ -12,11 +12,11 @@ public partial class Warehouse
     }
 
     [Key]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     [StringLength(32)]
     [Unicode(false)]
     public required string Name { get; set; }
 
     [InverseProperty("Warehouse")]
-    public virtual ICollection<WarehouseItem> WarehouseItem { get; set; }
+    public virtual ICollection<WarehouseItem> WarehouseItem { get; init; }
 }

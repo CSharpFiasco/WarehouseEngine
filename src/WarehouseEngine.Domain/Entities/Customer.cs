@@ -16,7 +16,6 @@ public partial class Customer
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    [JsonIgnore(Condition = JsonIgnoreCondition.Always)]
     public required Guid Id { get; set; }
     [StringLength(80)]
     [Unicode(false)]

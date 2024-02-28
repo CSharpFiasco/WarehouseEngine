@@ -8,8 +8,8 @@ public partial class Company
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
+
     [StringLength(80)]
-    [Unicode(false)]
     public required string Name { get; set; }
 }

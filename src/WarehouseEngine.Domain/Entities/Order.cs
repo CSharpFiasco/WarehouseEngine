@@ -13,8 +13,11 @@ public partial class Order
     }
 
     [Key]
-    public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public required Guid Id { get; set; }
+
     public Guid CustomerId { get; set; }
+
     public byte Status { get; set; }
 
     public required Address ShippingAddress { get; set; }

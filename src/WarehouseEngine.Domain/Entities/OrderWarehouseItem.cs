@@ -10,8 +10,10 @@ public partial class OrderWarehouseItem
 {
     [Key]
     public Guid OrderId { get; set; }
+
     [Key]
     public Guid WarehouseItemId { get; set; }
+
     public int Quantity { get; set; }
 
     [ForeignKey("OrderId")]

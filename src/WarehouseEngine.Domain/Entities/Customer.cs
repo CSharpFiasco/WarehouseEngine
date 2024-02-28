@@ -17,8 +17,8 @@ public partial class Customer
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public required Guid Id { get; set; }
+
     [StringLength(80)]
-    [Unicode(false)]
     public required string Name { get; set; }
 
     public Address? BillingAddress { get; set; }
@@ -27,10 +27,12 @@ public partial class Customer
 
     public required DateTime DateCreated { get; set; }
 
+    [StringLength(80)]
     public required string CreatedBy { get; set; }
 
     public DateTime? DateModified { get; set; }
 
+    [StringLength(80)]
     public string? ModifiedBy { get; set; }
 
     [InverseProperty("Customer")]

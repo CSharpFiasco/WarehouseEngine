@@ -12,6 +12,7 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 {
     public WarehouseEngineContext()
     {
+        
     }
 
     public WarehouseEngineContext(DbContextOptions<WarehouseEngineContext> options)
@@ -26,6 +27,8 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
             optionsBuilder.UseSqlServer($"Server=localhost;Database=WarehouseEngine;Trusted_Connection=True;MultipleActiveResultSets=true");
         }
+
+        optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
 
     public virtual DbSet<Company> Company { get; set; } = null!;

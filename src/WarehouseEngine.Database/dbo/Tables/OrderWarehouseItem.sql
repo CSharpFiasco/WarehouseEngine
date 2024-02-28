@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [OrderWarehouseItem](
-    [OrderId]         INT      NOT NULL,
-    [WarehouseItemId]         INT      NOT NULL,
+    [OrderId]         UNIQUEIDENTIFIER NOT NULL,
+    [WarehouseItemId]         UNIQUEIDENTIFIER NOT NULL,
     [Quantity] INT NOT NULL,
     CONSTRAINT [PK_OrderWarehouseItem] PRIMARY KEY CLUSTERED ([OrderId] ASC, [WarehouseItemId] ASC),
     CONSTRAINT [FK_OrderWarehouseItem_Order] FOREIGN KEY ([OrderId]) REFERENCES [Order]([Id]),

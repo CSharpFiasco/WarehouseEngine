@@ -12,10 +12,10 @@ public partial class Position
     }
 
     [Key]
-    public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public required Guid Id { get; set; }
 
     [StringLength(80)]
-    [Unicode(false)]
     public required string Name { get; set; }
 
     [InverseProperty("Position")]

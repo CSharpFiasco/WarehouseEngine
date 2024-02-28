@@ -14,15 +14,15 @@ public partial class Contact
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public Guid Id { get; set; }
+    public required Guid Id { get; set; }
+
     [StringLength(80)]
-    [Unicode(false)]
     public string? FirstName { get; set; }
+
     [StringLength(80)]
-    [Unicode(false)]
     public string? LastName { get; set; }
+
     [StringLength(60)]
-    [Unicode(false)]
     public string? Email { get; set; }
 
     public Address? Address { get; set; }

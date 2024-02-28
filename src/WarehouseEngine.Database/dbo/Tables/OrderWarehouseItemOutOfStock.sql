@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [OrderWarehouseItemOutOfStock](
-    [OrderId]         INT      NOT NULL,
-    [WarehouseItemId]         INT      NOT NULL,
+    [OrderId]         UNIQUEIDENTIFIER      NOT NULL,
+    [WarehouseItemId]         UNIQUEIDENTIFIER      NOT NULL,
     [Quantity] INT NOT NULL,
     CONSTRAINT [PK_OrderWarehouseItemOutOfStock] PRIMARY KEY CLUSTERED ([OrderId] ASC, [WarehouseItemId] ASC),
     CONSTRAINT [FK_OrderWarehouseItemOutOfStock_Order] FOREIGN KEY ([OrderId]) REFERENCES [Order]([Id]),

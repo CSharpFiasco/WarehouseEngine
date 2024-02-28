@@ -15,14 +15,15 @@ public partial class Item
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public required Guid Id { get; set; }
+
     [Required]
     [StringLength(12)]
-    [Unicode(false)]
     public required string Sku { get; set; }
+
     [Required]
     [StringLength(120)]
-    [Unicode(false)]
     public required string Description { get; set; }
+
     public bool IsActive { get; set; }
 
     [InverseProperty("Item")]

@@ -12,12 +12,15 @@ public partial class PurchaseOrder
     }
 
     [Key]
-    public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public required Guid Id { get; set; }
+
     [Column(TypeName = "date")]
     public DateTime OrderDate { get; set; }
+
     [StringLength(255)]
-    [Unicode(false)]
     public required string OrderNumber { get; set; }
+
     public byte Status { get; set; }
 
     [InverseProperty("PurchaseOrder")]

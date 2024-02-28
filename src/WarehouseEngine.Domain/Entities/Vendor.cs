@@ -12,9 +12,10 @@ public partial class Vendor
     }
 
     [Key]
-    public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public required Guid Id { get; set; }
+
     [StringLength(80)]
-    [Unicode(false)]
     public string? Name { get; set; }
 
     [ForeignKey("VendorId")]

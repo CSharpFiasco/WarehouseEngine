@@ -10,13 +10,16 @@ public partial class PurchaseOrderWarehouseItem
 {
     [Key]
     public Guid PurchaseOrderId { get; set; }
+
     [Key]
     public Guid WarehouseItemId { get; set; }
+
     public int Quantity { get; set; }
 
     [ForeignKey("PurchaseOrderId")]
     [InverseProperty("PurchaseOrderWarehouseItem")]
     public virtual PurchaseOrder? PurchaseOrder { get; set; }
+
     [ForeignKey("WarehouseItemId")]
     [InverseProperty("PurchaseOrderWarehouseItem")]
     public virtual WarehouseItem? WarehouseItem { get; set; }

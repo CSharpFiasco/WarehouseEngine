@@ -14,25 +14,29 @@ public partial class Employee
     }
 
     [Key]
-    public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public required Guid Id { get; set; }
+
     [StringLength(30)]
-    [Unicode(false)]
     public required string FirstName { get; set; }
+
     [StringLength(30)]
-    [Unicode(false)]
     public string? MiddleName { get; set; }
+
     [StringLength(30)]
-    [Unicode(false)]
     public required string LastName { get; set; }
+
     [StringLength(32)]
-    [Unicode(false)]
     public required string UserName { get; set; }
+
     public Guid PositionId { get; set; }
+
     public Guid SupervisorEmployeeId { get; set; }
+
     [MaxLength(32)]
     public byte[]? SocialSecurityNumberHash { get; set; }
+
     [StringLength(4)]
-    [Unicode(false)]
     public string? SocialSecuritySerialNumber { get; set; }
 
     [ForeignKey("PositionId")]

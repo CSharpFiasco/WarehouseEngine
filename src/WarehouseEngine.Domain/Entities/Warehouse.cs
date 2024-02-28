@@ -12,9 +12,10 @@ public partial class Warehouse
     }
 
     [Key]
-    public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public required Guid Id { get; set; }
+
     [StringLength(32)]
-    [Unicode(false)]
     public required string Name { get; set; }
 
     [InverseProperty("Warehouse")]

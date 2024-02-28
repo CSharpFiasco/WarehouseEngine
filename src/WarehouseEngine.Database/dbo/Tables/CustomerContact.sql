@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [CustomerContact](
-    [CustomerId]         INT      NOT NULL,
-    [ContactId]         INT      NOT NULL,
+    [CustomerId]        UNIQUEIDENTIFIER      NOT NULL,
+    [ContactId]         UNIQUEIDENTIFIER      NOT NULL,
     CONSTRAINT [PK_CustomerContact] PRIMARY KEY CLUSTERED ([CustomerId] ASC, [ContactId] ASC),
     CONSTRAINT [FK_CustomerContact_Customer] FOREIGN KEY ([CustomerId]) REFERENCES [Customer]([Id]),
     CONSTRAINT [FK_CustomerContact_Contact] FOREIGN KEY ([ContactId]) REFERENCES [Contact]([Id])

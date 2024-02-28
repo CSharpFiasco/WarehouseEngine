@@ -16,19 +16,26 @@ public partial class WarehouseItem
     }
 
     [Key]
-    public Guid Id { get; set; }
-    public Guid WarehouseId { get; set; }
-    public Guid ItemId { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public required Guid Id { get; set; }
+
+    public required Guid WarehouseId { get; set; }
+
+    public required Guid ItemId { get; set; }
+
     public int Quantity { get; set; }
+
     [Column(TypeName = "decimal(15, 3)")]
     public decimal? Price { get; set; }
 
     [ForeignKey("ItemId")]
     [InverseProperty("WarehouseItem")]
     public virtual Item? Item { get; set; }
+
     [ForeignKey("WarehouseId")]
     [InverseProperty("WarehouseItem")]
     public virtual Warehouse? Warehouse { get; set; }
+
     [InverseProperty("WarehouseItem")]
     public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; init; }
     [InverseProperty("WarehouseItem")]

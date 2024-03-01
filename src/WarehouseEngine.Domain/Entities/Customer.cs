@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using WarehouseEngine.Domain.Exceptions;
 using WarehouseEngine.Domain.ValueObjects;
 
 namespace WarehouseEngine.Domain.Entities;
@@ -23,6 +25,7 @@ public partial class Customer
 
     public Address? BillingAddress { get; set; }
 
+    [DisallowNull]
     public required Address ShippingAddress { get; set; }
 
     public required DateTime DateCreated { get; set; }
@@ -45,6 +48,36 @@ public partial class Customer
 
 public class PostCustomerDto {
     public required string Name { get; init; }
-    public Address? BillingAddress { get; set; }
-    public required Address ShippingAddress { get; set; }
+
+    public Address? BillingAddress { get; init; }
+
+    public required Address ShippingAddress { get; init; }
+
+    [JsonIgnore]
+    public DateTime? DateCreated { get; set; }
+
+    [JsonIgnore]
+    public string? CreatedBy { get; set; }
+
+    public static explicit operator Customer(PostCustomerDto dto)
+    {
+        if (!dto.DateCreated.HasValue || dto.CreatedBy is null) {
+            throw new EntityConversionException<Customer, PostCustomerDto>();
+        }
+
+        if (dto.ShippingAddress is null)
+        {
+            throw new EntityConversionException<Customer, PostCustomerDto>();
+        }
+
+        return new Customer
+        {
+            Id = Guid.NewGuid(),
+            Name = dto.Name,
+            BillingAddress = dto.BillingAddress,
+            ShippingAddress = dto.ShippingAddress,
+            DateCreated = dto.DateCreated.Value,
+            CreatedBy = dto.CreatedBy
+        };
+    }
 }

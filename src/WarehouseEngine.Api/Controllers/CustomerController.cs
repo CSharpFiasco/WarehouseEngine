@@ -37,9 +37,9 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Customer>> Create(Customer customer)
+    public async Task<ActionResult<Customer>> Create(PostCustomerDto customer)
     {
-        await _customerService.AddAsync(customer);
+        await _customerService.AddAsync((Customer)customer);
 
         return Ok(customer);
     }

@@ -41,7 +41,7 @@ public partial class Employee
 
     [ForeignKey("PositionId")]
     [InverseProperty("Employee")]
-    public Position? Position { get; set; }
+    public virtual Position? Position { get; set; }
 
     [ForeignKey("SupervisorEmployeeId")]
     [InverseProperty("InverseSupervisorEmployee")]

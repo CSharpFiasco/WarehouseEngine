@@ -43,6 +43,9 @@ public sealed class TestDatabaseFixture
             );
     }
 
+    /// <summary>
+    ///     When we test infrastructure, we test against Visual Studio's SQL Server 2019 instance.
+    /// </summary>
     public WarehouseEngineContext CreateContext()
         => new WarehouseEngineContext(
             new DbContextOptionsBuilder<WarehouseEngineContext>()

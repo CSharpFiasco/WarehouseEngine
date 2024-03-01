@@ -38,8 +38,10 @@ public partial class WarehouseItem
 
     [InverseProperty("WarehouseItem")]
     public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; init; }
+
     [InverseProperty("WarehouseItem")]
     public virtual ICollection<OrderWarehouseItemOutOfStock> OrderWarehouseItemOutOfStock { get; init; }
+
     [InverseProperty("WarehouseItem")]
     public virtual ICollection<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; init; }
 }

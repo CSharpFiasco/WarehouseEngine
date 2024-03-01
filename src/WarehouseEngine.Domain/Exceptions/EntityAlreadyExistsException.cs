@@ -1,8 +1,9 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace WarehouseEngine.Domain.Exceptions;
 
 [Serializable]
+[SuppressMessage("ISerializable should be implemented correctly", "S3925: Api is Obsolete and should not be implemented https://github.com/dotnet/docs/issues/34893")]
 public sealed class EntityAlreadyExistsException<T> : Exception
 {
     [NonSerialized]
@@ -12,10 +13,6 @@ public sealed class EntityAlreadyExistsException<T> : Exception
     }
 
     public EntityAlreadyExistsException(string? message) : base(message ?? DefaultMessage)
-    {
-    }
-
-    private EntityAlreadyExistsException(SerializationInfo info, StreamingContext context) : base(info, context)
     {
     }
 

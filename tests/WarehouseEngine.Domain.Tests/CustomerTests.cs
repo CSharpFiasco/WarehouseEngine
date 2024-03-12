@@ -1,10 +1,10 @@
-﻿using WarehouseEngine.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
-using System.ComponentModel.DataAnnotations;
-using Xunit.Abstractions;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
-using WarehouseEngine.Domain.ValueObjects;
+using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Exceptions;
+using WarehouseEngine.Domain.ValueObjects;
+using Xunit.Abstractions;
 
 namespace WarehouseEngine.Domain.Tests;
 public class CustomerTests
@@ -83,7 +83,7 @@ public class CustomerTests
         var dto = new PostCustomerDto
         {
             Name = "Test Customer",
-            ShippingAddress = null,
+            ShippingAddress = null!,
             DateCreated = DateTime.MinValue,
             CreatedBy = "a"
         };

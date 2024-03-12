@@ -26,11 +26,13 @@ public class CustomerService : ICustomerService
             : throw new EntityDoesNotExistException<Customer>();
     }
 
-    public async Task<int> GetCount() {
+    public async Task<int> GetCount()
+    {
         return await _context.Customer.CountAsync();
     }
 
-    public async Task<int> GetCountByDate(DateOnly date) {
+    public async Task<int> GetCountByDate(DateOnly date)
+    {
         return await _context.Customer
             .Where(e => e.DateCreated == date.ToDateTime(TimeOnly.MinValue))
             .CountAsync();

@@ -1,6 +1,6 @@
-﻿using Asp.Versioning;
+﻿using System.Reflection;
+using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
-using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +63,8 @@ public static class Program
             options.DefaultApiVersion = new ApiVersion(1, 0);
             options.ReportApiVersions = true;
         })
-        .AddApiExplorer(options => {
+        .AddApiExplorer(options =>
+        {
             options.GroupNameFormat = "'v'VVV";
             options.SubstituteApiVersionInUrl = true;
         });

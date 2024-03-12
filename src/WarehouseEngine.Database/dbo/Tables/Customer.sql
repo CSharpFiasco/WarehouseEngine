@@ -11,7 +11,7 @@
     [ShippingCity]    NVARCHAR(32) NOT NULL,
     [ShippingState]    NVARCHAR(2) NOT NULL,
     [ShippingZipCode]    NVARCHAR(11) NOT NULL,
-    [DateCreated] DATETIME2(7) NOT NULL DEFAULT GETUTCDATE(),
+    [DateCreated] DATETIME2(7) NOT NULL,
     [CreatedBy] NVARCHAR(80) NOT NULL,
     [DateModified] DATETIME2(7) NULL,
     [ModifiedBy] NVARCHAR(80) NULL,

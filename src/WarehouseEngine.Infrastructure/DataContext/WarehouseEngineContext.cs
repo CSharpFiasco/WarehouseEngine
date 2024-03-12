@@ -12,7 +12,7 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 {
     public WarehouseEngineContext()
     {
-        
+
     }
 
     public WarehouseEngineContext(DbContextOptions<WarehouseEngineContext> options)
@@ -52,7 +52,8 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 
         builder.Entity<Contact>(entity =>
         {
-            entity.OwnsOne(d => d.Address, (e) => {
+            entity.OwnsOne(d => d.Address, (e) =>
+            {
                 e.Property(a => a.Address1).HasColumnName("Address1").IsRequired();
                 e.Property(a => a.Address2).HasColumnName("Address2");
                 e.Property(a => a.City).HasColumnName("City").IsRequired();
@@ -93,8 +94,6 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 
                         j.HasIndex(new[] { "ContactId" }, "IX_CustomerContact02");
                     });
-
-            entity.Property(e => e.DateCreated).HasDefaultValueSql("getutcdate()");
         });
 
         builder.Entity<Employee>(entity =>

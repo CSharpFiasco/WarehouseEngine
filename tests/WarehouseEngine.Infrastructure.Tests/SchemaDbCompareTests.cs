@@ -19,20 +19,20 @@
 //        _output = output;
 //    }
 
-    //[Fact]
-    //public async Task CompareViaContext()
-    //{
-    //    await using WarehouseEngineContext context = _fixture.CreateContext();
-    //        var comparer = new CompareEfSql();
+//[Fact]
+//public async Task CompareViaContext()
+//{
+//    await using WarehouseEngineContext context = _fixture.CreateContext();
+//        var comparer = new CompareEfSql();
 
-    //    //ATTEMPT
-    //    //This will compare EF Core model of the database with the database that the context's connection points to
-    //    var hasErrors = comparer.CompareEfWithDb(context);
-    //    if (hasErrors)
-    //    {
-    //        _output.WriteLine(comparer.GetAllErrors);
-    //    }
+//    //ATTEMPT
+//    //This will compare EF Core model of the database with the database that the context's connection points to
+//    var hasErrors = comparer.CompareEfWithDb(context);
+//    if (hasErrors)
+//    {
+//        _output.WriteLine(comparer.GetAllErrors);
+//    }
 
-    //    Assert.False(hasErrors);
-    //}
+//    Assert.False(hasErrors);
+//}
 //}

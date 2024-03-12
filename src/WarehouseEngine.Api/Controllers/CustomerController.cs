@@ -17,9 +17,9 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<Customer>> Get(Guid id)
+    public async Task<ActionResult<CustomerResponseDto>> Get(Guid id)
     {
-        Customer? customer = await _customerService.GetByIdAsync(id);
+        CustomerResponseDto? customer = await _customerService.GetByIdAsync(id);
 
         return Ok(customer);
     }
@@ -39,8 +39,11 @@ public class CustomerController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Customer>> Create(PostCustomerDto customer)
     {
-        await _customerService.AddAsync((Customer)customer);
+        customer.DateCreated = DateTime.UtcNow;
+        customer.CreatedBy = User.Identity?.Name ?? "Unknown";
 
-        return Ok(customer);
+        var created = await _customerService.AddAsync(customer, User.Identity?.Name ?? "Unknown");
+
+        return Ok(created);
     }
 }

@@ -47,6 +47,7 @@ public static class Program
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IItemService, ItemService>();
         services.AddScoped<ICustomerService, CustomerService>();
+        services.AddSingleton<IIdGenerator, SequentialIdGenerator>();
 
         services.AddAuthentication(options =>
         {

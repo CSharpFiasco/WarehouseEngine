@@ -46,7 +46,42 @@ public partial class Customer
     public virtual ICollection<Contact> Contact { get; init; }
 }
 
+public class CustomerResponseDto {
+    public required Guid Id { get; init; }
+
+    public required string Name { get; init; }
+
+    public Address? BillingAddress { get; init; }
+
+    public required Address ShippingAddress { get; init; }
+
+    public required DateTime DateCreated { get; init; }
+
+    public required string CreatedBy { get; init; }
+
+    public DateTime? DateModified { get; init; }
+
+    public string? ModifiedBy { get; init; }
+
+    public static explicit operator CustomerResponseDto(Customer customer)
+    {
+        return new CustomerResponseDto
+        {
+            Id = customer.Id,
+            Name = customer.Name,
+            BillingAddress = customer.BillingAddress,
+            ShippingAddress = customer.ShippingAddress,
+            DateCreated = customer.DateCreated,
+            CreatedBy = customer.CreatedBy,
+            DateModified = customer.DateModified,
+            ModifiedBy = customer.ModifiedBy
+        };
+    }
+}
+
 public class PostCustomerDto {
+    [JsonIgnore]
+    public Guid? Id { get; set; }
     public required string Name { get; init; }
 
     public Address? BillingAddress { get; init; }
@@ -61,18 +96,28 @@ public class PostCustomerDto {
 
     public static explicit operator Customer(PostCustomerDto dto)
     {
+        if (!dto.Id.HasValue)
+        {
+            throw new EntityConversionException<Customer, PostCustomerDto>("Id is null");
+        }
+        if (dto.Id.Value == Guid.Empty)
+        {
+            throw new EntityConversionException<Customer, PostCustomerDto>("Id is empty");
+        }
+
         if (!dto.DateCreated.HasValue || dto.CreatedBy is null) {
-            throw new EntityConversionException<Customer, PostCustomerDto>();
+            throw new EntityConversionException<Customer, PostCustomerDto>("Date created is null");
         }
 
         if (dto.ShippingAddress is null)
         {
-            throw new EntityConversionException<Customer, PostCustomerDto>();
+            throw new EntityConversionException<Customer, PostCustomerDto>("Shipping address is null");
         }
 
         return new Customer
         {
-            Id = Guid.NewGuid(),
+            // todo: generate id
+            Id = dto.Id.Value,
             Name = dto.Name,
             BillingAddress = dto.BillingAddress,
             ShippingAddress = dto.ShippingAddress,

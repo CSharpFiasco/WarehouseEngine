@@ -3,9 +3,9 @@
 namespace WarehouseEngine.Application.Interfaces;
 public interface ICustomerService
 {
-    Task AddAsync(Customer entity);
+    Task<CustomerResponseDto> AddAsync(PostCustomerDto customer, string username);
     Task DeleteAsync(Guid id);
-    Task<Customer> GetByIdAsync(Guid id);
+    Task<CustomerResponseDto> GetByIdAsync(Guid id);
     Task<int> GetCount();
     Task<int> GetCountByDate(DateOnly date);
     Task UpdateAsync(Guid id, Customer entity);

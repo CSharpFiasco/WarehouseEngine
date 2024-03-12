@@ -54,6 +54,7 @@ public class CustomerTests
         //SETUP
         var dto = new PostCustomerDto
         {
+            Id = Guid.NewGuid(),
             Name = "Test Customer",
             ShippingAddress = new Address
             {

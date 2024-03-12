@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Emit;
 using Microsoft.EntityFrameworkCore;
+using Moq;
+using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.ValueObjects;
 using WarehouseEngine.Infrastructure.DataContext;
 
@@ -9,6 +12,7 @@ namespace WarehouseEngine.Infrastructure.Tests;
 public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
 {
     private readonly TestDatabaseFixture _fixture;
+    private readonly Mock<IIdGenerator> _idGenerator = new Mock<IIdGenerator>();
     public CustomerServiceTests(TestDatabaseFixture fixture)
     {
         _fixture = fixture;
@@ -37,7 +41,7 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
 
         context.ChangeTracker.Clear();
 
-        var sut = new CustomerService(context);
+        var sut = new CustomerService(context, _idGenerator.Object);
         var result = await sut.GetByIdAsync(testId);
 
         context.ChangeTracker.Clear();
@@ -52,19 +56,17 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
 
         const string newSku = "TestName";
         Guid testId = Guid.NewGuid();
+        _idGenerator.Setup(e => e.NewId()).Returns(testId);
 
-        Customer customer = new()
+        PostCustomerDto customer = new()
         {
-            Id = testId,
             Name = newSku,
             BillingAddress = null,
-            ShippingAddress = new Address { Address1 = "test1", Address2 = "test2", City = "test3", State = "TE", ZipCode = "test5" },
-            DateCreated = DateTime.UtcNow,
-            CreatedBy = "TestUser"
+            ShippingAddress = new Address { Address1 = "test1", Address2 = "test2", City = "test3", State = "TE", ZipCode = "test5" }
         };
 
-        var sut = new CustomerService(context);
-        await sut.AddAsync(customer);
+        var sut = new CustomerService(context, _idGenerator.Object);
+        await sut.AddAsync(customer, "TestUser");
 
         context.ChangeTracker.Clear();
         var result = await context.Customer.FirstOrDefaultAsync(e => e.Id == testId);
@@ -80,7 +82,7 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
         const string newSku = "TestName";
         Guid testId = Guid.NewGuid();
 
-        Customer customer = new()
+        PostCustomerDto customer = new()
         {
             Id = testId,
             Name = newSku,
@@ -90,7 +92,7 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
             CreatedBy = "TestUser"
         };
 
-        var sut = new CustomerService(context);
-        await Assert.ThrowsAnyAsync<Exception>(() => sut.AddAsync(customer));
+        var sut = new CustomerService(context, _idGenerator.Object);
+        await Assert.ThrowsAnyAsync<Exception>(() => sut.AddAsync(customer, string.Empty));
     }
 }

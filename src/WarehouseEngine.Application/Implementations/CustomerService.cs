@@ -8,19 +8,21 @@ namespace WarehouseEngine.Application.Implementations;
 public class CustomerService : ICustomerService
 {
     private readonly IWarehouseEngineContext _context;
-    public CustomerService(IWarehouseEngineContext context)
+    private readonly IIdGenerator _idGenerator;
+    public CustomerService(IWarehouseEngineContext context, IIdGenerator idGenerator)
     {
         _context = context;
+        _idGenerator = idGenerator;
     }
 
-    public async Task<Customer> GetByIdAsync(Guid id)
+    public async Task<CustomerResponseDto> GetByIdAsync(Guid id)
     {
         Customer? entity = await _context.Customer
             .AsNoTracking()
             .SingleOrDefaultAsync(i => i.Id == id);
 
         return entity is not null
-            ? entity
+            ? (CustomerResponseDto)entity
             : throw new EntityDoesNotExistException<Customer>();
     }
 
@@ -34,8 +36,14 @@ public class CustomerService : ICustomerService
             .CountAsync();
     }
 
-    public async Task AddAsync(Customer entity)
+    public async Task<CustomerResponseDto> AddAsync(PostCustomerDto customer, string username)
     {
+        customer.Id = _idGenerator.NewId();
+        customer.CreatedBy = username;
+        customer.DateCreated = DateTime.UtcNow;
+
+        var entity = (Customer)customer;
+
         if (await _context.Customer.AnyAsync(e => entity.Id == e.Id))
             throw new EntityAlreadyExistsException<Customer>();
 
@@ -46,6 +54,8 @@ public class CustomerService : ICustomerService
 
         await _context.Customer.AddAsync(entity);
         await _context.SaveChangesAsync();
+
+        return (CustomerResponseDto)entity;
     }
 
     public async Task UpdateAsync(Guid id, Customer entity)

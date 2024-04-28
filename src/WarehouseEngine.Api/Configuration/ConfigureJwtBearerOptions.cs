@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using WarehouseEngine.Domain.Models.Login;
+using WarehouseEngine.Domain.Models.Auth;
 
 namespace WarehouseEngine.Api.Configuration;
 public class ConfigureJwtBearerOptions : IConfigureNamedOptions<JwtBearerOptions>

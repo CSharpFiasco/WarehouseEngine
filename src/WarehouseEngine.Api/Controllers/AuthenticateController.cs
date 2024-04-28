@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Filters;
 using WarehouseEngine.Api.Examples;
 using WarehouseEngine.Application.Interfaces;
-using WarehouseEngine.Domain.Models.Login;
+using WarehouseEngine.Domain.Models.Auth;
 
 namespace WarehouseEngine.Api.Controllers;
 
@@ -39,11 +39,11 @@ public class AuthenticateController : ControllerBase
         {
             IList<string> userRoles = await _userManager.GetRolesAsync(user);
 
-            var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
+            List<Claim> authClaims =
+                [
+                    new Claim(WarehouseClaimTypes.UserId, user.Id),
+                    new Claim(WarehouseClaimTypes.Name, user.UserName),
+                ];
 
             foreach (string userRole in userRoles)
             {

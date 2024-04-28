@@ -1,15 +1,17 @@
 ﻿using System.Reflection;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using WarehouseEngine.Api.Configuration;
+using WarehouseEngine.Api.Middleware.Auth;
 using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Application.Interfaces;
-using WarehouseEngine.Domain.Models.Login;
+using WarehouseEngine.Domain.Models.Auth;
 using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Api;
@@ -55,6 +57,8 @@ public static class Program
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer();
+
+        services.AddTransient<IClaimsTransformation, WarehouseClaimsTransformation>();
 
         // Registers IApiVersionDescriptionProvider for swagger gen and swagger ui
         services.AddApiVersioning(options =>
@@ -102,8 +106,18 @@ public static class Program
         });
 
         services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
+        services.AddProblemDetails();
 
         var app = builder.Build();
+        app.UseExceptionHandler();
+
+        if (app.Environment.IsDevelopment())
+        {
+            // Uses the exception handling strategy detailed here:
+            // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/error-handling?view=aspnetcore-8.0#produce-a-problemdetails-payload-for-exceptions
+            app.UseDeveloperExceptionPage();
+        }
+
         await SeedData(app.Services);
 
         // Configure the HTTP request pipeline.

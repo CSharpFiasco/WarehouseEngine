@@ -190,6 +190,10 @@ csharp_style_prefer_switch_expression = true:suggestion
 csharp_style_prefer_pattern_matching = true:silent
 csharp_style_prefer_not_pattern = true:suggestion
 csharp_style_prefer_extended_property_pattern = true:suggestion
+
+# S2094: Classes should not be empty
+dotnet_diagnostic.S2094.severity = none
+
 ###############################
 # VB Coding Conventions       #
 ###############################

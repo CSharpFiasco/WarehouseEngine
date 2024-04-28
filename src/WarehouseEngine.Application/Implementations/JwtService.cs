@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WarehouseEngine.Application.Interfaces;
-using WarehouseEngine.Domain.Models.Login;
+using WarehouseEngine.Domain.Models.Auth;
 
 namespace WarehouseEngine.Application.Implementations;
 public class JwtService : IJwtService

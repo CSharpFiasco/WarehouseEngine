@@ -36,10 +36,11 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
         context.ChangeTracker.Clear();
 
         var sut = new ItemService(context);
-        Item result = await sut.GetByIdAsync(newGuidId);
+        var result = await sut.GetByIdAsync(newGuidId);
 
         context.ChangeTracker.Clear();
-        Assert.Equal(newGuidId, result.Id);
+        var itemResult = Assert.IsType<ItemResponseDto>(result.Value);
+        Assert.Equal(newGuidId, itemResult.Id);
     }
 
     [Fact]
@@ -50,9 +51,9 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
 
         const string newSku = "TestAddAsync";
 
-        var item = new Item
+        var item = new PostItemDto
         {
-            Id = Guid.Empty,
+            Id = Guid.NewGuid(),
             Description = "Test",
             Sku = newSku
         };
@@ -73,17 +74,26 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
         const string newSku = "TestSku";
 
         Item item = await context.Item.SingleAsync(i => i.Id == TestDatabaseFixture.ItemId1);
+        var itemToSave = new PostItemDto
+        {
+            Id = item.Id,
+            Description = item.Description,
+            IsActive = item.IsActive,
+            Sku = item.Sku
+        };
 
-        item.Sku = newSku;
-        item.Description = "TestDescriptionUpdateAsync";
-        item.IsActive = false;
+        itemToSave.Sku = newSku;
+        itemToSave.Description = "TestDescriptionUpdateAsync";
+        itemToSave.IsActive = false;
 
         var sut = new ItemService(context);
-        await sut.UpdateAsync(TestDatabaseFixture.ItemId1, item);
+        var result = await sut.UpdateAsync(TestDatabaseFixture.ItemId1, itemToSave);
+
+        var itemSaved = Assert.IsType<ItemResponseDto>(result.Value);
 
         context.ChangeTracker.Clear();
-        Assert.Equal("TestSku", item.Sku);
-        Assert.Equal("TestDescriptionUpdateAsync", item.Description);
-        Assert.False(item.IsActive);
+        Assert.Equal("TestSku", itemSaved.Sku);
+        Assert.Equal("TestDescriptionUpdateAsync", itemSaved.Description);
+        Assert.False(itemSaved.IsActive);
     }
 }

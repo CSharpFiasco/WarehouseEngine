@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OneOf;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
-using WarehouseEngine.Domain.Exceptions;
+using WarehouseEngine.Domain.ValidationResults;
 
 namespace WarehouseEngine.Application.Implementations;
 public class ItemService : IItemService
@@ -12,29 +13,33 @@ public class ItemService : IItemService
         _context = context;
     }
 
-    public async Task<Item> GetByIdAsync(Guid id)
+    public async Task<OneOf<ItemResponseDto, EntityDoesNotExistResult>> GetByIdAsync(Guid id)
     {
         Item? item = await _context.Item.AsNoTracking()
             .SingleOrDefaultAsync(i => i.Id == id);
 
         return item is not null
-            ? item
-            : throw new EntityDoesNotExistException<Item>();
+            ? (ItemResponseDto)item
+            : new EntityDoesNotExistResult(typeof(Item));
     }
 
-    public async Task AddAsync(Item item)
+    public async Task<OneOf<ItemResponseDto, EntityAlreadyExistsResult>> AddAsync(PostItemDto item)
     {
         if (await _context.Item.AnyAsync(i => item.Id == i.Id))
-            throw new EntityAlreadyExistsException<Item>();
-        await _context.Item.AddAsync(item);
+            return new EntityAlreadyExistsResult(typeof(Item));
+
+        var itemToAdd = (Item)item;
+        await _context.Item.AddAsync(itemToAdd);
         await _context.SaveChangesAsync();
+
+        return (ItemResponseDto)itemToAdd;
     }
 
-    public async Task UpdateAsync(Guid id, Item item)
+    public async Task<OneOf<ItemResponseDto, EntityDoesNotExistResult>> UpdateAsync(Guid id, PostItemDto item)
     {
         Item? entityToUpdate = await _context.Item.SingleOrDefaultAsync(i => id == i.Id);
         if (entityToUpdate is null)
-            throw new EntityDoesNotExistException<Item>();
+            return new EntityDoesNotExistResult(typeof(Item));
 
         entityToUpdate.IsActive = item.IsActive;
         entityToUpdate.Sku = item.Sku;
@@ -42,6 +47,8 @@ public class ItemService : IItemService
 
         _context.Item.Update(entityToUpdate);
         await _context.SaveChangesAsync();
+
+        return (ItemResponseDto)entityToUpdate;
     }
 
     public async Task DeleteAsync(Guid id)

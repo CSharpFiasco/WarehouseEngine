@@ -1,4 +1,4 @@
-﻿namespace WarehouseEngine.Domain.Models.Login;
+﻿namespace WarehouseEngine.Domain.Models.Auth;
 public static class UserRoles
 {
     public const string Admin = "Admin";

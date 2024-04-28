@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
 using WarehouseEngine.Domain.Exceptions;
 using WarehouseEngine.Domain.ValueObjects;
 
@@ -46,7 +45,8 @@ public partial class Customer
     public virtual ICollection<Contact> Contact { get; init; }
 }
 
-public class CustomerResponseDto {
+public class CustomerResponseDto
+{
     public required Guid Id { get; init; }
 
     public required string Name { get; init; }
@@ -79,7 +79,11 @@ public class CustomerResponseDto {
     }
 }
 
-public class PostCustomerDto {
+public class PostCustomerDto
+{
+    /// <summary>
+    /// This should be null when deserialized from a request
+    /// </summary>
     [JsonIgnore]
     public Guid? Id { get; set; }
     public required string Name { get; init; }
@@ -94,6 +98,12 @@ public class PostCustomerDto {
     [JsonIgnore]
     public string? CreatedBy { get; set; }
 
+    [JsonIgnore]
+    public DateTime? DateModified { get; set; }
+
+    [JsonIgnore]
+    public string? ModifiedBy { get; set; }
+
     public static explicit operator Customer(PostCustomerDto dto)
     {
         if (!dto.Id.HasValue)
@@ -105,7 +115,8 @@ public class PostCustomerDto {
             throw new EntityConversionException<Customer, PostCustomerDto>("Id is empty");
         }
 
-        if (!dto.DateCreated.HasValue || dto.CreatedBy is null) {
+        if (!dto.DateCreated.HasValue || dto.CreatedBy is null)
+        {
             throw new EntityConversionException<Customer, PostCustomerDto>("Date created is null");
         }
 
@@ -116,7 +127,6 @@ public class PostCustomerDto {
 
         return new Customer
         {
-            // todo: generate id
             Id = dto.Id.Value,
             Name = dto.Name,
             BillingAddress = dto.BillingAddress,

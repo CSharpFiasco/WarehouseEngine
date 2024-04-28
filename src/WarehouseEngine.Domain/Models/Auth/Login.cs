@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WarehouseEngine.Domain.Models.Login;
+namespace WarehouseEngine.Domain.Models.Auth;
 public class Login
 {
     [Required(ErrorMessage = "User Name is required")]

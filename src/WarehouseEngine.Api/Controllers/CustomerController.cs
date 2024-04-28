@@ -11,17 +11,26 @@ namespace WarehouseEngine.Api.Controllers;
 public class CustomerController : ControllerBase
 {
     private readonly ICustomerService _customerService;
-    public CustomerController(ICustomerService customer)
+    private readonly ILogger<CustomerController> _logger;
+
+    public CustomerController(ICustomerService customer, ILogger<CustomerController> logger)
     {
         _customerService = customer;
+        _logger = logger;
     }
 
     [HttpGet]
     public async Task<ActionResult<CustomerResponseDto>> Get(Guid id)
     {
-        CustomerResponseDto? customer = await _customerService.GetByIdAsync(id);
+        var customer = await _customerService.GetByIdAsync(id);
 
-        return Ok(customer);
+        return customer.Match(
+               customer => Ok(customer),
+               invalidResult =>
+               {
+                   _logger.LogError("Record not found. {message}", invalidResult.ErrorMessage);
+                   return Problem("Record not found", statusCode: 404);
+               });
     }
 
     [HttpGet("count")]
@@ -30,12 +39,14 @@ public class CustomerController : ControllerBase
         return Ok(await _customerService.GetCount());
     }
 
-    [HttpGet("countByDate")]
-    public async Task<ActionResult<int>> CountByDate(DateOnly date)
-    {
-        return Ok(await _customerService.GetCount());
-    }
-
+    /// <summary>
+    /// <para>
+    ///     This endpoint creates a new customer
+    /// </para>
+    /// <example>
+    ///     <see cref="Examples.PostCustomerDtoExample">Swagger examples</see>
+    /// </example>
+    /// </summary>
     [HttpPost]
     public async Task<ActionResult<Customer>> Create(PostCustomerDto customer)
     {

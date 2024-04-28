@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OneOf;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
-using WarehouseEngine.Domain.Exceptions;
+using WarehouseEngine.Domain.ValidationResults;
 
 namespace WarehouseEngine.Application.Implementations;
 
@@ -15,7 +16,7 @@ public class CustomerService : ICustomerService
         _idGenerator = idGenerator;
     }
 
-    public async Task<CustomerResponseDto> GetByIdAsync(Guid id)
+    public async Task<OneOf<CustomerResponseDto, EntityDoesNotExistResult>> GetByIdAsync(Guid id)
     {
         Customer? entity = await _context.Customer
             .AsNoTracking()
@@ -23,7 +24,7 @@ public class CustomerService : ICustomerService
 
         return entity is not null
             ? (CustomerResponseDto)entity
-            : throw new EntityDoesNotExistException<Customer>();
+            : new EntityDoesNotExistResult(typeof(Customer));
     }
 
     public async Task<int> GetCount()
@@ -38,8 +39,13 @@ public class CustomerService : ICustomerService
             .CountAsync();
     }
 
-    public async Task<CustomerResponseDto> AddAsync(PostCustomerDto customer, string username)
+    public async Task<OneOf<CustomerResponseDto, InvalidOperationException, EntityAlreadyExistsResult, InvalidShippingResult>>
+        AddAsync(PostCustomerDto customer, string username)
     {
+        if (customer.Id is not null)
+        {
+            return new InvalidOperationException("Customer should not have new id when created");
+        }
         customer.Id = _idGenerator.NewId();
         customer.CreatedBy = username;
         customer.DateCreated = DateTime.UtcNow;
@@ -47,11 +53,11 @@ public class CustomerService : ICustomerService
         var entity = (Customer)customer;
 
         if (await _context.Customer.AnyAsync(e => entity.Id == e.Id))
-            throw new EntityAlreadyExistsException<Customer>();
+            return new EntityAlreadyExistsResult(typeof(Customer));
 
         if (entity.ShippingAddress is null)
         {
-            throw new InvalidOperationException("Shipping Address is required");
+            return new InvalidShippingResult();
         }
 
         await _context.Customer.AddAsync(entity);
@@ -60,12 +66,15 @@ public class CustomerService : ICustomerService
         return (CustomerResponseDto)entity;
     }
 
-    public async Task UpdateAsync(Guid id, Customer entity)
+    public async Task<OneOf<CustomerResponseDto, EntityDoesNotExistResult>> UpdateAsync(Guid id, Customer entity)
     {
         Customer? entityToUpdate = await _context.Customer
             .SingleOrDefaultAsync(e => id == e.Id);
         if (entityToUpdate is null)
-            throw new EntityDoesNotExistException<Customer>();
+        {
+
+            return new EntityDoesNotExistResult(typeof(Customer));
+        }
 
         entityToUpdate.BillingAddress = entity.BillingAddress;
         entityToUpdate.ShippingAddress = entity.ShippingAddress;
@@ -73,6 +82,8 @@ public class CustomerService : ICustomerService
 
         _context.Customer.Update(entityToUpdate);
         await _context.SaveChangesAsync();
+
+        return (CustomerResponseDto)entityToUpdate;
     }
 
     public async Task DeleteAsync(Guid id)

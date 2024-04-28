@@ -8,7 +8,7 @@ using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.ValueObjects;
 
 namespace WarehouseEngine.Api.Examples;
-public class CustomerExample : IExamplesProvider<PostCustomerDto>
+public class PostCustomerDtoExample : IExamplesProvider<PostCustomerDto>
 {
     public PostCustomerDto GetExamples()
     {

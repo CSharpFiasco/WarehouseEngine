@@ -1,4 +1,4 @@
-﻿namespace WarehouseEngine.Domain.Models.Login;
+﻿namespace WarehouseEngine.Domain.Models.Auth;
 public class JwtConfiguration
 {
     public required string ValidAudience { get; set; }

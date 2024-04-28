@@ -17,18 +17,21 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<Item>> Get(Guid id)
+    public async Task<IActionResult> Get(Guid id)
     {
-        Item? item = await _itemService.GetByIdAsync(id);
+        var item = await _itemService.GetByIdAsync(id);
 
-        return Ok(item);
+        return item.Match<IActionResult>(
+            item => Ok(item),
+            error => Problem(error.ErrorMessage, statusCode: 400)
+            );
     }
 
     [HttpPost]
-    public async Task<ActionResult<Item>> Create(Item item)
+    public async Task<ActionResult<Item>> Create(PostItemDto item)
     {
-        await _itemService.AddAsync(item);
+        var response = await _itemService.AddAsync(item);
 
-        return Ok(item);
+        return Ok(response);
     }
 }

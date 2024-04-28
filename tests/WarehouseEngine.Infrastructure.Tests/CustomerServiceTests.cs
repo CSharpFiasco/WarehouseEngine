@@ -45,7 +45,9 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
         var result = await sut.GetByIdAsync(testId);
 
         context.ChangeTracker.Clear();
-        Assert.Equal(testId, result.Id);
+
+        var response = Assert.IsType<CustomerResponseDto>(result.Value);
+        Assert.Equal(testId, response.Id);
     }
 
     [Fact]
@@ -93,6 +95,8 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
         };
 
         var sut = new CustomerService(context, _idGenerator.Object);
-        await Assert.ThrowsAnyAsync<Exception>(() => sut.AddAsync(customer, string.Empty));
+        var result = await sut.AddAsync(customer, string.Empty);
+        var exception = Assert.IsType<InvalidOperationException>(result.Value);
+        Assert.Equal("Customer should not have new id when created", exception.Message);
     }
 }

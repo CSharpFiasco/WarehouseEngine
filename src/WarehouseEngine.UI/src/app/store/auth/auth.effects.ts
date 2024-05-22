@@ -29,14 +29,13 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(setJwtToken),
-        tap((action) => {
-          console.log('setJwtToken', action.jwtResponse.type);
+        tap(async (action) => {
           if (action.jwtResponse.type === 'Success') {
             this.authService.setJwtToken(action.jwtResponse.jwt);
-            this.router.navigate(['/']);
+            await this.router.navigate(['/']);
           } else if (action.jwtResponse.type === 'Unauthorized' || action.jwtResponse.type === 'Failed') {
             this.authService.unsetJwtToken();
-            this.router.navigate(['/login']);
+            await this.router.navigate(['/login']);
           }
         })
       ),

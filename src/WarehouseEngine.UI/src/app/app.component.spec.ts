@@ -11,45 +11,68 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { provideLocationMocks } from '@angular/common/testing';
 import { routes } from './app.routing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AuthService } from './services/auth.service';
+import type { WarehouseEngineStore } from './store/initial-state';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { AuthFacade } from './store/auth/auth.facade';
+import { ReplaySubject } from 'rxjs';
+import type { Action } from '@ngrx/store';
+import * as AuthActions from './store/auth/auth.actions';
+import { AuthEffects } from './store/auth/auth.effects';
 
 @Component({
   selector: 'app-top-nav, mat-spinner',
   standalone: true,
 })
-class StubComponent {}
+class StubComponent { }
 @Component({
   selector: 'app-sidenav',
   template: '<ng-content></ng-content>',
   standalone: true,
 })
-class SideNavStubComponent {}
+class SideNavStubComponent { }
 
 @Component({
   selector: 'app-login',
   template: '<span>The login component exists!</span>',
   standalone: true,
 })
-class LoginMockComponent {}
+class LoginMockComponent { }
 
 describe('AppComponent', () => {
   let app: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let themeServiceSpy: jasmine.SpyObj<ThemeService>;
 
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  const initialState: WarehouseEngineStore = {
+    auth: {
+      type: 'logged out'
+    },
+    navigation: {
+      isSideNavOpen: false
+    }
+  };
+  let actions$: ReplaySubject<Action>;
+  let effects: AuthEffects;
+
   let fixtureNativeElement: HTMLElement;
   let harness: RouterTestingHarness;
 
   beforeEach(async () => {
     themeServiceSpy = jasmine.createSpyObj<ThemeService>('ThemeService', ['setTheme']);
-    authServiceSpy = jasmine.createSpyObj<AuthService>('AuthService', ['getJwtToken', 'setJwtToken']);
+    actions$ = new ReplaySubject<Action>(1);
+
+    sessionStorage.clear();
+
     await TestBed.configureTestingModule({
       providers: [
         { provide: ThemeService, useValue: themeServiceSpy },
-        { provide: AuthService, useValue: authServiceSpy },
         provideRouter(routes),
         provideLocationMocks(),
+        provideMockStore({ initialState }),
+        provideMockActions(() => actions$),
+        AuthEffects,
+        AuthFacade
       ],
       imports: [NoopAnimationsModule, AppComponent, HttpClientTestingModule],
     })
@@ -62,6 +85,9 @@ describe('AppComponent', () => {
         },
       })
       .compileComponents();
+
+    TestBed.inject(MockStore);
+    effects = TestBed.inject(AuthEffects);
 
     fixture = TestBed.createComponent(AppComponent);
     harness = await RouterTestingHarness.create();
@@ -78,7 +104,6 @@ describe('AppComponent', () => {
 
   describe('Given we are not logged in', () => {
     beforeEach(async () => {
-      authServiceSpy.getJwtToken.and.returnValue(null);
       await harness.navigateByUrl('/');
     });
 
@@ -89,14 +114,29 @@ describe('AppComponent', () => {
   });
 
   describe('Given we are logged in', () => {
-    beforeEach(async () => {
-      authServiceSpy.getJwtToken.and.returnValue('I am a jwt token');
-      await harness.navigateByUrl('/');
+    beforeEach(() => {
+      actions$.next(AuthActions.setJwtToken({
+        jwtResponse: {
+          type: 'Success',
+          jwt: 'jwt'
+        }
+      }));
+
+      fixture.detectChanges();
     });
 
-    it('should render home', () => {
-      const loginEl = fixtureNativeElement.querySelector('app-home');
-      expect(loginEl).not.toBeNull();
+    it('should render home', (done) => {
+      effects.setJwtToken$.subscribe(async () => {
+        fixture.detectChanges();
+        await harness.navigateByUrl('/');
+        fixture.detectChanges();
+
+        await fixture.whenStable();
+
+        const loginEl = fixtureNativeElement.querySelector('app-home');
+        expect(loginEl).not.toBeNull();
+        done();
+      });
     });
   });
 });

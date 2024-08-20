@@ -2,6 +2,7 @@
 using OneOf;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
+using WarehouseEngine.Domain.ErrorTypes;
 using WarehouseEngine.Domain.ValidationResults;
 
 namespace WarehouseEngine.Application.Implementations;
@@ -16,7 +17,7 @@ public class CustomerService : ICustomerService
         _idGenerator = idGenerator;
     }
 
-    public async Task<OneOf<CustomerResponseDto, EntityDoesNotExistResult>> GetByIdAsync(Guid id)
+    public async Task<OneOf<CustomerResponseDto, EntityErrorType>> GetByIdAsync(Guid id)
     {
         Customer? entity = await _context.Customer
             .AsNoTracking()
@@ -24,7 +25,7 @@ public class CustomerService : ICustomerService
 
         return entity is not null
             ? (CustomerResponseDto)entity
-            : new EntityDoesNotExistResult(typeof(Customer));
+            : new EntityDoesNotExist();
     }
 
     public async Task<int> GetCount()
@@ -39,7 +40,7 @@ public class CustomerService : ICustomerService
             .CountAsync();
     }
 
-    public async Task<OneOf<CustomerResponseDto, InvalidOperationException, EntityAlreadyExistsResult, InvalidShippingResult>>
+    public async Task<OneOf<CustomerResponseDto, InvalidOperationException, EntityAlreadyExists, InvalidShippingResult>>
         AddAsync(PostCustomerDto customer, string username)
     {
         if (customer.Id is not null)
@@ -53,7 +54,7 @@ public class CustomerService : ICustomerService
         var entity = (Customer)customer;
 
         if (await _context.Customer.AnyAsync(e => entity.Id == e.Id))
-            return new EntityAlreadyExistsResult(typeof(Customer));
+            return new EntityAlreadyExists();
 
         if (entity.ShippingAddress is null)
         {
@@ -66,14 +67,14 @@ public class CustomerService : ICustomerService
         return (CustomerResponseDto)entity;
     }
 
-    public async Task<OneOf<CustomerResponseDto, EntityDoesNotExistResult>> UpdateAsync(Guid id, Customer entity)
+    public async Task<OneOf<CustomerResponseDto, EntityErrorType>> UpdateAsync(Guid id, Customer entity)
     {
         Customer? entityToUpdate = await _context.Customer
             .SingleOrDefaultAsync(e => id == e.Id);
         if (entityToUpdate is null)
         {
 
-            return new EntityDoesNotExistResult(typeof(Customer));
+            return new EntityDoesNotExist();
         }
 
         entityToUpdate.BillingAddress = entity.BillingAddress;

@@ -20,6 +20,7 @@ public partial class Customer
     public required Guid Id { get; set; }
 
     [StringLength(80)]
+    [Required]
     public required string Name { get; set; }
 
     public Address? BillingAddress { get; set; }

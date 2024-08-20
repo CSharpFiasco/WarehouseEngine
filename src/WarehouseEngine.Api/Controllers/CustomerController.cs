@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WarehouseEngine.Api.Extensions.ErrorTypeExtensions;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
 
@@ -28,8 +29,10 @@ public class CustomerController : ControllerBase
                customer => Ok(customer),
                invalidResult =>
                {
-                   _logger.LogError("Record not found. {message}", invalidResult.ErrorMessage);
-                   return Problem("Record not found", statusCode: 404);
+                   _logger.LogError("Record not found. {message}", invalidResult.GetMessage());
+                   ModelState.AddModelError("Record not found", invalidResult.GetMessage());
+
+                   return ValidationProblem(ModelState);
                });
     }
 

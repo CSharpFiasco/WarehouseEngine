@@ -8,7 +8,7 @@ import { StyleManagerService } from './app/services/style-manager/style-manager.
 import { LayoutFacade } from './app/store/layout/facade';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginService } from './app/services/login/login.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app/app.routing';
 import { provideRouter } from '@angular/router';
@@ -21,7 +21,7 @@ bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(StoreModule.forRoot<WarehouseEngineStore>(reducers), EffectsModule.forRoot([AuthEffects])),
     importProvidersFrom(BrowserAnimationsModule),
-    importProvidersFrom(HttpClientModule),
+    provideHttpClient(),
     ThemeService,
     StyleManagerService,
     LayoutFacade,

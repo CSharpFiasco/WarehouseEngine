@@ -3,8 +3,8 @@ using WarehouseEngine.Api.Integration.Tests.Factories;
 
 namespace WarehouseEngine.Api.Integration.Tests;
 
+[Collection("Database collection")]
 public class WarehouseEngineApiIntegrationTests
-    : IClassFixture<WarehouseEngineFactory<Program>>
 {
     private readonly WarehouseEngineFactory<Program> _factory;
 

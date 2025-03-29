@@ -19,7 +19,7 @@ public sealed class DatabaseCollection : ICollectionFixture<WarehouseEngineFacto
     // ICollectionFixture<> interfaces.
 }
 
-public class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>, IAsyncDisposable where TProgram : class
+public class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>, IAsyncLifetime where TProgram : class
 {
     // https://dotnet.testcontainers.org/modules/mssql/
     private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder()
@@ -32,7 +32,7 @@ public class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>,
     // We add the database when the connection string is being consumed
     // https://github.com/testcontainers/testcontainers-dotnet/issues/986#issuecomment-1698807027
     public string ConnectionString => _msSqlContainer.GetConnectionString() + ";Initial Catalog=WarehouseEngineTest";
-    private static readonly object _lock = new();
+    private static readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
     private static bool _databaseInitialized = false;
 
     public static readonly Guid ItemId1 = Guid.Parse("00000000-0000-0000-0000-000000000001");
@@ -75,27 +75,25 @@ public class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>,
     {
         await _msSqlContainer.StartAsync();
 
-        lock (_lock)
+        await _lock.WaitAsync(TimeSpan.FromMicroseconds(1_000));
+        try
         {
             if (!_databaseInitialized)
             {
                 using WarehouseEngineContext context = CreateContext();
 
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
+                await context.Database.EnsureDeletedAsync();
+                await context.Database.EnsureCreatedAsync();
                 SeedDatabase(context);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
 
                 _databaseInitialized = true;
             }
         }
-
-    }
-
-    public override async ValueTask DisposeAsync()
-    {
-        await _msSqlContainer.DisposeAsync();
-        await base.DisposeAsync();
+        finally
+        {
+            _lock.Release();
+        }
     }
 
     private static void SeedDatabase(WarehouseEngineContext context)
@@ -147,5 +145,10 @@ public class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>,
         builder.UseSqlServer(ConnectionString);
 
         return new WarehouseEngineContext(builder.Options);
+    }
+
+    async Task IAsyncLifetime.DisposeAsync()
+    {
+        await _msSqlContainer.DisposeAsync();
     }
 }

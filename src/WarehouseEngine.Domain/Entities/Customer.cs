@@ -50,6 +50,7 @@ public class CustomerResponseDto
 {
     public required Guid Id { get; init; }
 
+    [Required]
     public required string Name { get; init; }
 
     public Address? BillingAddress { get; init; }

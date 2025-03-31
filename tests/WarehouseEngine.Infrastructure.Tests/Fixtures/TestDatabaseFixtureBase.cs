@@ -11,7 +11,7 @@ public sealed class TestDatabaseFixture
      * TODO: Pull from environment variables against an instance of SQL Server 2022
      * VS 2022 uses SQL Serveer 2019
      */
-    private string ConnectionString = @$"Server=(localdb)\mssqllocaldb;Database=WarehouseTestDatabase;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False;Application Name=""Warehouse Engine Integration Tests""";
+    private readonly string ConnectionString = """Server=(localdb)\mssqllocaldb;Database=WarehouseTestDatabase;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False;Application Name="Warehouse Engine Integration Tests";""";
 
     private static readonly object _lock = new();
     private static bool _databaseInitialized = false;
@@ -51,26 +51,30 @@ public sealed class TestDatabaseFixture
             new Item { Id = ItemId1, Description = "Test", Sku = "Sku1" },
             new Item { Id = ItemId2, Description = "Test", Sku = "Sku2" }
             );
-        
+
         context.Customer.AddRange(
-            new Customer {
+            new Customer
+            {
                 Id = CustomerId1,
                 Name = string.Empty,
                 DateCreated = DateTime.MinValue,
                 CreatedBy = string.Empty,
-                ShippingAddress = new Address {
+                ShippingAddress = new Address
+                {
                     Address1 = string.Empty,
                     City = string.Empty,
                     State = "OK",
                     ZipCode = string.Empty
                 }
             },
-            new Customer {
+            new Customer
+            {
                 Id = CustomerId2,
                 Name = string.Empty,
                 DateCreated = DateTime.MinValue,
                 CreatedBy = string.Empty,
-                ShippingAddress = new Address {
+                ShippingAddress = new Address
+                {
                     Address1 = string.Empty,
                     City = string.Empty,
                     State = "OK",
@@ -87,12 +91,15 @@ public sealed class TestDatabaseFixture
     {
         var builder = new DbContextOptionsBuilder<WarehouseEngineContext>();
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
             builder.UseSqlite(ConnectionString);
-        } else {
+        }
+        else
+        {
             builder.UseSqlServer(ConnectionString);
         }
-        
+
         return new WarehouseEngineContext(builder.Options);
     }
 

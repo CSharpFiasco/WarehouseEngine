@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Testcontainers.MsSql;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.ValueObjects;
@@ -27,6 +28,7 @@ public class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>,
         .WithImage("mcr.microsoft.com/mssql/server:2019-CU28-ubuntu-20.04")
         // Adding wait strategy due to recent runner issues: https://github.com/actions/runner-images/issues/10649
         .WithWaitStrategy(Wait.ForUnixContainer().UntilCommandIsCompleted("/opt/mssql-tools18/bin/sqlcmd", "-C", "-Q", "SELECT 1;"))
+        .WithPortBinding(54965, true)
         .Build();
 
     // We add the database when the connection string is being consumed
@@ -48,11 +50,20 @@ public class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>,
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // set EnvironmentName as integration rather than development
+        var i = 1;
 
-
-        builder.ConfigureAppConfiguration((context, config) =>
+        var configurationValues = new Dictionary<string, string>
         {
+            { "ConnectionStrings:WarehouseEngine", ConnectionString }
+        };
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(configurationValues)
+            .Build();
 
+        builder
+        .UseConfiguration(configuration)
+        .ConfigureAppConfiguration((context, config) =>
+        {
             context.Configuration["ConnectionStrings:WarehouseEngine"] = ConnectionString;
 
             builder.ConfigureServices(services =>

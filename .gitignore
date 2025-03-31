@@ -390,3 +390,5 @@ FodyWeavers.xsd
 !*.publish.xml
 
 **/appsettings.Local.json
+
+/_/src/Testcontainers

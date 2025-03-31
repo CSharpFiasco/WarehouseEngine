@@ -147,7 +147,7 @@ public class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>,
     }
 
     /// <summary>
-    ///     When we test infrastructure, we test against Visual Studio's SQL Server 2019 instance.
+    ///     When we test infrastructure, we test against the database spun up by the testcontainer
     /// </summary>
     public WarehouseEngineContext CreateContext()
     {

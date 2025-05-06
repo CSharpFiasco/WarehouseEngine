@@ -16,7 +16,7 @@ using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Api;
 
-public static class Program
+public class Program
 {
     public static async Task Main(string[] args)
     {

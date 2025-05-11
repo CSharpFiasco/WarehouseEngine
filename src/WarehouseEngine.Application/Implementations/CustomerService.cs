@@ -40,12 +40,13 @@ public class CustomerService : ICustomerService
             .CountAsync();
     }
 
-    public async Task<OneOf<CustomerResponseDto, InvalidOperationException, EntityAlreadyExists, InvalidShippingResult>>
+    public async Task<OneOf<CustomerResponseDto, EntityAlreadyExists, InvalidShippingResult>>
         AddAsync(PostCustomerDto customer, string username)
     {
         if (customer.Id is not null)
         {
-            return new InvalidOperationException("Customer should not have new id when created");
+            // this is exceptional because this is internal logic
+            throw new InvalidOperationException("Customer should not have new id when created");
         }
         customer.Id = _idGenerator.NewId();
         customer.CreatedBy = username;

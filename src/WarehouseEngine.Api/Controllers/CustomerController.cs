@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Castle.Core.Resource;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseEngine.Api.Extensions.ErrorTypeExtensions;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
+using WarehouseEngine.Domain.ValidationResults;
 
 namespace WarehouseEngine.Api.Controllers;
 
@@ -51,13 +53,27 @@ public class CustomerController : ControllerBase
     /// </example>
     /// </summary>
     [HttpPost]
-    public async Task<ActionResult<Customer>> Create(PostCustomerDto customer)
+    public async Task<ActionResult<CustomerResponseDto>> Create(PostCustomerDto customerDto)
     {
-        customer.DateCreated = DateTime.UtcNow;
-        customer.CreatedBy = User.Identity?.Name ?? "Unknown";
+        customerDto.DateCreated = DateTime.UtcNow;
+        customerDto.CreatedBy = User.Identity?.Name ?? "Unknown";
 
-        var created = await _customerService.AddAsync(customer, User.Identity?.Name ?? "Unknown");
+        var customer = await _customerService.AddAsync(customerDto, User.Identity?.Name ?? "Unknown");
 
-        return Ok(created);
+        return customer.Match(
+               customer => Ok(customer),
+               entityExists =>
+               {
+                   _logger.LogError("Record not found. {message}", entityExists.GetMessage());
+                   ModelState.AddModelError("Record not found", entityExists.GetMessage());
+
+                   return Problem(statusCode: 404);
+               },
+               invalidShippingResult =>
+               {
+                   _logger.LogError(invalidShippingResult.ErrorMessage!);
+
+                   return Problem(invalidShippingResult.ErrorMessage, statusCode: 404);
+               });
     }
 }

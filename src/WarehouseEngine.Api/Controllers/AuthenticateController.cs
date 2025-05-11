@@ -4,8 +4,6 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Filters;
-using WarehouseEngine.Api.Examples;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Models.Auth;
 
@@ -31,7 +29,7 @@ public class AuthenticateController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    [SwaggerRequestExample(typeof(LoginExample), typeof(LoginExample))]
+    //[SwaggerRequestExample(typeof(LoginExample), typeof(LoginExample))]
     public async Task<IActionResult> Login([FromBody] Login model)
     {
         IdentityUser? user = await _userManager.FindByNameAsync(model.Username);

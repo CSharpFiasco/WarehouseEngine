@@ -95,8 +95,6 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
         };
 
         var sut = new CustomerService(context, _idGenerator.Object);
-        var result = await sut.AddAsync(customer, string.Empty);
-        var exception = Assert.IsType<InvalidOperationException>(result.Value);
-        Assert.Equal("Customer should not have new id when created", exception.Message);
+        await Assert.ThrowsAsync<InvalidOperationException>(async () => await sut.AddAsync(customer, string.Empty));
     }
 }

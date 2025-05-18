@@ -34,7 +34,7 @@ public class CustomerResponseDtoTests
         _output.WriteLine(json);
 
         //ATTEMPT
-        var serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web) { DefaultIgnoreCondition = JsonIgnoreCondition.Never };
+        var serializerOptions = JsonSerializerOptions.Web;
         var customer = JsonSerializer.Deserialize<CustomerResponseDto>(json, serializerOptions);
         var errors = new List<ValidationResult>();
         var isValid = Validator.TryValidateObject(customer!, new ValidationContext(customer!), errors, true);

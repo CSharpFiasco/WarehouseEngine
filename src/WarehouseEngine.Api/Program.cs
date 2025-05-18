@@ -1,19 +1,27 @@
 ﻿using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Azure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using WarehouseEngine.Api.Configuration;
+using WarehouseEngine.Api.Examples;
 using WarehouseEngine.Api.Middleware.Auth;
 using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Application.Interfaces;
+using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Models.Auth;
+using WarehouseEngine.Domain.ValueObjects;
 using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Api;
@@ -84,7 +92,28 @@ public class Program
         services.AddControllers().AddJsonOptions(options => {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
-        services.AddOpenApi();
+        services.AddOpenApi(options => {
+            options.AddOperationTransformer((operation, context, cancellationToken) => {
+                if (operation.Tags.Select(t => t.Name).Contains("Authenticate")) {
+                    var authenticate200Response = operation.Responses.FirstOrDefault(x => x.Key == "200").Value;
+                    if (authenticate200Response != null) {
+                        authenticate200Response.Headers.Add("Bearer", new OpenApiHeader() { Description = "Contains JWT" });
+                    }
+                }
+
+                return Task.CompletedTask;
+            });
+
+            options.AddSchemaTransformer((schema, context, cancellationToken) =>
+            {
+                var type = context.JsonTypeInfo.Type;
+                if (ExampleDictionary.Examples.TryGetValue(type, out var exampleValue)) {
+                    schema.Example = exampleValue;
+                }
+
+                return Task.CompletedTask;
+            });
+        });
         services.AddProblemDetails();
 
         var app = builder.Build();

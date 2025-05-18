@@ -17,6 +17,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(ItemResponseDto), 200)]
     public async Task<ActionResult<ItemResponseDto>> Get(Guid id)
     {
         var item = await _itemService.GetByIdAsync(id);
@@ -28,7 +29,6 @@ public class ItemController : ControllerBase
     }
 
     [HttpPost]
-    // todo: add dto
     public async Task<ActionResult<ItemResponseDto>> Create(PostItemDto itemDto)
     {
         var item = await _itemService.AddAsync(itemDto);

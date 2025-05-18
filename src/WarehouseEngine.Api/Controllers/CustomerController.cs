@@ -23,6 +23,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(CustomerResponseDto), 200)]
     public async Task<ActionResult<CustomerResponseDto>> Get(Guid id)
     {
         var customer = await _customerService.GetByIdAsync(id);

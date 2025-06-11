@@ -1,4 +1,10 @@
-﻿# Markdown File
+﻿# WarehouseEngine
+
+## Purpose
+
+This is meant to be an application for learning purposes only
+
+## Database strategy
 
 [Database-first](https://www.entityframeworktutorial.net/efcore/create-model-for-existing-database-in-ef-core.aspx) solutions assume the existence of a database. 
 
@@ -13,15 +19,8 @@ Please deploy this the database project of your choice then place the following 
 }
 ```
 
-Because we use EF Core, a repo layer does not faciliate testing since we can test against MSSQLLOCALDB. This blurs the line of unit and integration tests, but provides value quicker.
+Because we use EF Core, an additional repo layer would not faciliate testing since we can test against MSSQLLOCALDB. This blurs the line of unit and integration tests, but provides value quicker.
 
-May need to do following commands
-
-`dotnet dev-certs https --clean`
-
-`dotnet dev-certs https --trust`
-
-`dotnet dev-certs https --check`
 
 ## todo
 

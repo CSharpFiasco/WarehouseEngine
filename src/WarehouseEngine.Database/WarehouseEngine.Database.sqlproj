@@ -39,6 +39,8 @@
     <Build Include="dbo\Tables\AspNetUserRoles.sql" />
     <Build Include="dbo\Tables\AspNetUsers.sql" />
     <Build Include="dbo\Tables\AspNetUserTokens.sql" />
+    <Build Include="dbo\Tables\WarehousePickList.sql" />
+    <Build Include="dbo\Tables\WarehousePickListItem.sql" />
   </ItemGroup>
   <Target Name="PreBuild" BeforeTargets="Build">
     <Message Text="PreBuild - Starting to remove obj folder" />
@@ -46,10 +48,10 @@
     <RemoveDir Directories="$(BaseIntermediateOutputPath)" Condition="Exists('$(BaseIntermediateOutputPath)')" ContinueOnError="True" />
     <Message Text="PreBuild - Finished removing obj folder" />
   </Target>
-    <ItemGroup>
-        <None Include="WarehouseEngine.Database.publish.xml" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="WarehouseEngine.Database.publish.xml" />
-    </ItemGroup>
+  <ItemGroup>
+    <None Include="WarehouseEngine.Database.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WarehouseEngine.Database.publish.xml" />
+  </ItemGroup>
 </Project>

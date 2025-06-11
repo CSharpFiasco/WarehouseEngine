@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [VendorItem](
     [VendorId]         UNIQUEIDENTIFIER      NOT NULL,
-    [ItemId]         UNIQUEIDENTIFIER      NOT NULL,
+    [ItemId]           UNIQUEIDENTIFIER      NOT NULL,
     [DateCreated] DATETIME2(7) NOT NULL,
     [CreatedBy] NVARCHAR(80) NOT NULL,
     [DateModified] DATETIME2(7) NULL,

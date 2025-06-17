@@ -7,14 +7,8 @@ namespace WarehouseEngine.Domain.Entities;
 
 public partial class Contact
 {
-    public Contact()
-    {
-        Customer = new HashSet<Customer>();
-    }
-
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; set; }
+    public Guid Id { get; set; }
 
     [StringLength(80)]
     public string? FirstName { get; set; }
@@ -26,8 +20,17 @@ public partial class Contact
     public string? Email { get; set; }
 
     public Address? Address { get; set; }
+    public DateTime DateCreated { get; set; }
+
+    [StringLength(80)]
+    public string CreatedBy { get; set; } = null!;
+
+    public DateTime? DateModified { get; set; }
+
+    [StringLength(80)]
+    public string? ModifiedBy { get; set; }
 
     [ForeignKey("ContactId")]
     [InverseProperty("Contact")]
-    public virtual ICollection<Customer> Customer { get; init; }
+    public virtual ICollection<Customer> Customer { get; init; } = new List<Customer>();
 }

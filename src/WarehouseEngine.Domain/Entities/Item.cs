@@ -10,7 +10,7 @@ public partial class Item
     public Item()
     {
         WarehouseItem = new HashSet<WarehouseItem>();
-        Vendor = new HashSet<Vendor>();
+        VendorItem = new HashSet<VendorItem>();
     }
 
     [Key]
@@ -36,9 +36,8 @@ public partial class Item
     [InverseProperty("Item")]
     public virtual ICollection<WarehouseItem> WarehouseItem { get; init; }
 
-    [ForeignKey("ItemId")]
     [InverseProperty("Item")]
-    public virtual ICollection<Vendor> Vendor { get; init; }
+    public virtual ICollection<VendorItem> VendorItem { get; init; }
 
     public static explicit operator Item(ItemResponseDto v)
     {

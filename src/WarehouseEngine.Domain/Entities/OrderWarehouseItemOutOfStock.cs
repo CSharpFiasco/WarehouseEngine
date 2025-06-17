@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WarehouseEngine.Domain.Entities;
 
+[PrimaryKey("OrderId", "WarehouseItemId")]
 [Index("OrderId", Name = "IX_OrderWarehouseItemOutOfStock01")]
 [Index("WarehouseItemId", Name = "IX_OrderWarehouseItemOutOfStock02")]
 public partial class OrderWarehouseItemOutOfStock

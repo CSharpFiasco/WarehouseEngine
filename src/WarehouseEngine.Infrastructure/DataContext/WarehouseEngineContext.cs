@@ -43,15 +43,28 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
     public virtual DbSet<PurchaseOrder> PurchaseOrder { get; set; } = null!;
     public virtual DbSet<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; set; } = null!;
     public virtual DbSet<Vendor> Vendor { get; set; } = null!;
+
+    public virtual DbSet<VendorItem> VendorItem { get; set; } = null!;
+
     public virtual DbSet<Warehouse> Warehouse { get; set; } = null!;
     public virtual DbSet<WarehouseItem> WarehouseItem { get; set; } = null!;
+
+    public virtual DbSet<WarehousePickList> WarehousePickList { get; set; } = null!;
+
+    public virtual DbSet<WarehousePickListItem> WarehousePickListItem { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 
+        builder.Entity<Company>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
         builder.Entity<Contact>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.OwnsOne(d => d.Address, (e) =>
             {
                 e.Property(a => a.Address1).HasColumnName("Address1").IsRequired();
@@ -64,6 +77,8 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 
         builder.Entity<Customer>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
             var billingAddress = entity.OwnsOne(d => d.BillingAddress);
             billingAddress.Property(a => a.Address1).HasColumnName("BillingAddress1").IsRequired();
             billingAddress.Property(a => a.Address2).HasColumnName("BillingAddress2");
@@ -78,26 +93,30 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
             shippingAddress.Property(a => a.State).HasColumnName("ShippingState").IsRequired();
             shippingAddress.Property(a => a.ZipCode).HasColumnName("ShippingZipCode").IsRequired();
 
+
             entity.HasMany(d => d.Contact)
                 .WithMany(p => p.Customer)
                 .UsingEntity<Dictionary<string, object>>(
                     "CustomerContact",
-                    l => l.HasOne<Contact>().WithMany().HasForeignKey("ContactId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_CustomerContact_Contact"),
-                    r => r.HasOne<Customer>().WithMany().HasForeignKey("CustomerId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_CustomerContact_Customer"),
+                    r => r.HasOne<Contact>().WithMany()
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_CustomerContact_Contact"),
+                    l => l.HasOne<Customer>().WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_CustomerContact_Customer"),
                     j =>
                     {
                         j.HasKey("CustomerId", "ContactId");
-
-                        j.ToTable("CustomerContact");
-
                         j.HasIndex(new[] { "CustomerId" }, "IX_CustomerContact01");
-
                         j.HasIndex(new[] { "ContactId" }, "IX_CustomerContact02");
                     });
         });
 
         builder.Entity<Employee>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.SocialSecuritySerialNumber).IsFixedLength();
 
             entity.HasOne(d => d.Position)
@@ -113,8 +132,15 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
                 .HasConstraintName("FK_Employee_SupervisorEmployee");
         });
 
+        builder.Entity<Item>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
         builder.Entity<Order>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
             entity.HasOne(d => d.Customer)
                 .WithMany(p => p.Order)
                 .HasForeignKey(d => d.CustomerId)
@@ -132,10 +158,8 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
         builder.Entity<OrderWarehouseItem>(entity =>
         {
             entity.HasKey(e => new { e.OrderId, e.WarehouseItemId });
-
             entity.HasOne(d => d.Order)
                 .WithMany(p => p.OrderWarehouseItem)
-                .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_OrderWarehouseItem_Order");
 
@@ -163,6 +187,16 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
                 .HasConstraintName("FK_OrderWarehouseItemOutOfStock_WarehouseItemOutOfStock");
         });
 
+        builder.Entity<Position>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        builder.Entity<PurchaseOrder>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
         builder.Entity<PurchaseOrderWarehouseItem>(entity =>
         {
             entity.HasKey(e => new { e.PurchaseOrderId, e.WarehouseItemId });
@@ -182,26 +216,35 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
 
         builder.Entity<Vendor>(entity =>
         {
-            entity.HasMany(d => d.Item)
-                .WithMany(p => p.Vendor)
-                .UsingEntity<Dictionary<string, object>>(
-                    "VendorItem",
-                    l => l.HasOne<Item>().WithMany().HasForeignKey("ItemId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_VendorItem_Item"),
-                    r => r.HasOne<Vendor>().WithMany().HasForeignKey("VendorId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_VendorItem_Vendor"),
-                    j =>
-                    {
-                        j.HasKey("VendorId", "ItemId");
+            entity.Property(e => e.Id).ValueGeneratedNever();
 
-                        j.ToTable("VendorItem");
+            entity.HasMany(d => d.VendorItem)
+                  .WithOne(p => p.Vendor)
+                  .HasForeignKey(d => d.VendorId);
+        });
 
-                        j.HasIndex(new[] { "VendorId" }, "IX_VendorItem01");
+        builder.Entity<VendorItem>(entity =>
+        {
+            entity.HasOne(d => d.Item)
+                .WithMany(p => p.VendorItem)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_VendorItem_Item");
 
-                        j.HasIndex(new[] { "ItemId" }, "IX_VendorItem02");
-                    });
+            entity.HasOne(d => d.Vendor)
+                .WithMany(p => p.VendorItem)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_VendorItem_Vendor");
+        });
+
+        builder.Entity<Warehouse>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
         });
 
         builder.Entity<WarehouseItem>(entity =>
         {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+
             entity.HasOne(d => d.Item)
                 .WithMany(p => p.WarehouseItem)
                 .HasForeignKey(d => d.ItemId)
@@ -214,7 +257,44 @@ public partial class WarehouseEngineContext : IdentityDbContext<IdentityUser>, I
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_WarehouseItem_Warehouse");
         });
+
+        builder.Entity<WarehousePickList>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Priority).HasDefaultValue((byte)1);
+
+            entity.HasOne(d => d.AssignedToEmployee)
+                .WithMany(p => p.WarehousePickListAssignedToEmployee)
+                .HasConstraintName("FK_WarehousePickList_AssignedToEmployee");
+
+            entity.HasOne(d => d.CreatedByEmployee)
+                .WithMany(p => p.WarehousePickListCreatedByEmployee)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_WarehousePickList_CreatedByEmployee");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.WarehousePickList)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_WarehousePickList_Order");
+
+            entity.HasOne(d => d.Warehouse).WithMany(p => p.WarehousePickList)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_WarehousePickList_Warehouse");
+        });
+
+        builder.Entity<WarehousePickListItem>(entity =>
+        {
+            entity.HasOne(d => d.PickList).WithMany(p => p.WarehousePickListItem).HasConstraintName("FK_WarehousePickListItem_PickList");
+
+            entity.HasOne(d => d.WarehouseItem).WithMany(p => p.WarehousePickListItem)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_WarehousePickListItem_WarehouseItem");
+
+            entity.HasOne(d => d.OrderWarehouseItem).WithMany(p => p.WarehousePickListItem)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_WarehousePickListItem_OrderWarehouseItem");
+        });
     }
 
     public Task<int> SaveChangesAsync() => base.SaveChangesAsync();
+
 }

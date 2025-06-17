@@ -6,19 +6,12 @@ namespace WarehouseEngine.Domain.Entities;
 
 public partial class Vendor
 {
-    public Vendor()
-    {
-        Item = new HashSet<Item>();
-    }
-
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public required Guid Id { get; set; }
 
     [StringLength(80)]
     public string? Name { get; set; }
 
-    [ForeignKey("VendorId")]
     [InverseProperty("Vendor")]
-    public virtual ICollection<Item> Item { get; init; }
+    public virtual ICollection<VendorItem> VendorItem { get; init; } = new List<VendorItem>();
 }

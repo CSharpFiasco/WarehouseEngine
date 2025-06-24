@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace WarehouseEngine.Api.Integration.Tests;
 
-[Collection("Database collection")]
+[Collection(nameof(DatabaseCollection))]
 public class WarehouseEngineApiIntegrationTests
 {
     private readonly WarehouseEngineFactory<Program> _factory;

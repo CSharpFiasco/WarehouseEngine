@@ -10,7 +10,7 @@ using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Api.Integration.Tests.Factories;
 
-[CollectionDefinition("Database collection")]
+[CollectionDefinition(nameof(DatabaseCollection))]
 public sealed class DatabaseCollection : ICollectionFixture<WarehouseEngineFactory<Program>>
 {
     // Per https://xunit.net/docs/shared-context#collection-fixture
@@ -25,13 +25,14 @@ public class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>,
     // https://dotnet.testcontainers.org/modules/mssql/
     private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder()
         // Pinning image to a specific version to avoid breaking changes
-        .WithImage("mcr.microsoft.com/mssql/server:2019-CU28-ubuntu-20.04")
+        .WithImage("mcr.microsoft.com/mssql/server:2025-CTP2.1-ubuntu-22.04")
+        .WithEnvironment("ACCEPT_EULA", "Y")
         // Adding wait strategy due to recent runner issues: https://github.com/actions/runner-images/issues/10649
         .WithWaitStrategy(Wait.ForUnixContainer().UntilCommandIsCompleted("/opt/mssql-tools18/bin/sqlcmd", "-C", "-Q", "SELECT 1;"))
-        .WithPortBinding(54965, true)
+        .WithPortBinding(54965, 1433)
         .Build();
 
-    // We add the database when the connection string is being consumed
+    // We add an arbitrary database name when the connection string is being consumed
     // https://github.com/testcontainers/testcontainers-dotnet/issues/986#issuecomment-1698807027
     public string ConnectionString => _msSqlContainer.GetConnectionString() + ";Initial Catalog=WarehouseEngineTest";
     private static readonly SemaphoreSlim _lock = new SemaphoreSlim(1, 1);
@@ -42,10 +43,6 @@ public class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>,
 
     public static readonly Guid CustomerId1 = Guid.Parse("10000000-0000-0000-0000-000000000001");
     public static readonly Guid CustomerId2 = Guid.Parse("10000000-0000-0000-0000-000000000002");
-
-    public WarehouseEngineFactory()
-    {
-    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {

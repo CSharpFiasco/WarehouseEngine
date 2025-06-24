@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 namespace WarehouseEngine.Domain.ValidationResults;
 public sealed class InvalidShippingResult() : ValidationResult(GetDefaultMessage())
 {
-    public static string GetDefaultMessage()
-    {
-        return $"Shipping is missing";
-    }
+    private static readonly string _defaultMessage = "Shipping is missing";
+    public static string GetDefaultMessage() => _defaultMessage;
 }

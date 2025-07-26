@@ -16,3 +16,5 @@
     CONSTRAINT [FK_Order_Customer] FOREIGN KEY ([CustomerId]) REFERENCES [Customer]([Id])
 );
 GO
+
+CREATE INDEX [IX_Order_CustomerId] ON [Order]([CustomerId]);

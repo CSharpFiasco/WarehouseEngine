@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using WarehouseEngine.Domain.Entities;
-using Xunit.Abstractions;
 
 namespace WarehouseEngine.Domain.Tests;
 public class CustomerResponseDtoTests

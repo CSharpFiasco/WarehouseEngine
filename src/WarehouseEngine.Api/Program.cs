@@ -1,17 +1,10 @@
-﻿using System.Reflection;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading;
+﻿using System.Text.Json.Serialization;
 using Asp.Versioning;
-using Asp.Versioning.ApiExplorer;
-using Azure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using WarehouseEngine.Api.Configuration;
@@ -19,9 +12,7 @@ using WarehouseEngine.Api.Examples;
 using WarehouseEngine.Api.Middleware.Auth;
 using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Application.Interfaces;
-using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Models.Auth;
-using WarehouseEngine.Domain.ValueObjects;
 using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Api;
@@ -34,9 +25,12 @@ public class Program
         var services = builder.Services;
         var env = builder.Environment;
 
-        builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-              .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-              .AddJsonFile($"appsettings.local.json", optional: true, reloadOnChange: true);
+        if (env.EnvironmentName != "Integration")
+        {
+            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                  .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                  .AddJsonFile($"appsettings.local.json", optional: true, reloadOnChange: true);
+        }
 
         var connectionString = builder.Configuration.GetConnectionString("WarehouseEngine")
             ?? throw new ArgumentException("Connection string is not in the app settings");
@@ -84,19 +78,25 @@ public class Program
 
         // Using ..Configure<JsonOptions> rather than .AddJsonOptions() according to docs
         //https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/include-metadata?view=aspnetcore-10.0&tabs=minimal-apis#mvc-json-options-and-global-json-options
-        services.Configure<JsonOptions>(options => {
+        services.Configure<JsonOptions>(options =>
+        {
             options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             options.SerializerOptions.MaxDepth = 128;
         });
 
-        services.AddControllers().AddJsonOptions(options => {
+        services.AddControllers().AddJsonOptions(options =>
+        {
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         });
-        services.AddOpenApi(options => {
-            options.AddOperationTransformer((operation, context, cancellationToken) => {
-                if (operation.Tags.Select(t => t.Name).Contains("Authenticate")) {
+        services.AddOpenApi(options =>
+        {
+            options.AddOperationTransformer((operation, context, cancellationToken) =>
+            {
+                if (operation.Tags.Select(t => t.Name).Contains("Authenticate"))
+                {
                     var authenticate200Response = operation.Responses.FirstOrDefault(x => x.Key == "200").Value;
-                    if (authenticate200Response != null) {
+                    if (authenticate200Response != null)
+                    {
                         authenticate200Response.Headers.Add("Bearer", new OpenApiHeader() { Description = "Contains JWT" });
                     }
                 }
@@ -107,7 +107,8 @@ public class Program
             options.AddSchemaTransformer((schema, context, cancellationToken) =>
             {
                 var type = context.JsonTypeInfo.Type;
-                if (ExampleDictionary.Examples.TryGetValue(type, out var exampleValue)) {
+                if (ExampleDictionary.Examples.TryGetValue(type, out var exampleValue))
+                {
                     schema.Example = exampleValue;
                 }
 

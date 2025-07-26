@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using WarehouseEngine.Infrastructure.DataContext;
+using Xunit;
 
 namespace WarehouseEngine.Infrastructure.Tests;
 

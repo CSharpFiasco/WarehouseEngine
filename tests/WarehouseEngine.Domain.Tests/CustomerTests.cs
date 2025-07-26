@@ -3,7 +3,6 @@ using System.Text.Json;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Exceptions;
 using WarehouseEngine.Domain.ValueObjects;
-using Xunit.Abstractions;
 
 namespace WarehouseEngine.Domain.Tests;
 public class CustomerTests

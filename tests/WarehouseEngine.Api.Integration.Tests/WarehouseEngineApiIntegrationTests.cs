@@ -11,9 +11,9 @@ namespace WarehouseEngine.Api.Integration.Tests;
 [Collection(nameof(DatabaseCollection))]
 public class WarehouseEngineApiIntegrationTests
 {
-    private readonly WarehouseEngineFactory<Program> _factory;
+    private readonly WarehouseEngineFactory _factory;
 
-    public WarehouseEngineApiIntegrationTests(WarehouseEngineFactory<Program> factory)
+    public WarehouseEngineApiIntegrationTests(WarehouseEngineFactory factory)
     {
         _factory = factory;
     }
@@ -93,7 +93,7 @@ public class WarehouseEngineApiIntegrationTests
         client.DefaultRequestHeaders.Authorization = authHeader;
 
         // Act
-        using var response = await client.GetAsync($"api/v1/Customer?id={WarehouseEngineFactory<Program>.CustomerId1}");
+        using var response = await client.GetAsync($"api/v1/Customer?id={WarehouseEngineFactory.CustomerId1}");
         // Assert
         // response should have 200 status code
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

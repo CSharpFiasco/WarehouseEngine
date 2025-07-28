@@ -9,7 +9,7 @@ using Xunit;
 namespace WarehouseEngine.Api.Integration.Tests.Factories;
 
 [CollectionDefinition(nameof(DatabaseCollection))]
-public sealed class DatabaseCollection : ICollectionFixture<WarehouseEngineFactory<Program>>
+public sealed class DatabaseCollection : ICollectionFixture<WarehouseEngineFactory>
 {
     // Per https://xunit.net/docs/shared-context#collection-fixture
 
@@ -18,7 +18,7 @@ public sealed class DatabaseCollection : ICollectionFixture<WarehouseEngineFacto
     // ICollectionFixture<> interfaces.
 }
 
-public sealed class WarehouseEngineFactory<TProgram> : WebApplicationFactory<TProgram>, IAsyncLifetime where TProgram : class
+public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly TestDatabaseManager _databaseManager = new(SeedDatabase);
 

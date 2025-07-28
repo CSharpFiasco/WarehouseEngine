@@ -1,23 +1,19 @@
 ﻿using System.Net;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using WarehouseEngine.Api.Integration.Tests.Factories;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
-using WarehouseEngine.Application.Implementations;
 using Microsoft.Extensions.Options;
+using WarehouseEngine.Api.Integration.Tests.Factories;
+using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Domain.Models.Auth;
-using WarehouseEngine.Infrastructure.DataContext;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
+using Xunit;
 
 namespace WarehouseEngine.Api.Integration.Tests;
 
-[Collection("Database collection")]
+[Collection(nameof(DatabaseCollection))]
 public class WarehouseEngineApiIntegrationTests
 {
-    private readonly WarehouseEngineFactory<Program> _factory;
+    private readonly WarehouseEngineFactory _factory;
 
-    public WarehouseEngineApiIntegrationTests(WarehouseEngineFactory<Program> factory)
+    public WarehouseEngineApiIntegrationTests(WarehouseEngineFactory factory)
     {
         _factory = factory;
     }
@@ -46,7 +42,8 @@ public class WarehouseEngineApiIntegrationTests
         """)]
     public async Task CustomerController_Auth_NotFound()
     {
-        var options = Options.Create<JwtConfiguration>(new JwtConfiguration {
+        var options = Options.Create<JwtConfiguration>(new JwtConfiguration
+        {
             Secret = "MyIntegrationTestSecr3!tIsSoSecr3t",
             ValidIssuer = "http://localhost",
             ValidAudience = "http://warehouse-api"
@@ -73,7 +70,7 @@ public class WarehouseEngineApiIntegrationTests
     [Fact(DisplayName = """
         Given a request to the CustomerController
         When the request is authorized
-        And when the requesed resource is found
+        And when the requested resource is found
         Then the response should have a 200 status code
         """)]
     public async Task CustomerController_Auth_Found()
@@ -96,7 +93,7 @@ public class WarehouseEngineApiIntegrationTests
         client.DefaultRequestHeaders.Authorization = authHeader;
 
         // Act
-        using var response = await client.GetAsync($"api/v1/Customer?id={WarehouseEngineFactory<Program>.CustomerId1}");
+        using var response = await client.GetAsync($"api/v1/Customer?id={WarehouseEngineFactory.CustomerId1}");
         // Assert
         // response should have 200 status code
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

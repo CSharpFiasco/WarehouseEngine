@@ -75,8 +75,10 @@ public class VendorController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<VendorResponseDto>> Update(Guid id, Vendor vendor)
+    public async Task<ActionResult<VendorResponseDto>> Update(Guid id, UpdateVendorDto vendorDto)
     {
+        vendorDto.Id = id;
+        var vendor = (Vendor)vendorDto;
         var result = await _vendorService.UpdateAsync(id, vendor);
 
         return result.Match(

@@ -37,6 +37,14 @@ public class VendorController : ControllerBase
                });
     }
 
+    [HttpGet("list")]
+    [ProducesResponseType(typeof(IEnumerable<VendorResponseDto>), 200)]
+    public async Task<ActionResult<IEnumerable<VendorResponseDto>>> GetAll()
+    {
+        var vendors = await _vendorService.GetAllAsync();
+        return Ok(vendors);
+    }
+
     [HttpGet("count")]
     public async Task<ActionResult<int>> Count()
     {
@@ -64,5 +72,21 @@ public class VendorController : ControllerBase
     {
         await _vendorService.DeleteAsync(id);
         return NoContent();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<VendorResponseDto>> Update(Guid id, Vendor vendor)
+    {
+        var result = await _vendorService.UpdateAsync(id, vendor);
+
+        return result.Match(
+               vendor => Ok(vendor),
+               invalidResult =>
+               {
+                   _logger.LogError("Record not found. {message}", invalidResult.GetMessage());
+                   ModelState.AddModelError("Record not found", invalidResult.GetMessage());
+
+                   return Problem(statusCode: 404);
+               });
     }
 }

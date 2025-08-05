@@ -28,6 +28,15 @@ public class VendorService : IVendorService
             : new EntityDoesNotExist();
     }
 
+    public async Task<IEnumerable<VendorResponseDto>> GetAllAsync()
+    {
+        var vendors = await _context.Vendor
+            .AsNoTracking()
+            .ToListAsync();
+
+        return vendors.Select(v => (VendorResponseDto)v);
+    }
+
     public async Task<int> GetCount()
     {
         return await _context.Vendor.CountAsync();

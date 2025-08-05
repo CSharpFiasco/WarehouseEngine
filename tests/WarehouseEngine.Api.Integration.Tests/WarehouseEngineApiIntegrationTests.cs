@@ -286,4 +286,82 @@ public class WarehouseEngineApiIntegrationTests
         
         Assert.True(count >= 0);
     }
+
+    [Fact(DisplayName = """
+        Given a request to get all vendors
+        When the request is authorized
+        Then the response should have a 200 status code
+        And return the vendor list
+        """)]
+    public async Task VendorController_GetAll_Success()
+    {
+        var options = Options.Create<JwtConfiguration>(new JwtConfiguration
+        {
+            Secret = "MyIntegrationTestSecr3!tIsSoSecr3t",
+            ValidIssuer = "http://localhost",
+            ValidAudience = "http://warehouse-api"
+        });
+        var jwtService = new JwtService(options);
+
+        var tokenString = jwtService.GetNewToken([]);
+        var authHeader = new AuthenticationHeaderValue("Bearer", tokenString);
+
+        // Arrange
+        using var client = _factory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = authHeader;
+
+        // Act
+        using var response = await client.GetAsync("api/v1/Vendor/list", TestContext.Current.CancellationToken);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var vendors = JsonSerializer.Deserialize<VendorResponseDto[]>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        
+        Assert.NotNull(vendors);
+        Assert.True(vendors.Length >= 0);
+    }
+
+    [Fact(DisplayName = """
+        Given a request to update a vendor
+        When the request is authorized
+        And when the vendor exists
+        Then the response should have a 200 status code
+        And the vendor should be updated
+        """)]
+    public async Task VendorController_Update_Success()
+    {
+        var options = Options.Create<JwtConfiguration>(new JwtConfiguration
+        {
+            Secret = "MyIntegrationTestSecr3!tIsSoSecr3t",
+            ValidIssuer = "http://localhost",
+            ValidAudience = "http://warehouse-api"
+        });
+        var jwtService = new JwtService(options);
+
+        var tokenString = jwtService.GetNewToken([]);
+        var authHeader = new AuthenticationHeaderValue("Bearer", tokenString);
+
+        // Arrange
+        using var client = _factory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = authHeader;
+
+        var updatedVendor = new Vendor { Id = WarehouseEngineFactory.VendorId1, Name = "Updated Vendor Name" };
+        var json = JsonSerializer.Serialize(updatedVendor);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        // Act
+        using var response = await client.PutAsync($"api/v1/Vendor/{WarehouseEngineFactory.VendorId1}", content, TestContext.Current.CancellationToken);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var result = JsonSerializer.Deserialize<VendorResponseDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        
+        Assert.NotNull(result);
+        Assert.Equal("Updated Vendor Name", result.Name);
+        Assert.Equal(WarehouseEngineFactory.VendorId1, result.Id);
+    }
 }

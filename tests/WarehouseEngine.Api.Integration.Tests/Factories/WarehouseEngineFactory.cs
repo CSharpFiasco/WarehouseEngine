@@ -50,7 +50,7 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
     public async ValueTask InitializeAsync() => await _databaseManager.InitializeAsync();
 
     /// <inheritdoc/>
-    public async Task DisposeAsync() => await _databaseManager.DisposeAsync();
+    async ValueTask IAsyncDisposable.DisposeAsync() => await _databaseManager.DisposeAsync();
 
     public WarehouseEngineContext CreateContext() => _databaseManager.CreateContext();
 

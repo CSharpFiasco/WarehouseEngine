@@ -210,13 +210,13 @@ public class WarehouseEngineApiIntegrationTests
 
         // Act
         using var response = await client.PostAsync("api/v1/Vendor", content, TestContext.Current.CancellationToken);
-        
+
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        
-        var responseContent = await response.Content.ReadAsStringAsync();
+
+        var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var createdVendor = JsonSerializer.Deserialize<VendorResponseDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        
+
         Assert.NotNull(createdVendor);
         Assert.Equal("New Test Vendor", createdVendor.Name);
         Assert.NotEqual(Guid.Empty, createdVendor.Id);
@@ -247,7 +247,7 @@ public class WarehouseEngineApiIntegrationTests
 
         // Act
         using var response = await client.DeleteAsync($"api/v1/Vendor?id={WarehouseEngineFactory.VendorId2}", TestContext.Current.CancellationToken);
-        
+
         // Assert
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
     }
@@ -277,13 +277,13 @@ public class WarehouseEngineApiIntegrationTests
 
         // Act
         using var response = await client.GetAsync("api/v1/Vendor/count", TestContext.Current.CancellationToken);
-        
+
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        
-        var responseContent = await response.Content.ReadAsStringAsync();
+
+        var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var count = JsonSerializer.Deserialize<int>(responseContent);
-        
+
         Assert.True(count >= 0);
     }
 
@@ -312,13 +312,13 @@ public class WarehouseEngineApiIntegrationTests
 
         // Act
         using var response = await client.GetAsync("api/v1/Vendor/list", TestContext.Current.CancellationToken);
-        
+
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        
-        var responseContent = await response.Content.ReadAsStringAsync();
+
+        var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var vendors = JsonSerializer.Deserialize<VendorResponseDto[]>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        
+
         Assert.NotNull(vendors);
         Assert.True(vendors.Length >= 0);
     }
@@ -353,13 +353,13 @@ public class WarehouseEngineApiIntegrationTests
 
         // Act
         using var response = await client.PutAsync($"api/v1/Vendor/{WarehouseEngineFactory.VendorId1}", content, TestContext.Current.CancellationToken);
-        
+
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        
-        var responseContent = await response.Content.ReadAsStringAsync();
+
+        var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var result = JsonSerializer.Deserialize<VendorResponseDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        
+
         Assert.NotNull(result);
         Assert.Equal("Updated Vendor Name", result.Name);
         Assert.Equal(WarehouseEngineFactory.VendorId1, result.Id);

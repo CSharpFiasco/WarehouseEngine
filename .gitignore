@@ -206,6 +206,9 @@ PublishScripts/
 *.nuget.props
 *.nuget.targets
 
+# Visual Studio auto-generated package properties
+package.g.props
+
 # Nuget personal access tokens and Credentials
 nuget.config
 

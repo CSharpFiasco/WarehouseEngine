@@ -8,5 +8,6 @@ public static class ExampleDictionary
     public static readonly IReadOnlyDictionary<Type, OpenApiString> Examples = new Dictionary<Type, OpenApiString>
     {
         { typeof(CustomerResponseDto),  new OpenApiString(JsonSerializer.Serialize(CustomerExamples.CustomerResponseDto, JsonSerializerOptions.Web))},
+        { typeof(VendorResponseDto), new OpenApiString(JsonSerializer.Serialize(VendorExamples.VendorResponseDto, JsonSerializerOptions.Web))},
     };
 }

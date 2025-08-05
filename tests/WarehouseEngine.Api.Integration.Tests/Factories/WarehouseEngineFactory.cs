@@ -28,6 +28,8 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
     public static readonly Guid ItemId2 = Guid.Parse("00000000-0000-0000-0000-000000000002");
     public static readonly Guid CustomerId1 = Guid.Parse("10000000-0000-0000-0000-000000000001");
     public static readonly Guid CustomerId2 = Guid.Parse("10000000-0000-0000-0000-000000000002");
+    public static readonly Guid VendorId1 = Guid.Parse("20000000-0000-0000-0000-000000000001");
+    public static readonly Guid VendorId2 = Guid.Parse("20000000-0000-0000-0000-000000000002");
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -48,7 +50,7 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
     public async ValueTask InitializeAsync() => await _databaseManager.InitializeAsync();
 
     /// <inheritdoc/>
-    public async Task DisposeAsync() => await _databaseManager.DisposeAsync();
+    async ValueTask IAsyncDisposable.DisposeAsync() => await _databaseManager.DisposeAsync();
 
     public WarehouseEngineContext CreateContext() => _databaseManager.CreateContext();
 
@@ -88,6 +90,11 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
                     ZipCode = string.Empty
                 }
             }
+        );
+
+        context.Vendor.AddRange(
+            new Vendor { Id = VendorId1, Name = "Test Vendor 1" },
+            new Vendor { Id = VendorId2, Name = "Test Vendor 2" }
         );
     }
 }

@@ -28,18 +28,18 @@ public class TestDatabaseManager : IAsyncLifetime
 
     public async ValueTask InitializeAsync()
     {
-        await _msSqlContainer.StartAsync();
+        await _msSqlContainer.StartAsync(TestContext.Current.CancellationToken);
 
-        await _lock.WaitAsync(TimeSpan.FromMicroseconds(1_000));
+        await _lock.WaitAsync(TimeSpan.FromMicroseconds(1_000), TestContext.Current.CancellationToken);
         try
         {
             if (!_databaseInitialized)
             {
                 using var context = CreateContext();
-                await context.Database.EnsureDeletedAsync();
-                await context.Database.EnsureCreatedAsync();
+                await context.Database.EnsureDeletedAsync(TestContext.Current.CancellationToken);
+                await context.Database.EnsureCreatedAsync(TestContext.Current.CancellationToken);
                 _seedDatabase(context);
-                await context.SaveChangesAsync();
+                await context.SaveChangesAsync(TestContext.Current.CancellationToken);
                 _databaseInitialized = true;
             }
         }

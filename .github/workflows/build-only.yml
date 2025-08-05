@@ -1,0 +1,34 @@
+name: Build Only
+
+on:
+  workflow_dispatch: # Manual trigger
+  schedule:
+    - cron: '0 2 * * *' # Daily at 2 AM UTC
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build solution
+      run: dotnet build --configuration Release --no-restore
+      
+    - name: Build API project specifically
+      run: dotnet build src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore
+      
+    - name: Check that API can be published
+      run: dotnet publish src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-build --output ./publish-output
+      
+    - name: List published files
+      run: ls -la ./publish-output

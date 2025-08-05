@@ -1,0 +1,50 @@
+name: API Build and Test
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths: 
+      - 'src/WarehouseEngine.Api/**'
+      - 'src/WarehouseEngine.Domain/**'
+      - 'src/WarehouseEngine.Application/**'
+      - 'src/WarehouseEngine.Infrastructure/**'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/WarehouseEngine.Api/**'
+      - 'src/WarehouseEngine.Domain/**'
+      - 'src/WarehouseEngine.Application/**'
+      - 'src/WarehouseEngine.Infrastructure/**'
+
+jobs:
+  api-build-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+        
+    - name: Restore API dependencies
+      run: dotnet restore src/WarehouseEngine.Api/WarehouseEngine.Api.csproj
+      
+    - name: Build API project
+      run: dotnet build src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore
+      
+    - name: Run API-related tests
+      run: |
+        dotnet test tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --verbosity normal
+        
+    - name: Publish API
+      run: dotnet publish src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-build --output ./api-dist
+      
+    - name: Upload API artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-build
+        path: ./api-dist/
+        retention-days: 7

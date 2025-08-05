@@ -18,7 +18,7 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     public async Task GetItemByIdAsync_SingleItem_AddSingleItem()
     {
         await using WarehouseEngineContext context = _fixture.CreateContext();
-        await using var _ = await context.Database.BeginTransactionAsync();
+        await using var _ = await context.Database.BeginTransactionAsync(TestContext.Current.CancellationToken);
 
         const string newSku = "TestAddAsync";
 
@@ -31,8 +31,8 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
             Sku = newSku
         };
 
-        await context.AddAsync(item);
-        await context.SaveChangesAsync();
+        await context.AddAsync(item, TestContext.Current.CancellationToken);
+        await context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         context.ChangeTracker.Clear();
 
@@ -48,7 +48,7 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     public async Task AddAsync_SingleItem_AddSingleItem()
     {
         await using WarehouseEngineContext context = _fixture.CreateContext();
-        await using var _ = await context.Database.BeginTransactionAsync();
+        await using var _ = await context.Database.BeginTransactionAsync(TestContext.Current.CancellationToken);
 
         const string newSku = "TestAddAsync";
 
@@ -70,11 +70,11 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
     public async Task UpdateAsync_SingleItem_Fields()
     {
         await using WarehouseEngineContext context = _fixture.CreateContext();
-        await using var _ = await context.Database.BeginTransactionAsync();
+        await using var _ = await context.Database.BeginTransactionAsync(TestContext.Current.CancellationToken);
 
         const string newSku = "TestSku";
 
-        Item item = await context.Item.SingleAsync(i => i.Id == TestDatabaseFixture.ItemId1);
+        Item item = await context.Item.SingleAsync(i => i.Id == TestDatabaseFixture.ItemId1, TestContext.Current.CancellationToken);
         var itemToSave = new PostItemDto
         {
             Id = item.Id,

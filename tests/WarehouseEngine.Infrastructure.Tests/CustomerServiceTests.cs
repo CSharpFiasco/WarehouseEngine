@@ -22,7 +22,7 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
     public async Task GetByIdAsync_SingleCustomer_ReturnsSingleCustomer()
     {
         await using WarehouseEngineContext context = _fixture.CreateContext();
-        await using var _ = await context.Database.BeginTransactionAsync();
+        await using var _ = await context.Database.BeginTransactionAsync(TestContext.Current.CancellationToken);
 
         const string newSku = "TestName";
         Guid testId = Guid.NewGuid();
@@ -36,8 +36,8 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
             CreatedBy = "TestUser"
         };
 
-        await context.AddAsync(customer);
-        await context.SaveChangesAsync();
+        await context.AddAsync(customer, TestContext.Current.CancellationToken);
+        await context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
         context.ChangeTracker.Clear();
 
@@ -54,7 +54,7 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
     public async Task AddAsync_SingleCustomer_BillingAddressIsMissing_DoesNotThrow()
     {
         await using WarehouseEngineContext context = _fixture.CreateContext();
-        await using var _ = await context.Database.BeginTransactionAsync();
+        await using var _ = await context.Database.BeginTransactionAsync(TestContext.Current.CancellationToken);
 
         const string newSku = "TestName";
         Guid testId = Guid.NewGuid();
@@ -71,7 +71,7 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
         await sut.AddAsync(customer, "TestUser");
 
         context.ChangeTracker.Clear();
-        var result = await context.Customer.FirstOrDefaultAsync(e => e.Id == testId);
+        var result = await context.Customer.FirstOrDefaultAsync(e => e.Id == testId, TestContext.Current.CancellationToken);
         Assert.NotNull(result);
     }
 
@@ -79,7 +79,7 @@ public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>
     public async Task AddAsync_SingleCustomer_ShippingAddressIsMissing_ThrowsException()
     {
         await using WarehouseEngineContext context = _fixture.CreateContext();
-        await using var _ = await context.Database.BeginTransactionAsync();
+        await using var _ = await context.Database.BeginTransactionAsync(TestContext.Current.CancellationToken);
 
         const string newSku = "TestName";
         Guid testId = Guid.NewGuid();

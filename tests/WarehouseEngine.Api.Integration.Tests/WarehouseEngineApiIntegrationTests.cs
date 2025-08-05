@@ -28,7 +28,7 @@ public class WarehouseEngineApiIntegrationTests
         // Arrange
         using var client = _factory.CreateClient();
         // Act
-        using var response = await client.GetAsync("api/v1/Customer");
+        using var response = await client.GetAsync("api/v1/Customer", TestContext.Current.CancellationToken);
         // Assert
         // response should have 401 status code
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -61,7 +61,7 @@ public class WarehouseEngineApiIntegrationTests
 
         // Act
         var guid = Guid.NewGuid();
-        using var response = await client.GetAsync($"api/v1/Customer?id={guid}");
+        using var response = await client.GetAsync($"api/v1/Customer?id={guid}", TestContext.Current.CancellationToken);
         // Assert
         // response should have 200 status code
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -93,7 +93,7 @@ public class WarehouseEngineApiIntegrationTests
         client.DefaultRequestHeaders.Authorization = authHeader;
 
         // Act
-        using var response = await client.GetAsync($"api/v1/Customer?id={WarehouseEngineFactory.CustomerId1}");
+        using var response = await client.GetAsync($"api/v1/Customer?id={WarehouseEngineFactory.CustomerId1}", TestContext.Current.CancellationToken);
         // Assert
         // response should have 200 status code
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

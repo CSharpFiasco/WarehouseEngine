@@ -209,6 +209,9 @@ PublishScripts/
 # Visual Studio auto-generated package properties
 package.g.props
 
+# Additional obj directory patterns to prevent future issues
+**/obj/**/package.g.props
+
 # Nuget personal access tokens and Credentials
 nuget.config
 

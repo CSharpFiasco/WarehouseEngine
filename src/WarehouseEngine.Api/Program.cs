@@ -52,6 +52,7 @@ public class Program
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IItemService, ItemService>();
         services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IVendorService, VendorService>();
         services.AddTransient<IIdGenerator, SequentialIdGenerator>();
 
         services.AddAuthentication(options =>

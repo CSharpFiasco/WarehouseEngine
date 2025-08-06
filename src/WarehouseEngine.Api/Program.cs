@@ -131,7 +131,7 @@ public class Program
         await SeedData(app.Services);
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Integration")
         {
             // configure openapi here
             app.MapOpenApi();

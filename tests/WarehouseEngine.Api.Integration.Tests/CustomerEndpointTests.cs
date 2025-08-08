@@ -9,11 +9,11 @@ using Xunit;
 namespace WarehouseEngine.Api.Integration.Tests;
 
 [Collection(nameof(DatabaseCollection))]
-public class WarehouseEngineApiIntegrationTests
+public class CustomerEndpointTests
 {
     private readonly WarehouseEngineFactory _factory;
 
-    public WarehouseEngineApiIntegrationTests(WarehouseEngineFactory factory)
+    public CustomerEndpointTests(WarehouseEngineFactory factory)
     {
         _factory = factory;
     }

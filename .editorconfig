@@ -164,6 +164,7 @@ dotnet_diagnostic.IDE0006.severity = suggestion
 dotnet_diagnostic.IDE0059.severity = suggestion
 dotnet_diagnostic.IDE0063.severity = suggestion
 dotnet_diagnostic.IDE0090.severity = none
+dotnet_diagnostic.IDE0290.severity = none
 dotnet_diagnostic.CA2000.severity = warning
 dotnet_diagnostic.CA2013.severity = warning
 dotnet_diagnostic.CA2017.severity = warning

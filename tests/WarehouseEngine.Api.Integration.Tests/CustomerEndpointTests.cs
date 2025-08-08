@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
 using Microsoft.Extensions.Options;
+using WarehouseEngine.Api.Controllers;
 using WarehouseEngine.Api.Integration.Tests.Factories;
 using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Domain.Models.Auth;
@@ -18,8 +19,8 @@ public class CustomerEndpointTests
         _factory = factory;
     }
 
-    [Fact(DisplayName = """
-        Given a request to the CustomerController
+    [Fact(DisplayName = $"""
+        Given a request to the {nameof(CustomerController)}
         When the request is unauthorized
         Then the response should have a 401 status code
         """)]
@@ -34,8 +35,8 @@ public class CustomerEndpointTests
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
-    [Fact(DisplayName = """
-        Given a request to the CustomerController
+    [Fact(DisplayName = $"""
+        Given a request to the {nameof(CustomerController)}
         When the request is authorized
         And when the requested resource is not found
         Then the response should have a 404 status code
@@ -67,8 +68,8 @@ public class CustomerEndpointTests
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
-    [Fact(DisplayName = """
-        Given a request to the CustomerController
+    [Fact(DisplayName = $"""
+        Given a request to the {nameof(CustomerController)}
         When the request is authorized
         And when the requested resource is found
         Then the response should have a 200 status code

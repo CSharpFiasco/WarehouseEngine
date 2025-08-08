@@ -16,7 +16,7 @@ This repository includes several GitHub Actions workflows for continuous integra
   - Infrastructure tests (with SQL Server, allows failures)
   - API Integration tests (allows failures if Docker issues)
 - Publishes the API project
-- Uploads code coverage reports to Codecov
+- Collects code coverage reports
 
 **Projects built:**
 - WarehouseEngine.Domain
@@ -54,16 +54,13 @@ The main CI workflow includes a SQL Server 2022 service for Infrastructure tests
 - Build continues even if some tests fail to provide maximum feedback
 
 ### Code Coverage
-All test runs collect XPlat Code Coverage and upload to Codecov (requires `CODECOV_TOKEN` secret).
+All test runs collect XPlat Code Coverage for local analysis.
 
 ### Artifact Management
 - API builds are uploaded as artifacts with 7-day retention
 - Published API output is available for deployment
 
 ## Setup Requirements
-
-### Secrets (Optional)
-- `CODECOV_TOKEN` - For code coverage reporting to Codecov
 
 ### Environment
 - Requires GitHub Actions runners with:

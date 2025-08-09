@@ -2,14 +2,14 @@ name: API Build and Test
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
     paths: 
       - 'src/WarehouseEngine.Api/**'
       - 'src/WarehouseEngine.Domain/**'
       - 'src/WarehouseEngine.Application/**'
       - 'src/WarehouseEngine.Infrastructure/**'
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]
     paths:
       - 'src/WarehouseEngine.Api/**'
       - 'src/WarehouseEngine.Domain/**'

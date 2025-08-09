@@ -1,9 +1,11 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using Microsoft.Extensions.Options;
 using WarehouseEngine.Api.Controllers;
 using WarehouseEngine.Api.Integration.Tests.Factories;
 using WarehouseEngine.Application.Implementations;
+using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Models.Auth;
 using Xunit;
 
@@ -98,6 +100,12 @@ public class CustomerEndpointTests
         // Assert
         // response should have 200 status code
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        var contentString = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        var deserializedCustomerDto = JsonSerializer.Deserialize<CustomerResponseDto>(contentString, JsonSerializerOptions.Web);
+        Assert.NotNull(deserializedCustomerDto);
+
+        Assert.NotNull(deserializedCustomerDto.ShippingAddress);
+        Assert.Equal("OK", deserializedCustomerDto.ShippingAddress.State);
 
     }
 }

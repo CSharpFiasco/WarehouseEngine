@@ -35,8 +35,11 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
     {
         var configurationValues = new Dictionary<string, string?>
         {
-            { "ConnectionStrings:WarehouseEngine", ConnectionString }
-        };
+            { "ConnectionStrings:WarehouseEngine", ConnectionString },
+            { "JwtConfiguration:ValidAudience", "http://warehouse-api"},
+            { "JwtConfiguration:ValidIssuer", "http://localhost" },
+            { "JwtConfiguration:Secret", "MyIntegrationTestSecr3!tIsSoSecr3t" }
+    };
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationValues)
             .Build();

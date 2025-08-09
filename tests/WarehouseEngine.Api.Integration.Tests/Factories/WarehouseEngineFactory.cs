@@ -68,7 +68,7 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
             new Customer
             {
                 Id = CustomerId1,
-                Name = string.Empty,
+                Name = "Customer1",
                 DateCreated = DateTime.MinValue,
                 CreatedBy = string.Empty,
                 ShippingAddress = new Address
@@ -82,7 +82,7 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
             new Customer
             {
                 Id = CustomerId2,
-                Name = string.Empty,
+                Name = "Customer2",
                 DateCreated = DateTime.MinValue,
                 CreatedBy = string.Empty,
                 ShippingAddress = new Address

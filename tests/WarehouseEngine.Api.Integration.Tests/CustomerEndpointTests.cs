@@ -104,6 +104,8 @@ public class CustomerEndpointTests
         var deserializedCustomerDto = JsonSerializer.Deserialize<CustomerResponseDto>(contentString, JsonSerializerOptions.Web);
         Assert.NotNull(deserializedCustomerDto);
 
+        Assert.Equal("Customer1", deserializedCustomerDto.Name);
+
         Assert.NotNull(deserializedCustomerDto.ShippingAddress);
         Assert.Equal("OK", deserializedCustomerDto.ShippingAddress.State);
 

@@ -96,10 +96,7 @@ public class Program
                 if (operation.Tags.Select(t => t.Name).Contains("Authenticate"))
                 {
                     var authenticate200Response = operation.Responses.FirstOrDefault(x => x.Key == "200").Value;
-                    if (authenticate200Response != null)
-                    {
-                        authenticate200Response.Headers.Add("Bearer", new OpenApiHeader() { Description = "Contains JWT" });
-                    }
+                    authenticate200Response?.Headers.Add("Bearer", new OpenApiHeader() { Description = "Contains JWT" });
                 }
 
                 return Task.CompletedTask;

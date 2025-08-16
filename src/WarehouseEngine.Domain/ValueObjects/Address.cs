@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
-using WarehouseEngine.Domain.Helpers;
 
 namespace WarehouseEngine.Domain.ValueObjects;
 
 [Owned]
-public class Address : ValueObject
+public record Address
 {
     [Required]
     [StringLength(80)]
@@ -23,14 +22,4 @@ public class Address : ValueObject
     [Required]
     [StringLength(11)]
     public required string ZipCode { get; init; }
-
-    protected override IEnumerable<object?> GetEqualityComponents()
-    {
-        // Using a yield return statement to return each element one at a time
-        yield return Address1;
-        yield return Address2;
-        yield return City;
-        yield return State;
-        yield return ZipCode;
-    }
 }

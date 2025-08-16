@@ -35,8 +35,11 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
     {
         var configurationValues = new Dictionary<string, string?>
         {
-            { "ConnectionStrings:WarehouseEngine", ConnectionString }
-        };
+            { "ConnectionStrings:WarehouseEngine", ConnectionString },
+            { "JwtConfiguration:ValidAudience", "http://warehouse-api"},
+            { "JwtConfiguration:ValidIssuer", "http://localhost" },
+            { "JwtConfiguration:Secret", "MyIntegrationTestSecr3!tIsSoSecr3t" }
+    };
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationValues)
             .Build();
@@ -65,7 +68,7 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
             new Customer
             {
                 Id = CustomerId1,
-                Name = string.Empty,
+                Name = "Customer1",
                 DateCreated = DateTime.MinValue,
                 CreatedBy = string.Empty,
                 ShippingAddress = new Address
@@ -79,7 +82,7 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
             new Customer
             {
                 Id = CustomerId2,
-                Name = string.Empty,
+                Name = "Customer2",
                 DateCreated = DateTime.MinValue,
                 CreatedBy = string.Empty,
                 ShippingAddress = new Address

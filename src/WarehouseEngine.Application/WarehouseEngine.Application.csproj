@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WarehouseEngine.Domain\WarehouseEngine.Domain.csproj" />
+    <Compile Remove="Dtos\**" />
+    <EmbeddedResource Remove="Dtos\**" />
+    <None Remove="Dtos\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\" />
+    <ProjectReference Include="..\WarehouseEngine.Domain\WarehouseEngine.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

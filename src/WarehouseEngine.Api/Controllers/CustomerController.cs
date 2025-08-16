@@ -1,10 +1,8 @@
-﻿using Castle.Core.Resource;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseEngine.Api.Extensions.ErrorTypeExtensions;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
-using WarehouseEngine.Domain.ValidationResults;
 
 namespace WarehouseEngine.Api.Controllers;
 
@@ -65,14 +63,14 @@ public class CustomerController : ControllerBase
                customer => Ok(customer),
                entityExists =>
                {
-                   _logger.LogError("Record not found. {message}", entityExists.GetMessage());
+                   _logger.LogWarning("Record not found. {message}", entityExists.GetMessage());
                    ModelState.AddModelError("Record not found", entityExists.GetMessage());
 
                    return Problem(statusCode: 404);
                },
                invalidShippingResult =>
                {
-                   _logger.LogError(invalidShippingResult.ErrorMessage!);
+                   _logger.LogWarning(invalidShippingResult.ErrorMessage!);
 
                    return Problem(invalidShippingResult.ErrorMessage, statusCode: 404);
                });

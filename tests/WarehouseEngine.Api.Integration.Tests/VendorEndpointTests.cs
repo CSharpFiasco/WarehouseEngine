@@ -134,7 +134,7 @@ public class VendorEndpointTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
-        var createdVendor = JsonSerializer.Deserialize<VendorResponseDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var createdVendor = JsonSerializer.Deserialize<VendorResponseDto>(responseContent, JsonSerializerOptions.Web);
 
         Assert.NotNull(createdVendor);
         Assert.Equal("New Test Vendor", createdVendor.Name);
@@ -236,7 +236,7 @@ public class VendorEndpointTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
-        var vendors = JsonSerializer.Deserialize<VendorResponseDto[]>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var vendors = JsonSerializer.Deserialize<VendorResponseDto[]>(responseContent, JsonSerializerOptions.Web);
 
         Assert.NotNull(vendors);
         Assert.True(vendors.Length >= 0);
@@ -277,7 +277,7 @@ public class VendorEndpointTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
-        var result = JsonSerializer.Deserialize<VendorResponseDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var result = JsonSerializer.Deserialize<VendorResponseDto>(responseContent, JsonSerializerOptions.Web);
 
         Assert.NotNull(result);
         Assert.Equal("Updated Vendor Name", result.Name);

@@ -30,7 +30,7 @@ public class VendorController : ControllerBase
                vendor => Ok(vendor),
                invalidResult =>
                {
-                   _logger.LogError("Record not found. {message}", invalidResult.GetMessage());
+                   _logger.LogWarning("Record not found. {message}", invalidResult.GetMessage());
                    ModelState.AddModelError("Record not found", invalidResult.GetMessage());
 
                    return Problem(statusCode: 404);
@@ -60,7 +60,7 @@ public class VendorController : ControllerBase
                vendor => Ok(vendor),
                entityExists =>
                {
-                   _logger.LogError("Entity already exists. {message}", entityExists.GetMessage());
+                   _logger.LogWarning("Entity already exists. {message}", entityExists.GetMessage());
                    ModelState.AddModelError("Entity already exists", entityExists.GetMessage());
 
                    return Problem(statusCode: 409);

@@ -283,4 +283,30 @@ public class VendorEndpointTests
         Assert.Equal("Updated Vendor Name", result.Name);
         Assert.Equal(WarehouseEngineFactory.VendorId1, result.Id);
     }
+
+    [Fact(DisplayName = """
+        Given a request to get OpenAPI specification
+        When the request is made to openapi/v1.json
+        Then the response should have a 200 status code
+        And return the OpenAPI JSON document
+        """)]
+    public async Task OpenApi_V1Json_Success()
+    {
+        // Arrange
+        using var client = _factory.CreateClient();
+
+        // Act
+        using var response = await client.GetAsync("openapi/v1.json", TestContext.Current.CancellationToken);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        Assert.NotNull(responseContent);
+        Assert.NotEmpty(responseContent);
+        
+        // Verify it's valid JSON by deserializing
+        var openApiDoc = JsonSerializer.Deserialize<JsonElement>(responseContent);
+        Assert.True(openApiDoc.ValueKind == JsonValueKind.Object);
+    }
 }

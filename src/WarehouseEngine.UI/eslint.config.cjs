@@ -61,7 +61,6 @@ module.exports = [{
         "@typescript-eslint/prefer-readonly": "error",
         "@typescript-eslint/strict-boolean-expressions": "warn",
         "@angular-eslint/prefer-output-readonly": "error",
-        "@angular-eslint/prefer-standalone-component": "warn",
         "@angular-eslint/no-pipe-impure": "error",
         "@angular-eslint/no-conflicting-lifecycle": "warn",
         "@typescript-eslint/no-unused-vars": "off",

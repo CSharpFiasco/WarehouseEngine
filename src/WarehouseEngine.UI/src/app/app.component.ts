@@ -9,17 +9,18 @@ import { RouterOutlet } from '@angular/router';
 import { AuthFacade } from './store/auth/auth.facade';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  imports: [CommonModule, TopNavComponent, SidenavComponent, LoginComponent, MatProgressSpinnerModule, RouterOutlet],
-  standalone: true,
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    imports: [CommonModule, TopNavComponent, SidenavComponent, LoginComponent, MatProgressSpinnerModule, RouterOutlet]
 })
 export class AppComponent {
   private readonly authFacade: AuthFacade = inject(AuthFacade);
   protected readonly loginStatus$ = this.authFacade.loginStatus$;
 
-  constructor(themeService: ThemeService) {
+  constructor() {
+    const themeService = inject(ThemeService);
+
     themeService.setTheme('indigo-pink');
   }
 }

@@ -13,16 +13,6 @@ Please deploy this the database project of your choice then place the following 
 }
 ```
 
-Because we use EF Core, a repo layer does not faciliate testing since we can test against MSSQLLOCALDB. This blurs the line of unit and integration tests, but provides value quicker.
+Because we use EF Core, a repo layer does not facilitate testing since we can test against MSSQLLOCALDB by creating a real instance of the db.
 
-May need to do following commands
-
-`dotnet dev-certs https --clean`
-
-`dotnet dev-certs https --trust`
-
-`dotnet dev-certs https --check`
-
-## todo
-
-1. Add global exception handling
+Additionally, when we write integration tests, we can test against a real db instance which is spun up via TestContainers when the test begins.

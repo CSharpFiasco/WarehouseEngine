@@ -10,20 +10,24 @@
         placeholder="my-username"
         required
         [formControl]="credentials.controls.username"
-      />
-      <mat-error *ngIf="credentials.controls.username.errors?.['required']">required</mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Enter your password</mat-label>
-      <input
-        matInput
-        placeholder="my-password"
-        type="password"
-        required
-        [formControl]="credentials.controls.password"
-      />
-      <mat-error *ngIf="credentials.controls.password.errors?.['required']">required</mat-error>
-    </mat-form-field>
-    <button mat-flat-button color="accent" (click)="login()">Login</button>
-  </mat-card-content>
-</mat-card>
+        />
+        @if (credentials.controls.username.errors?.['required']) {
+          <mat-error>required</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Enter your password</mat-label>
+        <input
+          matInput
+          placeholder="my-password"
+          type="password"
+          required
+          [formControl]="credentials.controls.password"
+          />
+          @if (credentials.controls.password.errors?.['required']) {
+            <mat-error>required</mat-error>
+          }
+        </mat-form-field>
+        <button mat-flat-button color="accent" (click)="login()">Login</button>
+      </mat-card-content>
+    </mat-card>

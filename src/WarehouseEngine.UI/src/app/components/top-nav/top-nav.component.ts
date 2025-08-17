@@ -9,11 +9,10 @@ import { LayoutFacade } from 'src/app/store/layout/facade';
 import type { Theme } from 'src/app/types/default-theme';
 
 @Component({
-  selector: 'app-top-nav',
-  templateUrl: './top-nav.component.html',
-  styleUrls: ['./top-nav.component.scss'],
-  imports: [CommonModule, MatIconModule, MatToolbarModule, MatMenuModule, MatButtonModule],
-  standalone: true,
+    selector: 'app-top-nav',
+    templateUrl: './top-nav.component.html',
+    styleUrls: ['./top-nav.component.scss'],
+    imports: [CommonModule, MatIconModule, MatToolbarModule, MatMenuModule, MatButtonModule]
 })
 export class TopNavComponent {
   private readonly navigationFacade: LayoutFacade = inject(LayoutFacade);

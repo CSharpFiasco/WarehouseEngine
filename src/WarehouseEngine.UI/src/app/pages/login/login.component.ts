@@ -9,11 +9,10 @@ import { Router } from '@angular/router';
 import { AuthFacade } from 'src/app/store/auth/auth.facade';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule],
-  standalone: true,
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule]
 })
 export class LoginComponent {
   private readonly loginFacade: AuthFacade = inject(AuthFacade);

@@ -7,11 +7,10 @@ import { LayoutFacade } from 'src/app/store/layout/facade';
 import { AuthFacade } from 'src/app/store/auth/auth.facade';
 
 @Component({
-  selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss'],
-  imports: [CommonModule, MatSidenavModule, MatListModule, RouterModule],
-  standalone: true,
+    selector: 'app-sidenav',
+    templateUrl: './sidenav.component.html',
+    styleUrls: ['./sidenav.component.scss'],
+    imports: [CommonModule, MatSidenavModule, MatListModule, RouterModule]
 })
 export class SidenavComponent {
   private readonly navigationFacade: LayoutFacade = inject(LayoutFacade);

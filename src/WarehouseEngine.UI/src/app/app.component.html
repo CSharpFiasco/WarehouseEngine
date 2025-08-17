@@ -1,7 +1,11 @@
 <app-top-nav></app-top-nav>
 <app-sidenav>
-  <ng-container *ngIf="{ value: loginStatus$ | async } as status">
-    <mat-spinner *ngIf="status.value === 'logging in'"></mat-spinner>
-    <router-outlet *ngIf="status.value !== 'logging in'"></router-outlet>
-  </ng-container>
+  @if ({ value: loginStatus$ | async }; as status) {
+    @if (status.value === 'logging in') {
+      <mat-spinner></mat-spinner>
+    }
+    @if (status.value !== 'logging in') {
+      <router-outlet></router-outlet>
+    }
+  }
 </app-sidenav>

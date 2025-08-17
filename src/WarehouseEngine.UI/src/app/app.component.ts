@@ -18,7 +18,9 @@ export class AppComponent {
   private readonly authFacade: AuthFacade = inject(AuthFacade);
   protected readonly loginStatus$ = this.authFacade.loginStatus$;
 
-  constructor(themeService: ThemeService) {
+  constructor() {
+    const themeService = inject(ThemeService);
+
     themeService.setTheme('indigo-pink');
   }
 }

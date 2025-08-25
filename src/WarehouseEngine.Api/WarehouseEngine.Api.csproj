@@ -12,7 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
     <PackageReference Include="OneOf" Version="3.0.271" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.2.1" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.7.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,7 +11,6 @@ using Xunit;
 
 namespace WarehouseEngine.Api.Integration.Tests;
 
-[Collection(nameof(DatabaseCollection))]
 public class CustomerEndpointTests
 {
     private readonly WarehouseEngineFactory _factory;

@@ -13,7 +13,6 @@ using Xunit;
 
 namespace WarehouseEngine.Api.Integration.Tests;
 
-[Collection(nameof(DatabaseCollection))]
 public class VendorEndpointTests
 {
     private readonly WarehouseEngineFactory _factory;
@@ -308,6 +307,6 @@ public class VendorEndpointTests
 
         // Verify it's valid JSON by deserializing
         var openApiDoc = JsonSerializer.Deserialize<JsonElement>(responseContent);
-        Assert.True(openApiDoc.ValueKind == JsonValueKind.Object);
+        Assert.Equal(JsonValueKind.Object, openApiDoc.ValueKind);
     }
 }

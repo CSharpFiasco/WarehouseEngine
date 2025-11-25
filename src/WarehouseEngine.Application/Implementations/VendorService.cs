@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OneOf;
+using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.ErrorTypes;

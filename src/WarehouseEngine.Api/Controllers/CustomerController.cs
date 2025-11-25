@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseEngine.Api.Extensions.ErrorTypeExtensions;
+using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
 
@@ -21,7 +22,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(CustomerResponseDto), 200)]
+    [ProducesResponseType<CustomerResponseDto>(200)]
     public async Task<ActionResult<CustomerResponseDto>> Get(Guid id)
     {
         var customer = await _customerService.GetByIdAsync(id);
@@ -38,6 +39,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("count")]
+    [ProducesResponseType<int>(200)]
     public async Task<ActionResult<int>> Count()
     {
         return Ok(await _customerService.GetCount());

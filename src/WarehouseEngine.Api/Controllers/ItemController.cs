@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Entities;
 

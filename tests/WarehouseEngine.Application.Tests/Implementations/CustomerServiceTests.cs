@@ -1,12 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
-using Moq;
+﻿using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.ValueObjects;
 using WarehouseEngine.Infrastructure.DataContext;
-using Xunit;
 
-namespace WarehouseEngine.Infrastructure.Tests;
+namespace WarehouseEngine.Application.Tests.Implementations;
 
 [ExcludeFromCodeCoverage]
 public class CustomerServiceTests : IClassFixture<TestDatabaseFixture>

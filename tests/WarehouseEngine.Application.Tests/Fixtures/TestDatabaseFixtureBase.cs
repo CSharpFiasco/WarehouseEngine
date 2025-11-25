@@ -1,9 +1,8 @@
 ﻿using System.Runtime.InteropServices;
-using Microsoft.EntityFrameworkCore;
 using WarehouseEngine.Domain.ValueObjects;
 using WarehouseEngine.Infrastructure.DataContext;
 
-namespace WarehouseEngine.Infrastructure.Tests.Fixtures;
+namespace WarehouseEngine.Application.Tests.Fixtures;
 
 public sealed class TestDatabaseFixture
 {
@@ -13,7 +12,7 @@ public sealed class TestDatabaseFixture
      */
     private readonly string ConnectionString = """Server=(localdb)\mssqllocaldb;Database=WarehouseTestDatabase;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False;Application Name="Warehouse Engine Integration Tests";""";
 
-    private static readonly object _lock = new();
+    private static readonly Lock _lock = new();
     private static bool _databaseInitialized = false;
 
     public static readonly Guid ItemId1 = Guid.Parse("00000000-0000-0000-0000-000000000001");

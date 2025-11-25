@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 using WarehouseEngine.Api.Configuration;
 using WarehouseEngine.Api.Examples;
@@ -91,12 +91,36 @@ public class Program
         });
         services.AddOpenApi(options =>
         {
-            options.AddOperationTransformer((operation, context, cancellationToken) =>
-            {
-                if (operation.Tags.Select(t => t.Name).Contains("Authenticate"))
+            options.AddDocumentTransformer((document, context, cancellationToken) => {
+                IOpenApiSecurityScheme jwtBearerScheme = new OpenApiSecurityScheme()
                 {
-                    var authenticate200Response = operation.Responses.FirstOrDefault(x => x.Key == "200").Value;
-                    authenticate200Response?.Headers.Add("Bearer", new OpenApiHeader() { Description = "Contains JWT" });
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "Json Web Token",
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT token into field",
+                    Name = "Authorization",
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                };
+
+                var securitySchemes = new Dictionary<string, IOpenApiSecurityScheme>
+                {
+                    [JwtBearerDefaults.AuthenticationScheme] = jwtBearerScheme
+                };
+
+                document.Components ??= new OpenApiComponents();
+                document.Components.SecuritySchemes = securitySchemes;
+
+                // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/customize-openapi?view=aspnetcore-10.0#use-document-transformers
+                // Apply it as a requirement for all operations
+                foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations))
+                {
+                    if (operation.Value.Tags is not null && operation.Value.Tags.Any(tag => tag.Name == "Authenticate")) { continue; }
+
+                    operation.Value.Security ??= [];
+                    operation.Value.Security.Add(new OpenApiSecurityRequirement
+                    {
+                        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
+                    });
                 }
 
                 return Task.CompletedTask;

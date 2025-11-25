@@ -4,6 +4,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Options;
 using WarehouseEngine.Api.Controllers;
 using WarehouseEngine.Api.Integration.Tests.Factories;
+using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Models.Auth;

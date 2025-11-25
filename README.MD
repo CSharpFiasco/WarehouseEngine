@@ -1,10 +1,14 @@
-﻿# Markdown File
+﻿
+# Warehouse Engine
 
-[Database-first](https://www.entityframeworktutorial.net/efcore/create-model-for-existing-database-in-ef-core.aspx) solutions assume the existence of a database. 
+This is not a production ready application. This is an example of a Warehouse Engine built using .NET 8, EF Core, and Clean Architecture principles.
 
-This is useful when trying to build an application based off of an existing database, for example, when rewriting an application or when performance is crucial, etc.
+## Database Deployment Strategy
 
-Please deploy this the database project of your choice then place the following in a appsettings.local.json file inside the [Api](WarehouseEngine.Api) project.
+This application uses Entity Framework Core (EF Core) for database management. The database is created and updated using EF Core migrations. The startup project and the data project are the same project in this case.
+
+You can get started by adding an appsettings.local.json file to the WarehouseEngine.Infrastructure project with the following content with your connection string:
+
 ```
 {
   "ConnectionStrings": {
@@ -13,6 +17,16 @@ Please deploy this the database project of your choice then place the following 
 }
 ```
 
-Because we use EF Core, a repo layer does not facilitate testing since we can test against MSSQLLOCALDB by creating a real instance of the db.
+## Testing Strategy
 
-Additionally, when we write integration tests, we can test against a real db instance which is spun up via TestContainers when the test begins.
+### WarehouseEngine.Api.Integration.Tests
+
+Integration tests against a real instance of the API using TestContainers for spinning up dependent services.
+
+### Warehouse.Domain.Tests
+
+Unit tests against the domain layer including entities, value objects, and domain services. Focuses on making sure they serialize correctly. TODO: this may not be needed anymore since we have moved to using DTOs.
+
+### Warehouse.Application.Tests
+
+Integration tests against the application and infrastructure layers using TestContainers for spinning up a SQL Server database. This tests business logic and data access logic such as querying data and turning them to DTOs.

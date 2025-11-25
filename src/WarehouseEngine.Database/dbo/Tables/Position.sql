@@ -1,5 +1,0 @@
-﻿CREATE TABLE [Position](
-    [Id]         UNIQUEIDENTIFIER      NOT NULL,
-    [Name]       NVARCHAR(80) NOT NULL,
-    CONSTRAINT [PK_Position] PRIMARY KEY CLUSTERED ([Id] ASC)
-);

@@ -5,6 +5,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Options;
 using WarehouseEngine.Api.Controllers;
 using WarehouseEngine.Api.Integration.Tests.Factories;
+using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Implementations;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Models.Auth;
@@ -299,12 +300,12 @@ public class VendorEndpointTests
         using var response = await client.GetAsync("openapi/v1.json", TestContext.Current.CancellationToken);
 
         // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
         var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         Assert.NotNull(responseContent);
         Assert.NotEmpty(responseContent);
-        
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
         // Verify it's valid JSON by deserializing
         var openApiDoc = JsonSerializer.Deserialize<JsonElement>(responseContent);
         Assert.True(openApiDoc.ValueKind == JsonValueKind.Object);

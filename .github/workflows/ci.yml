@@ -44,14 +44,14 @@ jobs:
         dotnet build src/WarehouseEngine.Infrastructure/WarehouseEngine.Infrastructure.csproj --configuration Release --no-restore
         dotnet build src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore
         dotnet build tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-restore
-        dotnet build tests/WarehouseEngine.Infrastructure.Tests/WarehouseEngine.Infrastructure.Tests.csproj --configuration Release --no-restore
+        dotnet build tests/WarehouseEngine.Application.Tests/WarehouseEngine.Application.Tests.csproj --configuration Release --no-restore
         dotnet build tests/WarehouseEngine.Api.Integration.Tests/WarehouseEngine.Api.Integration.Tests.csproj --configuration Release --no-restore
       
     - name: Run Domain tests
       run: dotnet test tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
       
     - name: Run Infrastructure tests (with SQL Server)
-      run: dotnet test tests/WarehouseEngine.Infrastructure.Tests/WarehouseEngine.Infrastructure.Tests.csproj --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      run: dotnet test tests/WarehouseEngine.Application.Tests/WarehouseEngine.Application.Tests.csproj --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
       env:
         ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=WarehouseEngineTest;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;"
       continue-on-error: true  # Allow this to fail gracefully if it can't connect to SQL Server

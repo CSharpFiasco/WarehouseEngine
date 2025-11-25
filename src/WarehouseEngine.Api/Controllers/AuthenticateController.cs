@@ -4,6 +4,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Domain.Models.Auth;
 
@@ -29,7 +30,7 @@ public class AuthenticateController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(typeof(AuthenticationResponse), 200)]
     [ProducesResponseType(401)]
     [ProducesResponseType(500)]
     public async Task<IActionResult> Login([FromBody] Login model)
@@ -53,7 +54,7 @@ public class AuthenticateController : ControllerBase
             string token = _jwtService.GetNewToken(authClaims);
             Response.Headers.Append("Bearer", token);
 
-            return Ok();
+            return Ok(new AuthenticationResponse(token));
         }
         return Unauthorized();
     }

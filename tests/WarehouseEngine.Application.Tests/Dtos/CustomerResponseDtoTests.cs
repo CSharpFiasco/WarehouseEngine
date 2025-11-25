@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
-using WarehouseEngine.Domain.Entities;
+using WarehouseEngine.Application.Dtos;
+using WarehouseEngine.Domain.Exceptions;
+using WarehouseEngine.Domain.ValueObjects;
 
-namespace WarehouseEngine.Domain.Tests;
+namespace WarehouseEngine.Application.Tests;
 public class CustomerResponseDtoTests
 {
     private readonly ITestOutputHelper _output;
@@ -79,5 +80,51 @@ public class CustomerResponseDtoTests
                 Assert.Equal(nameof(CustomerResponseDto.Name), member); return true;
             }
         );
+    }
+
+    [Fact]
+    public void GivenPostCustomerDto_WhenConvertedToCustomer_ThenConversionIsSuccessful()
+    {
+        //SETUP
+        var dto = new PostCustomerDto
+        {
+            Id = Guid.NewGuid(),
+            Name = "Test Customer",
+            ShippingAddress = new Address
+            {
+                Address1 = "123 Main St",
+                City = "Anytown",
+                State = "NY",
+                ZipCode = "12345"
+            },
+            DateCreated = DateTime.MinValue,
+            CreatedBy = "a"
+        };
+
+        //ATTEMPT
+        var customer = (Customer)dto;
+
+        //VERIFY
+        Assert.NotNull(customer);
+        Assert.Equal(dto.Name, customer.Name);
+        Assert.Equal(dto.ShippingAddress, customer.ShippingAddress);
+    }
+
+    [Fact]
+    public void GivenPostCustomerDtoWithNullShippingAddress_WhenConvertedToCustomer_ThenThrowEntityConversionException()
+    {
+        //SETUP
+        var dto = new PostCustomerDto
+        {
+            Name = "Test Customer",
+            ShippingAddress = null!,
+            DateCreated = DateTime.MinValue,
+            CreatedBy = "a"
+        };
+
+        //ATTEMPT
+        var ex = Assert.Throws<EntityConversionException<Customer, PostCustomerDto>>(() => (Customer)dto);
+
+
     }
 }

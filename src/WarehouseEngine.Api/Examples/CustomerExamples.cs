@@ -1,4 +1,4 @@
-﻿using WarehouseEngine.Domain.Entities;
+﻿using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Domain.ValueObjects;
 
 namespace WarehouseEngine.Api.Examples;

@@ -6,13 +6,11 @@ using WarehouseEngine.Api.Controllers;
 using WarehouseEngine.Api.Integration.Tests.Factories;
 using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Implementations;
-using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Models.Auth;
 using Xunit;
 
 namespace WarehouseEngine.Api.Integration.Tests;
 
-[Collection(nameof(DatabaseCollection))]
 public class CustomerEndpointTests
 {
     private readonly WarehouseEngineFactory _factory;

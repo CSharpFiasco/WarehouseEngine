@@ -149,7 +149,10 @@ public class Program
             app.UseDeveloperExceptionPage();
         }
 
-        await SeedData(app.Services);
+        if (env.EnvironmentName != "Integration")
+        {
+            await SeedData(app.Services);
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Integration")

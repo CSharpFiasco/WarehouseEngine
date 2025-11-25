@@ -1,22 +1,15 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using WarehouseEngine.Api.Integration.Tests.Factories;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.ValueObjects;
 using WarehouseEngine.Infrastructure.DataContext;
 using Xunit;
 
+[assembly: AssemblyFixture(typeof(WarehouseEngineFactory))]
+
 namespace WarehouseEngine.Api.Integration.Tests.Factories;
-
-[CollectionDefinition(nameof(DatabaseCollection))]
-public sealed class DatabaseCollection : ICollectionFixture<WarehouseEngineFactory>
-{
-    // Per https://xunit.net/docs/shared-context#collection-fixture
-
-    // This class has no code, and is never created. Its purpose is simply
-    // to be the place to apply [CollectionDefinition] and all the
-    // ICollectionFixture<> interfaces.
-}
 
 public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {

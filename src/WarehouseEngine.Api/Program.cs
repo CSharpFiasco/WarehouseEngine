@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 using WarehouseEngine.Api.Configuration;
+using WarehouseEngine.Api.Endpoints;
 using WarehouseEngine.Api.Examples;
 using WarehouseEngine.Api.Middleware.Auth;
 using WarehouseEngine.Application.Implementations;
@@ -112,7 +113,7 @@ public class Program
 
                 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/customize-openapi?view=aspnetcore-10.0#use-document-transformers
                 // Apply it as a requirement for all operations
-                foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations))
+                foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations ?? []))
                 {
                     if (operation.Value.Tags is not null && operation.Value.Tags.Any(tag => tag.Name == "Authenticate")) { continue; }
 
@@ -137,6 +138,8 @@ public class Program
                 return Task.CompletedTask;
             });
         });
+
+        services.AddValidation();
         services.AddProblemDetails();
 
         var app = builder.Build();
@@ -168,6 +171,7 @@ public class Program
 
 
         app.MapControllers();
+        CustomerEndpoints.Map(app);
 
 #if DEBUG
         app.UseCors("localhost");

@@ -48,10 +48,13 @@ public class PostCustomerDto
     /// </summary>
     [JsonIgnore]
     public Guid? Id { get; set; }
+
+    [Required]
     public required string Name { get; init; }
 
     public Address? BillingAddress { get; init; }
 
+    [Required]
     public required Address ShippingAddress { get; init; }
 
     [JsonIgnore]

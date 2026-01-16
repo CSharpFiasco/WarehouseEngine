@@ -23,7 +23,7 @@ public record PostVendorDto
     [JsonIgnore]
     public Guid? Id { get; set; }
 
-    public required string? Name { get; init; }
+    public string? Name { get; init; }
 
     public static explicit operator Vendor(PostVendorDto dto)
     {

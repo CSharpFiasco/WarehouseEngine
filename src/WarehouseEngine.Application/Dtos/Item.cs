@@ -49,12 +49,12 @@ public record PostItemDto
     {
         if (!dto.Id.HasValue)
         {
-            throw new EntityConversionException<Item, PostItemDto>("Item should should have Id when created");
+            throw new EntityConversionException<Item, PostItemDto>("Item should have Id when created");
         }
 
         if (dto.Id.Value == Guid.Empty)
         {
-            throw new EntityConversionException<Item, PostItemDto>("Item should should have Id when created");
+            throw new EntityConversionException<Item, PostItemDto>("Item should have Id when created");
         }
 
         return new Item

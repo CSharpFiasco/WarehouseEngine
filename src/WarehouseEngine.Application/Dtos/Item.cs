@@ -9,22 +9,16 @@ using WarehouseEngine.Domain.Exceptions;
 
 namespace WarehouseEngine.Application.Dtos;
 
-public class ItemResponseDto
+public record ItemResponseDto(Guid Id, string Sku, string Description, bool IsActive)
 {
-    public Guid Id { get; set; }
-    public required string Sku { get; set; }
-    public required string Description { get; set; }
-    public bool IsActive { get; set; }
-
     public static explicit operator ItemResponseDto(Item item)
     {
-        return new ItemResponseDto
-        {
-            Id = item.Id,
-            Sku = item.Sku,
-            Description = item.Description,
-            IsActive = item.IsActive
-        };
+        return new ItemResponseDto(
+            item.Id,
+            item.Sku,
+            item.Description,
+            item.IsActive
+        );
     }
 
     public static explicit operator Item(ItemResponseDto v)
@@ -39,13 +33,13 @@ public class ItemResponseDto
     }
 }
 
-public class PostItemDto
+public record PostItemDto
 {
     [JsonIgnore]
     public Guid? Id { get; set; }
-    public required string Sku { get; set; }
-    public required string Description { get; set; }
-    public bool IsActive { get; set; }
+    public required string Sku { get; init; }
+    public required string Description { get; init; }
+    public bool IsActive { get; init; }
 
     /// <summary>
     /// Converts PostItemDto to Item

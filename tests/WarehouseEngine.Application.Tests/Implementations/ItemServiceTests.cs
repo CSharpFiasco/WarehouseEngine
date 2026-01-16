@@ -76,14 +76,10 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
         var itemToSave = new PostItemDto
         {
             Id = item.Id,
-            Description = item.Description,
-            IsActive = item.IsActive,
-            Sku = item.Sku
+            Description = "TestDescriptionUpdateAsync",
+            IsActive = false,
+            Sku = newSku
         };
-
-        itemToSave.Sku = newSku;
-        itemToSave.Description = "TestDescriptionUpdateAsync";
-        itemToSave.IsActive = false;
 
         var sut = new ItemService(context);
         var result = await sut.UpdateAsync(TestDatabaseFixture.ItemId1, itemToSave);

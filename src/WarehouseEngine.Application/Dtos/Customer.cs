@@ -6,42 +6,32 @@ using WarehouseEngine.Domain.ValueObjects;
 
 namespace WarehouseEngine.Application.Dtos;
 
-public class CustomerResponseDto
+public record CustomerResponseDto(
+    Guid Id,
+    [property: Required] string Name,
+    Address? BillingAddress,
+    Address ShippingAddress,
+    DateTime DateCreated,
+    string CreatedBy,
+    DateTime? DateModified,
+    string? ModifiedBy)
 {
-    public required Guid Id { get; init; }
-
-    [Required]
-    public required string Name { get; init; }
-
-    public Address? BillingAddress { get; init; }
-
-    public required Address ShippingAddress { get; init; }
-
-    public required DateTime DateCreated { get; init; }
-
-    public required string CreatedBy { get; init; }
-
-    public DateTime? DateModified { get; init; }
-
-    public string? ModifiedBy { get; init; }
-
     public static explicit operator CustomerResponseDto(Customer customer)
     {
-        return new CustomerResponseDto
-        {
-            Id = customer.Id,
-            Name = customer.Name,
-            BillingAddress = customer.BillingAddress,
-            ShippingAddress = customer.ShippingAddress,
-            DateCreated = customer.DateCreated,
-            CreatedBy = customer.CreatedBy,
-            DateModified = customer.DateModified,
-            ModifiedBy = customer.ModifiedBy
-        };
+        return new CustomerResponseDto(
+            customer.Id,
+            customer.Name,
+            customer.BillingAddress,
+            customer.ShippingAddress,
+            customer.DateCreated,
+            customer.CreatedBy,
+            customer.DateModified,
+            customer.ModifiedBy
+        );
     }
 }
 
-public class PostCustomerDto
+public record PostCustomerDto
 {
     /// <summary>
     /// This should be null when deserialized from a request

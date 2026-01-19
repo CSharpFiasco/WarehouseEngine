@@ -4,23 +4,18 @@ using WarehouseEngine.Domain.Exceptions;
 
 namespace WarehouseEngine.Application.Dtos;
 
-public class VendorResponseDto
+public record VendorResponseDto(Guid Id, string? Name)
 {
-    public required Guid Id { get; init; }
-
-    public string? Name { get; init; }
-
     public static explicit operator VendorResponseDto(Vendor vendor)
     {
-        return new VendorResponseDto
-        {
-            Id = vendor.Id,
-            Name = vendor.Name
-        };
+        return new VendorResponseDto(
+            vendor.Id,
+            vendor.Name
+        );
     }
 }
 
-public class PostVendorDto
+public record PostVendorDto
 {
     /// <summary>
     /// This should be null when deserialized from a request

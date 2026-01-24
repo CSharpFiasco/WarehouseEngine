@@ -1,11 +1,10 @@
 <app-top-nav></app-top-nav>
 <app-sidenav>
-  @if ({ value: loginStatus$ | async }; as status) {
-    @if (status.value === 'logging in') {
-      <mat-spinner></mat-spinner>
-    }
-    @if (status.value !== 'logging in') {
-      <router-outlet></router-outlet>
-    }
+  @let loginStatus = (loginStatus$ | async);
+  @if (loginStatus === 'logging in') {
+  <mat-spinner></mat-spinner>
+  }
+  @if (loginStatus !== 'logging in') {
+  <router-outlet></router-outlet>
   }
 </app-sidenav>

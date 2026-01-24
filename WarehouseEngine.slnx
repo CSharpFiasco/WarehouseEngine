@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".github/workflows/api-ci.yml" />
+    <File Path=".github/workflows/build-only.yml" />
+    <File Path=".github/workflows/ci.yml" />
+    <File Path=".gitignore" />
+    <File Path="README.MD" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/WarehouseEngine.Api/WarehouseEngine.Api.csproj" />
+    <Project Path="src/WarehouseEngine.Application/WarehouseEngine.Application.csproj" />
+    <Project Path="src/WarehouseEngine.Domain/WarehouseEngine.Domain.csproj" />
+    <Project Path="src/WarehouseEngine.Infrastructure/WarehouseEngine.Infrastructure.csproj" />
+    <Project Path="src/WarehouseEngine.UI/WarehouseEngine.UI.esproj">
+      <Build />
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WarehouseEngine.Api.Integration.Tests/WarehouseEngine.Api.Integration.Tests.csproj" />
+    <Project Path="tests/WarehouseEngine.Application.Tests/WarehouseEngine.Application.Tests.csproj" />
+    <Project Path="tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj" />
+  </Folder>
+</Solution>

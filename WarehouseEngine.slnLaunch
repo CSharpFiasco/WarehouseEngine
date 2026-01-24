@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "UI and API",
+    "Projects": [
+      {
+        "Path": "src\\WarehouseEngine.Api\\WarehouseEngine.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\WarehouseEngine.UI\\WarehouseEngine.UI.esproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

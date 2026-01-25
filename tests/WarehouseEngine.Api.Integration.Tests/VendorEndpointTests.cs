@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
-using WarehouseEngine.Api.Controllers;
+using WarehouseEngine.Api.Endpoints;
 using WarehouseEngine.Api.Integration.Tests.Factories;
 using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Implementations;
@@ -23,28 +23,29 @@ public class VendorEndpointTests
     }
 
     [Fact(DisplayName = $"""
-        Given a request to the {nameof(VendorController)}
+        Given a request to the {nameof(VendorEndpoints)}
         When the request is unauthorized
         Then the response should have a 401 status code
         """)]
-    public async Task VendorController_NoAuth_Unauthorized()
+    public async Task VendorEndpoints_NoAuth_Unauthorized()
     {
         // Arrange
         using var client = _factory.CreateClient();
         // Act
-        using var response = await client.GetAsync("api/v1/Vendor", TestContext.Current.CancellationToken);
+        var guid = Guid.NewGuid();
+        using var response = await client.GetAsync($"api/v1/vendor/{guid}", TestContext.Current.CancellationToken);
         // Assert
         // response should have 401 status code
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact(DisplayName = $"""
-        Given a request to the {nameof(VendorController)}
+        Given a request to the {nameof(VendorEndpoints)}
         When the request is authorized
         And when the requested resource is not found
         Then the response should have a 404 status code
         """)]
-    public async Task VendorController_Auth_NotFound()
+    public async Task VendorEndpoints_Auth_NotFound()
     {
         var options = Options.Create(new JwtConfiguration
         {
@@ -63,19 +64,19 @@ public class VendorEndpointTests
 
         // Act
         var guid = Guid.NewGuid();
-        using var response = await client.GetAsync($"api/v1/Vendor?id={guid}", TestContext.Current.CancellationToken);
+        using var response = await client.GetAsync($"api/v1/vendor/{guid}", TestContext.Current.CancellationToken);
         // Assert
         // response should have 404 status code
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
     [Fact(DisplayName = $"""
-        Given a request to the {nameof(VendorController)}
+        Given a request to the {nameof(VendorEndpoints)}
         When the request is authorized
         And when the requested resource is found
         Then the response should have a 200 status code
         """)]
-    public async Task VendorController_Auth_Found()
+    public async Task VendorEndpoints_Auth_Found()
     {
         var options = Options.Create(new JwtConfiguration
         {
@@ -93,7 +94,7 @@ public class VendorEndpointTests
         client.DefaultRequestHeaders.Authorization = authHeader;
 
         // Act
-        using var response = await client.GetAsync($"api/v1/Vendor?id={WarehouseEngineFactory.VendorId1}", TestContext.Current.CancellationToken);
+        using var response = await client.GetAsync($"api/v1/vendor/{WarehouseEngineFactory.VendorId1}", TestContext.Current.CancellationToken);
         // Assert
         // response should have 200 status code
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -106,7 +107,7 @@ public class VendorEndpointTests
         Then the response should have a 200 status code
         And the vendor should be created
         """)]
-    public async Task VendorController_Create_Success()
+    public async Task VendorEndpoints_Create_Success()
     {
         var options = Options.Create(new JwtConfiguration
         {
@@ -128,7 +129,7 @@ public class VendorEndpointTests
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         // Act
-        using var response = await client.PostAsync("api/v1/Vendor", content, TestContext.Current.CancellationToken);
+        using var response = await client.PostAsync("api/v1/vendor", content, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -147,7 +148,7 @@ public class VendorEndpointTests
         And when the vendor exists
         Then the response should have a 204 status code
         """)]
-    public async Task VendorController_Delete_Success()
+    public async Task VendorEndpoints_Delete_Success()
     {
         var options = Options.Create(new JwtConfiguration
         {
@@ -165,7 +166,7 @@ public class VendorEndpointTests
         client.DefaultRequestHeaders.Authorization = authHeader;
 
         // Act
-        using var response = await client.DeleteAsync($"api/v1/Vendor?id={WarehouseEngineFactory.VendorId2}", TestContext.Current.CancellationToken);
+        using var response = await client.DeleteAsync($"api/v1/vendor/{WarehouseEngineFactory.VendorId2}", TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
@@ -177,7 +178,7 @@ public class VendorEndpointTests
         Then the response should have a 200 status code
         And return the count
         """)]
-    public async Task VendorController_Count_Success()
+    public async Task VendorEndpoints_Count_Success()
     {
         var options = Options.Create(new JwtConfiguration
         {
@@ -195,7 +196,7 @@ public class VendorEndpointTests
         client.DefaultRequestHeaders.Authorization = authHeader;
 
         // Act
-        using var response = await client.GetAsync("api/v1/Vendor/count", TestContext.Current.CancellationToken);
+        using var response = await client.GetAsync("api/v1/vendor/count", TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -212,7 +213,7 @@ public class VendorEndpointTests
         Then the response should have a 200 status code
         And return the vendor list
         """)]
-    public async Task VendorController_GetAll_Success()
+    public async Task VendorEndpoints_GetAll_Success()
     {
         var options = Options.Create(new JwtConfiguration
         {
@@ -230,7 +231,7 @@ public class VendorEndpointTests
         client.DefaultRequestHeaders.Authorization = authHeader;
 
         // Act
-        using var response = await client.GetAsync("api/v1/Vendor/list", TestContext.Current.CancellationToken);
+        using var response = await client.GetAsync("api/v1/vendor/list", TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -249,7 +250,7 @@ public class VendorEndpointTests
         Then the response should have a 200 status code
         And the vendor should be updated
         """)]
-    public async Task VendorController_Update_Success()
+    public async Task VendorEndpoints_Update_Success()
     {
         var options = Options.Create(new JwtConfiguration
         {
@@ -271,7 +272,7 @@ public class VendorEndpointTests
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         // Act
-        using var response = await client.PutAsync($"api/v1/Vendor/{WarehouseEngineFactory.VendorId1}", content, TestContext.Current.CancellationToken);
+        using var response = await client.PutAsync($"api/v1/vendor/{WarehouseEngineFactory.VendorId1}", content, TestContext.Current.CancellationToken);
 
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

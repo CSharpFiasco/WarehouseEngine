@@ -1,4 +1,5 @@
 ﻿using WarehouseEngine.Application.Dtos;
+using WarehouseEngine.Application.Interfaces;
 using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Application.Tests.Implementations;
@@ -7,6 +8,7 @@ namespace WarehouseEngine.Application.Tests.Implementations;
 public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
 {
     private readonly TestDatabaseFixture _fixture;
+    private readonly Mock<IIdGenerator> _idGenerator = new Mock<IIdGenerator>();
     public ItemServiceTests(TestDatabaseFixture fixture)
     {
         _fixture = fixture;
@@ -34,7 +36,7 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
 
         context.ChangeTracker.Clear();
 
-        var sut = new ItemService(context);
+        var sut = new ItemService(context, _idGenerator.Object);
         var result = await sut.GetByIdAsync(newGuidId);
 
         context.ChangeTracker.Clear();
@@ -52,12 +54,13 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
 
         var item = new PostItemDto
         {
-            Id = Guid.NewGuid(),
             Description = "Test",
             Sku = newSku
         };
 
-        var sut = new ItemService(context);
+        _idGenerator.Setup(g => g.NewId()).Returns(Guid.NewGuid());
+
+        var sut = new ItemService(context, _idGenerator.Object);
         await sut.AddAsync(item);
 
         context.ChangeTracker.Clear();
@@ -85,7 +88,7 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
         itemToSave.Description = "TestDescriptionUpdateAsync";
         itemToSave.IsActive = false;
 
-        var sut = new ItemService(context);
+        var sut = new ItemService(context, _idGenerator.Object);
         var result = await sut.UpdateAsync(TestDatabaseFixture.ItemId1, itemToSave);
 
         var itemSaved = Assert.IsType<ItemResponseDto>(result.Value);

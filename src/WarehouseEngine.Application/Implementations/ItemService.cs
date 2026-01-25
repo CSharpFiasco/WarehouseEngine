@@ -9,9 +9,12 @@ namespace WarehouseEngine.Application.Implementations;
 public class ItemService : IItemService
 {
     private readonly IWarehouseEngineContext _context;
-    public ItemService(IWarehouseEngineContext context)
+    private readonly IIdGenerator _idGenerator;
+
+    public ItemService(IWarehouseEngineContext context, IIdGenerator idGenerator)
     {
         _context = context;
+        _idGenerator = idGenerator;
     }
 
     public async Task<OneOf<ItemResponseDto, EntityDoesNotExistResult>> GetByIdAsync(Guid id)
@@ -26,6 +29,12 @@ public class ItemService : IItemService
 
     public async Task<OneOf<ItemResponseDto, EntityAlreadyExistsResult>> AddAsync(PostItemDto item)
     {
+        if (item.Id is not null)
+        {
+            throw new InvalidOperationException("Item should not have an id when created");
+        }
+        item.Id = _idGenerator.NewId();
+
         if (await _context.Item.AnyAsync(i => item.Id == i.Id))
             return new EntityAlreadyExistsResult(typeof(Item));
 
@@ -50,6 +59,11 @@ public class ItemService : IItemService
         await _context.SaveChangesAsync();
 
         return (ItemResponseDto)entityToUpdate;
+    }
+
+    public async Task<int> GetCount()
+    {
+        return await _context.Item.CountAsync();
     }
 
     public async Task DeleteAsync(Guid id)

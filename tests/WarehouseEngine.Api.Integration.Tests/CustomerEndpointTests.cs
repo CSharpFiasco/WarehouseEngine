@@ -3,7 +3,6 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
-using WarehouseEngine.Api.Controllers;
 using WarehouseEngine.Api.Integration.Tests.Factories;
 using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Implementations;

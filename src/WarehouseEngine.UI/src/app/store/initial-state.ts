@@ -3,11 +3,11 @@ import { initialJwtState, loggingInReducer } from './auth/auth.reducers';
 import type { ActionReducerMap } from '@ngrx/store';
 
 export type WarehouseEngineStore = {
-  auth: typeof initialJwtState;
-  navigation: typeof initialNavigationState;
+  readonly auth: typeof initialJwtState;
+  readonly navigation: typeof initialNavigationState;
 };
 
-export const reducers: ActionReducerMap<WarehouseEngineStore> = {
+export const reducers = {
   auth: loggingInReducer,
   navigation: navigationReducer,
-} as const;
+} as const satisfies ActionReducerMap<WarehouseEngineStore>;

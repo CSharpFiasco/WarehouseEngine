@@ -171,7 +171,10 @@ public class Program
 
 
         app.MapControllers();
+        AuthenticateEndpoints.Map(app);
         CustomerEndpoints.Map(app);
+        ItemEndpoints.Map(app);
+        VendorEndpoints.Map(app);
 
 #if DEBUG
         app.UseCors("localhost");

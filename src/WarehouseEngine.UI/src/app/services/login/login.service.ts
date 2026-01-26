@@ -19,10 +19,10 @@ export class LoginService {
         },
         { observe: 'response' }
       )
-      .pipe(map(this.handleLoginResponse), catchError(this.handleError));
+      .pipe(map(this.#handleLoginResponse), catchError(this.#handleError));
   }
 
-  private handleLoginResponse(response: HttpResponse<JwtTokenResponse>): JwtTokenResponse {
+  #handleLoginResponse(response: HttpResponse<JwtTokenResponse>): JwtTokenResponse {
     const isUnauthorized = response.status === 401;
     if (isUnauthorized) {
       return { type: 'Unauthorized' };
@@ -36,16 +36,13 @@ export class LoginService {
     return { type: 'Success', jwt: bearerToken };
   }
 
-  private handleError(error: HttpErrorResponse): Observable<JwtTokenResponse> {
-    if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      console.error(`Backend returned code ${error.status}, body was: `, error.error);
+  #handleError(error: unknown): Observable<JwtTokenResponse> {
+    if (!(error instanceof HttpErrorResponse)) {
+      console.error('An unexpected error occurred:', error);
+      return of({ type: 'Failed', error: 'An unexpected error occurred. Please try again later.' });
     }
-    // Return an observable with a user-facing error message.
-    return of({ type: 'Failed', error: 'Something bad happened; please try again later.' });
+
+    console.error(`Backend returned code ${error.status}, body was: `, error.error);
+    return of({ type: 'Failed', error: 'Something went wrong. Please try again later.' });
   }
 }

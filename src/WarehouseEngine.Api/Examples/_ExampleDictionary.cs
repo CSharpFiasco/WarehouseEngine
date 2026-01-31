@@ -10,6 +10,7 @@ public static class ExampleDictionary
     {
         { typeof(CustomerResponseDto), JsonSerializer.SerializeToNode(CustomerExamples.CustomerResponseDto, JsonSerializerOptions.Web) },
         { typeof(VendorResponseDto), JsonSerializer.SerializeToNode(VendorExamples.VendorResponseDto, JsonSerializerOptions.Web) },
+        { typeof(PositionResponseDto), JsonSerializer.SerializeToNode(PositionExamples.PositionResponseDto, JsonSerializerOptions.Web) },
         { typeof(AuthenticationResponse), JsonSerializer.SerializeToNode(AuthenticationExamples.AuthenticationResultExample, JsonSerializerOptions.Web)  }
     };
 }

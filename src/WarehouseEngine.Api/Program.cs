@@ -54,6 +54,7 @@ public class Program
         services.AddScoped<IItemService, ItemService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IVendorService, VendorService>();
+        services.AddScoped<IPositionService, PositionService>();
         services.AddTransient<IIdGenerator, SequentialIdGenerator>();
 
         services.AddAuthentication(options =>
@@ -174,6 +175,7 @@ public class Program
         AuthenticateEndpoints.Map(app);
         CustomerEndpoints.Map(app);
         ItemEndpoints.Map(app);
+        PositionEndpoints.Map(app);
         VendorEndpoints.Map(app);
 
 #if DEBUG

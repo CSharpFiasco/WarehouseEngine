@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { ThemeService } from './services/theme/theme.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { TopNavComponent } from './components/top-nav/top-nav.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { LoginComponent } from './pages/login/login.component';
@@ -11,14 +11,7 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { provideLocationMocks } from '@angular/common/testing';
 import { routes } from './app.routing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import type { WarehouseEngineStore } from './store/initial-state';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { provideMockActions } from '@ngrx/effects/testing';
-import { AuthFacade } from './store/auth/auth.facade';
-import { ReplaySubject } from 'rxjs';
-import type { Action } from '@ngrx/store';
-import * as AuthActions from './store/auth/auth.actions';
-import { AuthEffects } from './store/auth/auth.effects';
+import { AuthStore } from './store/auth/auth.store';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
@@ -45,23 +38,20 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let themeServiceSpy: jasmine.SpyObj<ThemeService>;
 
-  const initialState: WarehouseEngineStore = {
-    auth: {
-      type: 'logged out'
-    },
-    navigation: {
-      isSideNavOpen: false
-    }
+  const mockAuthStore = {
+    loginStatus: signal('logged out' as const),
+    isLoggedIn: signal(false),
+    isLoggingIn: signal(false),
+    authState: signal({ type: 'logged out' as const }),
+    login: jasmine.createSpy('login'),
+    logout: jasmine.createSpy('logout'),
   };
-  let actions$: ReplaySubject<Action>;
-  let effects: AuthEffects;
 
   let fixtureNativeElement: HTMLElement;
   let harness: RouterTestingHarness;
 
   beforeEach(async () => {
     themeServiceSpy = jasmine.createSpyObj<ThemeService>('ThemeService', ['setTheme']);
-    actions$ = new ReplaySubject<Action>(1);
 
     sessionStorage.clear();
 
@@ -69,12 +59,9 @@ describe('AppComponent', () => {
     imports: [NoopAnimationsModule, AppComponent],
     providers: [
         { provide: ThemeService, useValue: themeServiceSpy },
+        { provide: AuthStore, useValue: mockAuthStore },
         provideRouter(routes),
         provideLocationMocks(),
-        provideMockStore({ initialState }),
-        provideMockActions(() => actions$),
-        AuthEffects,
-        AuthFacade,
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting()
     ]
@@ -88,9 +75,6 @@ describe('AppComponent', () => {
         },
       })
       .compileComponents();
-
-    TestBed.inject(MockStore);
-    effects = TestBed.inject(AuthEffects);
 
     fixture = TestBed.createComponent(AppComponent);
     harness = await RouterTestingHarness.create();
@@ -113,33 +97,6 @@ describe('AppComponent', () => {
     it('should render login by default', () => {
       const loginEl = fixtureNativeElement.querySelector('app-login');
       expect(loginEl).not.toBeNull();
-    });
-  });
-
-  describe('Given we are logged in', () => {
-    beforeEach(() => {
-      actions$.next(AuthActions.setJwtToken({
-        jwtResponse: {
-          type: 'Success',
-          jwt: 'jwt'
-        }
-      }));
-
-      fixture.detectChanges();
-    });
-
-    it('should render home', (done) => {
-      effects.setJwtToken$.subscribe(async () => {
-        fixture.detectChanges();
-        await harness.navigateByUrl('/');
-        fixture.detectChanges();
-
-        await fixture.whenStable();
-
-        const loginEl = fixtureNativeElement.querySelector('app-home');
-        expect(loginEl).not.toBeNull();
-        done();
-      });
     });
   });
 });

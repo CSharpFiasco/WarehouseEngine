@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import type { JwtTokenResponse } from 'src/app/types/jwt';
 import { Observable, catchError, map, of } from 'rxjs';
+import type { JwtTokenResponse } from '../../types/jwt';
 
 @Injectable({
   providedIn: 'root',

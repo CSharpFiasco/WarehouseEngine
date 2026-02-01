@@ -2,33 +2,38 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidenavComponent } from './sidenav.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { provideMockStore } from '@ngrx/store/testing';
-import type { WarehouseEngineStore } from 'src/app/store/initial-state';
-import { LayoutFacade } from 'src/app/store/layout/facade';
-import { AuthFacade } from 'src/app/store/auth/auth.facade';
 import { provideRouter } from '@angular/router';
-import { routes } from 'src/app/app.routing';
+import { signal } from '@angular/core';
+import { LayoutStore } from '../../store/layout/layout.store';
+import { AuthStore } from '../../store/auth/auth.store';
+import { routes } from '../../app.routing';
 
 describe('SidenavComponent', () => {
   let component: SidenavComponent;
   let fixture: ComponentFixture<SidenavComponent>;
 
-  const initialState: WarehouseEngineStore = {
-    auth: {
-      type: 'logged out'
-    },
-    navigation: {
-      isSideNavOpen: false
-    }
+  const mockLayoutStore = {
+    sideNavOpen: signal(false),
+    isSideNavOpen: signal(false),
+    toggleSideNav: jasmine.createSpy('toggleSideNav'),
+    openSideNav: jasmine.createSpy('openSideNav'),
+    closeSideNav: jasmine.createSpy('closeSideNav'),
+  };
+
+  const mockAuthStore = {
+    loginStatus: signal('logged out'),
+    isLoggedIn: signal(false),
+    isLoggingIn: signal(false),
+    login: jasmine.createSpy('login'),
+    logout: jasmine.createSpy('logout'),
   };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        LayoutFacade,
-        AuthFacade,
+        { provide: LayoutStore, useValue: mockLayoutStore },
+        { provide: AuthStore, useValue: mockAuthStore },
         provideRouter(routes),
-        provideMockStore({ initialState }),
       ],
       imports: [NoopAnimationsModule, SidenavComponent],
     });

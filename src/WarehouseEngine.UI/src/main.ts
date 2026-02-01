@@ -1,6 +1,6 @@
 import { AppComponent } from './app/app.component';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { importProvidersFrom } from '@angular/core';
+import { importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 
 import { ThemeService } from './app/services/theme/theme.service';
 import { StyleManagerService } from './app/services/style-manager/style-manager.service';
@@ -12,7 +12,7 @@ import { provideRouter } from '@angular/router';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(BrowserAnimationsModule),
+    provideZoneChangeDetection(),importProvidersFrom(BrowserAnimationsModule),
     provideHttpClient(),
     ThemeService,
     StyleManagerService,

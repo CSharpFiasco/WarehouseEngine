@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
-import { LoginService } from 'src/app/services/login/login.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthStore } from 'src/app/store/auth/auth.store';
 import { provideRouter } from '@angular/router';
 import { signal } from '@angular/core';
+import { LoginService } from '../../services/login/login.service';
+import { AuthStore } from '../../store/auth/auth.store';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;

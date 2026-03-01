@@ -1,12 +1,10 @@
-
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
-import { AuthFacade } from 'src/app/store/auth/auth.facade';
+import { AuthStore } from '../../store/auth/auth.store';
 
 @Component({
     selector: 'app-login',
@@ -15,8 +13,7 @@ import { AuthFacade } from 'src/app/store/auth/auth.facade';
     imports: [ReactiveFormsModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule]
 })
 export class LoginComponent {
-  private readonly loginFacade: AuthFacade = inject(AuthFacade);
-  private readonly router: Router = inject(Router);
+  private readonly authStore = inject(AuthStore);
 
   private readonly demoUsername = 'demo';
   // deepcode ignore NoHardcodedPasswords: This is demo credentials only
@@ -35,6 +32,9 @@ export class LoginComponent {
   protected login(): void {
     if (!this.credentials.valid) return;
 
-    this.loginFacade.login(this.credentials.controls.username.value, this.credentials.controls.password.value);
+    this.authStore.login({
+      username: this.credentials.controls.username.value,
+      password: this.credentials.controls.password.value,
+    });
   }
 }

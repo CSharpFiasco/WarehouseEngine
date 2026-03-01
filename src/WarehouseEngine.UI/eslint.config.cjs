@@ -91,7 +91,6 @@ module.exports = [{
             maxComplexity: 3,
         }],
 
-        "@angular-eslint/template/no-call-expression": "error",
         "@angular-eslint/template/no-inline-styles": "warn",
         "@angular-eslint/template/no-duplicate-attributes": "error",
         "@angular-eslint/template/attributes-order": "warn",

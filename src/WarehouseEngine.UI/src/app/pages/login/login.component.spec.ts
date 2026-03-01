@@ -1,31 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
-import { LoginService } from 'src/app/services/login/login.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { AuthFacade } from 'src/app/store/auth/auth.facade';
-import { provideMockStore } from '@ngrx/store/testing';
-import type { WarehouseEngineStore } from 'src/app/store/initial-state';
+import { provideRouter } from '@angular/router';
+import { signal } from '@angular/core';
+import { LoginService } from '../../services/login/login.service';
+import { AuthStore } from '../../store/auth/auth.store';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 
-  const initialState: WarehouseEngineStore = {
-    auth: {
-      type: 'logged out'
-    },
-    navigation: {
-      isSideNavOpen: false
-    }
+  const mockAuthStore = {
+    loginStatus: signal('logged out'),
+    isLoggedIn: signal(false),
+    isLoggingIn: signal(false),
+    login: jasmine.createSpy('login'),
+    logout: jasmine.createSpy('logout'),
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [
         { provide: LoginService, useValue: {} },
-        AuthFacade,
-        provideMockStore({ initialState }),
+        { provide: AuthStore, useValue: mockAuthStore },
+        provideRouter([]),
       ],
       imports: [NoopAnimationsModule, LoginComponent],
     }).compileComponents();

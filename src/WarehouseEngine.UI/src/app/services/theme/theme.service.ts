@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { StyleManagerService } from '../style-manager/style-manager.service';
-import type { Theme } from 'src/app/types/default-theme';
 import { BehaviorSubject } from 'rxjs';
+import type { Theme } from '../../types/default-theme';
 
 @Injectable({
   providedIn: 'root',

@@ -1,22 +1,21 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, type Signal } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
-import { LayoutFacade } from 'src/app/store/layout/facade';
-import { AuthFacade } from 'src/app/store/auth/auth.facade';
+import { LayoutStore } from '../../store/layout/layout.store';
+import { AuthStore } from '../../store/auth/auth.store';
 
 @Component({
     selector: 'app-sidenav',
     templateUrl: './sidenav.component.html',
     styleUrls: ['./sidenav.component.scss'],
-    imports: [CommonModule, MatSidenavModule, MatListModule, RouterModule]
+    imports: [MatSidenavModule, MatListModule, RouterModule]
 })
 export class SidenavComponent {
-  private readonly navigationFacade: LayoutFacade = inject(LayoutFacade);
-  private readonly authFacade: AuthFacade = inject(AuthFacade);
+  private readonly layoutStore = inject(LayoutStore);
+  private readonly authStore = inject(AuthStore);
 
-  protected sideNavOpen$ = this.navigationFacade.sideNavOpen$;
+  protected readonly isSideNavOpen: Signal<boolean> = this.layoutStore.isSideNavOpen;
 
   protected logoutOnKeyup(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
@@ -25,6 +24,6 @@ export class SidenavComponent {
   }
 
   protected logout(): void {
-    this.authFacade.unsetJwtToken();
+    this.authStore.logout();
   }
 }

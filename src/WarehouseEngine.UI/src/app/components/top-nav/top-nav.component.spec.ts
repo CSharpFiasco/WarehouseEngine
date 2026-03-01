@@ -1,17 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TopNavComponent } from './top-nav.component';
-import { LayoutFacade } from 'src/app/store/layout/facade';
-import { ThemeService } from 'src/app/services/theme/theme.service';
+import { signal } from '@angular/core';
+import { LayoutStore } from '../../store/layout/layout.store';
+import { ThemeService } from '../../services/theme/theme.service';
 
 describe('TopNavComponent', () => {
   let component: TopNavComponent;
   let fixture: ComponentFixture<TopNavComponent>;
 
+  const mockLayoutStore = {
+    sideNavOpen: signal(false),
+    isSideNavOpen: signal(false),
+    toggleSideNav: jasmine.createSpy('toggleSideNav'),
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: LayoutFacade, useValue: {} },
+        { provide: LayoutStore, useValue: mockLayoutStore },
         { provide: ThemeService, useValue: {} },
       ],
       imports: [TopNavComponent],

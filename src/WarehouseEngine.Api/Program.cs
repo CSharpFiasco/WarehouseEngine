@@ -55,6 +55,7 @@ public class Program
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IVendorService, VendorService>();
         services.AddScoped<IPositionService, PositionService>();
+        services.AddScoped<IWarehouseService, WarehouseService>();
         services.AddTransient<IIdGenerator, SequentialIdGenerator>();
 
         services.AddAuthentication(options =>
@@ -177,6 +178,7 @@ public class Program
         ItemEndpoints.Map(app);
         PositionEndpoints.Map(app);
         VendorEndpoints.Map(app);
+        WarehouseEndpoints.Map(app);
 
 #if DEBUG
         app.UseCors("localhost");

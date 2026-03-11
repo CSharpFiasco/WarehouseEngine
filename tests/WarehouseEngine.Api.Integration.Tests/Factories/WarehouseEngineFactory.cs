@@ -25,6 +25,8 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
     public static readonly Guid VendorId2 = Guid.Parse("20000000-0000-0000-0000-000000000002");
     public static readonly Guid PositionId1 = Guid.Parse("30000000-0000-0000-0000-000000000001");
     public static readonly Guid PositionId2 = Guid.Parse("30000000-0000-0000-0000-000000000002");
+    public static readonly Guid WarehouseId1 = Guid.Parse("40000000-0000-0000-0000-000000000001");
+    public static readonly Guid WarehouseId2 = Guid.Parse("40000000-0000-0000-0000-000000000002");
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -98,6 +100,11 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
         context.Position.AddRange(
             new Position { Id = PositionId1, Name = "Test Position 1" },
             new Position { Id = PositionId2, Name = "Test Position 2" }
+        );
+
+        context.Warehouse.AddRange(
+            new Warehouse { Id = WarehouseId1, Name = "Warehouse 1" },
+            new Warehouse { Id = WarehouseId2, Name = "Warehouse 2" }
         );
     }
 }

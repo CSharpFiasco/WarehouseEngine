@@ -17,6 +17,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-top-nav, mat-spinner',
   standalone: true,
+  template: ''
 })
 class StubComponent { }
 @Component({

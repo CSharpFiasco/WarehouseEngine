@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidenavComponent } from './sidenav.component';
@@ -15,17 +16,17 @@ describe('SidenavComponent', () => {
   const mockLayoutStore = {
     sideNavOpen: signal(false),
     isSideNavOpen: signal(false),
-    toggleSideNav: jasmine.createSpy('toggleSideNav'),
-    openSideNav: jasmine.createSpy('openSideNav'),
-    closeSideNav: jasmine.createSpy('closeSideNav'),
+    toggleSideNav: vi.fn(),
+    openSideNav: vi.fn(),
+    closeSideNav: vi.fn(),
   };
 
   const mockAuthStore = {
     loginStatus: signal('logged out'),
     isLoggedIn: signal(false),
     isLoggingIn: signal(false),
-    login: jasmine.createSpy('login'),
-    logout: jasmine.createSpy('logout'),
+    login: vi.fn(),
+    logout: vi.fn(),
   };
 
   beforeEach(() => {

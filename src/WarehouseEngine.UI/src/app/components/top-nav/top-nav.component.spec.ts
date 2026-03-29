@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TopNavComponent } from './top-nav.component';
@@ -12,7 +13,7 @@ describe('TopNavComponent', () => {
   const mockLayoutStore = {
     sideNavOpen: signal(false),
     isSideNavOpen: signal(false),
-    toggleSideNav: jasmine.createSpy('toggleSideNav'),
+    toggleSideNav: vi.fn(),
   };
 
   beforeEach(() => {

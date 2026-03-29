@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
@@ -15,8 +16,8 @@ describe('LoginComponent', () => {
     loginStatus: signal('logged out'),
     isLoggedIn: signal(false),
     isLoggingIn: signal(false),
-    login: jasmine.createSpy('login'),
-    logout: jasmine.createSpy('logout'),
+    login: vi.fn(),
+    logout: vi.fn(),
   };
 
   beforeEach(async () => {

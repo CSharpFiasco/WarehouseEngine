@@ -1,7 +1,7 @@
+import { vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { ThemeService } from './services/theme/theme.service';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, signal } from '@angular/core';
 import { TopNavComponent } from './components/top-nav/top-nav.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
@@ -37,27 +37,27 @@ class LoginMockComponent { }
 describe('AppComponent', () => {
   let app: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  let themeServiceSpy: jasmine.SpyObj<ThemeService>;
+  let themeServiceSpy: { setTheme: ReturnType<typeof vi.fn> };
 
   const mockAuthStore = {
     loginStatus: signal('logged out' as const),
     isLoggedIn: signal(false),
     isLoggingIn: signal(false),
     authState: signal({ type: 'logged out' as const }),
-    login: jasmine.createSpy('login'),
-    logout: jasmine.createSpy('logout'),
+    login: vi.fn(),
+    logout: vi.fn(),
   };
 
   let fixtureNativeElement: HTMLElement;
   let harness: RouterTestingHarness;
 
   beforeEach(async () => {
-    themeServiceSpy = jasmine.createSpyObj<ThemeService>('ThemeService', ['setTheme']);
+    themeServiceSpy = { setTheme: vi.fn() };
 
     sessionStorage.clear();
 
     await TestBed.configureTestingModule({
-    imports: [NoopAnimationsModule, AppComponent],
+    imports: [AppComponent],
     providers: [
         { provide: ThemeService, useValue: themeServiceSpy },
         { provide: AuthStore, useValue: mockAuthStore },

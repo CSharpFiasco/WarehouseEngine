@@ -1,10 +1,15 @@
 import { Router, type CanActivateFn } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { inject } from '@angular/core';
+import { AuthStore } from '../store/auth/auth.store';
 
 export const isAuthenticatedGuard: CanActivateFn = () => {
-  const authService = inject(AuthService);
   const router = inject(Router);
+  const store = inject(AuthStore)
 
-  return authService.getJwtToken() !== null ? Promise.resolve(true) : router.navigate(['/login']);
+  if (store.isLoggedIn()) {
+    return Promise.resolve(true);
+  }
+
+  return router.navigate(['/login']);
 };

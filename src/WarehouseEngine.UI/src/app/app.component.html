@@ -1,9 +1,9 @@
 <app-top-nav></app-top-nav>
-<app-sidenav>
-  @if (loginStatus() === 'logging in') {
-  <mat-spinner></mat-spinner>
-  }
-  @if (loginStatus() !== 'logging in') {
-  <router-outlet></router-outlet>
-  }
-</app-sidenav>
+@if (loginStatus() == null || loginStatus() === 'logging in') {
+<mat-spinner></mat-spinner>
+}
+@if (loginStatus() !== 'logging in') {
+  <app-sidenav>
+    <router-outlet></router-outlet>
+  </app-sidenav>
+}

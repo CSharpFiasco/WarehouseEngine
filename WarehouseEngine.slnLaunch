@@ -4,11 +4,13 @@
     "Projects": [
       {
         "Path": "src\\WarehouseEngine.Api\\WarehouseEngine.Api.csproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": "WarehouseEngine.Api"
       },
       {
         "Path": "src\\WarehouseEngine.UI\\WarehouseEngine.UI.esproj",
-        "Action": "Start"
+        "Action": "Start",
+        "DebugTarget": "localhost (Edge)"
       }
     ]
   }

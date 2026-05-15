@@ -1,6 +1,6 @@
-import { computed, inject } from '@angular/core';
+import { computed, inject, InjectionToken } from '@angular/core';
 import { Router } from '@angular/router';
-import { signalStore, withComputed, withMethods, withState, patchState } from '@ngrx/signals';
+import { signalStore, withHooks, withComputed, withMethods, withState, patchState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LoginService } from '../../services/login/login.service';
@@ -39,6 +39,19 @@ function getJwtStateByJwtResponse(jwtResponse: JwtTokenResponse): JwtState {
 export const AuthStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
+  withHooks({
+    onInit(store, authService = inject(AuthService)) {
+      const token = authService.getJwtToken();
+      if (token) {
+        patchState(store, {
+          authState: {
+            type: 'logged in',
+            jwt: token,
+          }
+        });
+      }
+    }
+  }),
   withComputed((store) => ({
     loginStatus: computed(() => store.authState().type),
     isLoggedIn: computed(() => store.authState().type === 'logged in'),
@@ -51,22 +64,24 @@ export const AuthStore = signalStore(
         switchMap(({ username, password }) => loginService.login$(username, password)),
         tap((response: JwtTokenResponse) => {
           const newState = getJwtStateByJwtResponse(response);
-          patchState(store, { authState: newState });
 
           if (response.type === 'Success') {
             authService.setJwtToken(response.jwt);
+            patchState(store, { authState: newState });
             router.navigate(['/']);
           } else {
             authService.unsetJwtToken();
+            patchState(store, { authState: newState });
             router.navigate(['/login']);
           }
         })
       )
     ),
     logout(): void {
-      patchState(store, { authState: { type: 'logged out' } });
       authService.unsetJwtToken();
+      patchState(store, { authState: { type: 'logged out' } });
       router.navigate(['/login']);
     },
-  }))
+  }),
+  )
 );

@@ -8,8 +8,8 @@
   $background: map.get($theme, background);
   $foreground: map.get($theme, foreground);
   $is-dark-theme: map.get($theme, is-dark);
-  $nav-background-opacity: if($is-dark-theme, 0.2, 0.03);
-  $nav-background-focus-opacity: if($is-dark-theme, 0.25, 0.08);
+  $nav-background-opacity: if(sass($is-dark-theme): 0.2; else: 0.03);
+  $nav-background-focus-opacity: if(sass($is-dark-theme): 0.25; else: 0.08);
 
   .docs-component-viewer-nav-content {
     border-right: 1px solid mat.m2-get-color-from-palette($foreground, divider);
@@ -31,7 +31,7 @@
         .mdc-list-item__primary-text {
           color: color.adjust(
             mat.m2-get-color-from-palette($primary, default),
-            $lightness: if($is-dark-theme, 25%, 0%)
+            $lightness: if(sass($is-dark-theme): 25%; else: 0%)
           );
         }
       }

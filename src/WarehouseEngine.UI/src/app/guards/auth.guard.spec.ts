@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { type CanActivateFn } from '@angular/router';
 
 import { isAuthenticatedGuard } from './auth.guard';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('authGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) =>

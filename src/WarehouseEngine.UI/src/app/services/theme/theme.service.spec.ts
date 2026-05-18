@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ThemeService } from './theme.service';
 import { StyleManagerService } from '../style-manager/style-manager.service';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('ThemeService', () => {
   let service: ThemeService;

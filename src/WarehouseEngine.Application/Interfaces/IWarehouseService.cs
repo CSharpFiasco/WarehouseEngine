@@ -8,5 +8,6 @@ public interface IWarehouseService
 {
     Task<OneOf<WarehouseResponseDto, EntityAlreadyExists>> AddAsync(PostWarehouseDto warehouse);
     Task<OneOf<WarehouseResponseDto, EntityErrorType>> GetByIdAsync(Guid id);
+    Task<IEnumerable<WarehouseResponseDto>> GetAllAsync();
     Task<int> GetCount();
 }

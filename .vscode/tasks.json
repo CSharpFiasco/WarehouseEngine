@@ -1,0 +1,47 @@
+{
+    // For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "start:vs",
+            "label": "npm: start:vs",
+            "isBackground": true,
+            "options": {
+                "cwd": "${workspaceFolder}/src/WarehouseEngine.UI"
+            },
+            "problemMatcher": {
+                "owner": "typescript",
+                "pattern": "$tsc",
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": {
+                        "regexp": "(.*?)"
+                    },
+                    "endsPattern": {
+                        "regexp": ".*Local:\\s+(https?://\\S+)"
+                    }
+                }
+            }
+        },
+        {
+            "type": "npm",
+            "script": "test",
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "typescript",
+                "pattern": "$tsc",
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": {
+                        "regexp": "(.*?)"
+                    },
+                    "endsPattern": {
+                        "regexp": "server started at"
+                    }
+                }
+            },
+            "path": "src/WarehouseEngine.UI"
+        }
+    ]
+}

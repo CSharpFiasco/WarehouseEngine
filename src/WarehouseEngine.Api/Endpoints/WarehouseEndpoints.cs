@@ -34,6 +34,15 @@ internal class WarehouseEndpoints
         .WithName("GetWarehouseCount")
         .WithTags("Warehouse");
 
+        app.MapGet("/api/v{version:apiVersion}/warehouse/list", [Authorize] async (IWarehouseService warehouseService) =>
+        {
+            var warehouses = await warehouseService.GetAllAsync();
+            return TypedResults.Ok(warehouses);
+        })
+        .Produces<IEnumerable<WarehouseResponseDto>>(200)
+        .WithName("GetAllWarehouses")
+        .WithTags("Warehouse");
+
         app.MapPost("/api/v{version:apiVersion}/warehouse", [Authorize] async (ILogger<WarehouseEndpoints> logger, IWarehouseService warehouseService, PostWarehouseDto warehouseDto) =>
         {
             var warehouse = await warehouseService.AddAsync(warehouseDto);

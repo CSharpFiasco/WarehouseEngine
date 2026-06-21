@@ -2,7 +2,10 @@
 @if (loginStatus() == null || loginStatus() === 'logging in') {
 <mat-spinner></mat-spinner>
 }
-@if (loginStatus() !== 'logging in') {
+@else if (loginStatus() === 'logged out') {
+  <app-login></app-login>
+}
+@else if (loginStatus() === 'logged in') {
   <app-sidenav>
     <router-outlet></router-outlet>
   </app-sidenav>

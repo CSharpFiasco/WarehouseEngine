@@ -25,7 +25,7 @@
         color: mat.m2-get-color-from-palette($foreground, text);
       }
 
-      &.docs-component-viewer-sidenav-item-selected {
+      &.sidenav-item-selected {
         background: rgba(mat.m2-get-color-from-palette($primary, default), 0.15);
 
         .mdc-list-item__primary-text {
@@ -36,7 +36,7 @@
         }
       }
 
-      &.docs-component-viewer-sidenav-item-selected:hover {
+      &.sidenav-item-selected:hover {
         background: rgba(mat.m2-get-color-from-palette($primary, default), 0.3);
       }
     }

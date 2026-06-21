@@ -8,5 +8,11 @@ export const routes: Route[] = [
     canActivate: [isAuthenticatedGuard],
     loadComponent: () => import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
+  {
+    path: 'warehouses',
+    canActivate: [isAuthenticatedGuard],
+    loadComponent: () =>
+      import('./pages/warehouse/warehouse.component').then((m) => m.WarehouseComponent),
+  },
   { path: 'login', component: LoginComponent },
 ];

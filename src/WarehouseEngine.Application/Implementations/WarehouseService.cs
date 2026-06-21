@@ -29,6 +29,15 @@ public class WarehouseService : IWarehouseService
             : new EntityDoesNotExist();
     }
 
+    public async Task<IEnumerable<WarehouseResponseDto>> GetAllAsync()
+    {
+        var warehouses = await _context.Warehouse
+            .AsNoTracking()
+            .ToListAsync();
+
+        return warehouses.Select(w => (WarehouseResponseDto)w);
+    }
+
     public async Task<int> GetCount()
     {
         return await _context.Warehouse.CountAsync();

@@ -1,0 +1,24 @@
+<h2>Warehouses</h2>
+
+@if (isLoading()) {
+  <mat-spinner></mat-spinner>
+}
+@else if (error(); as err) {
+  <p class="warehouse-error">{{ err }}</p>
+}
+@else {
+  <table mat-table [dataSource]="warehouses()" class="mat-elevation-z2 warehouse-table">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>Id</th>
+      <td mat-cell *matCellDef="let warehouse">{{ warehouse.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let warehouse">{{ warehouse.name }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+}

@@ -17,7 +17,7 @@
             }
         },
         {
-            "type": "chrome",
+            "type": "msedge",
             "request": "launch",
             "name": "WarehouseEngine.UI",
             "url": "http://127.0.0.1:4201",

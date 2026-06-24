@@ -22,7 +22,7 @@
             "name": "WarehouseEngine.UI",
             "url": "http://127.0.0.1:4201",
             "preLaunchTask": "npm: start:vs",
-            "webRoot": "${workspaceFolder}/src/WarehouseEngine.UI"
+            "webRoot": "${workspaceFolder}"
         }
     ],
     "compounds": [

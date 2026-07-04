@@ -2,16 +2,15 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { ThemeService } from './services/theme/theme.service';
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { TopNavComponent } from './components/top-nav/top-nav.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { LoginComponent } from './pages/login/login.component';
-import { provideRouter } from '@angular/router';
-import { RouterTestingHarness } from '@angular/router/testing';
+import { provideRouter, Router } from '@angular/router';
 import { provideLocationMocks } from '@angular/common/testing';
 import { routes } from './app.routing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { AuthStore } from './store/auth/auth.store';
+import { AuthService } from './services/auth.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
@@ -39,17 +38,7 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;
   let themeServiceSpy: { setTheme: ReturnType<typeof vi.fn> };
 
-  const mockAuthStore = {
-    loginStatus: signal('logged out' as const),
-    isLoggedIn: signal(false),
-    isLoggingIn: signal(false),
-    authState: signal({ type: 'logged out' as const }),
-    login: vi.fn(),
-    logout: vi.fn(),
-  };
-
   let fixtureNativeElement: HTMLElement;
-  let harness: RouterTestingHarness;
 
   beforeEach(async () => {
     themeServiceSpy = { setTheme: vi.fn() };
@@ -57,16 +46,15 @@ describe('AppComponent', () => {
     sessionStorage.clear();
 
     await TestBed.configureTestingModule({
-    imports: [AppComponent],
-    providers: [
+      imports: [AppComponent],
+      providers: [
         { provide: ThemeService, useValue: themeServiceSpy },
-        { provide: AuthStore, useValue: mockAuthStore },
         provideRouter(routes),
         provideLocationMocks(),
         provideHttpClient(withInterceptorsFromDi()),
-        provideHttpClientTesting()
-    ]
-})
+        provideHttpClientTesting(),
+      ],
+    })
       .overrideComponent(AppComponent, {
         add: {
           imports: [StubComponent, SideNavStubComponent, LoginMockComponent],
@@ -76,28 +64,50 @@ describe('AppComponent', () => {
         },
       })
       .compileComponents();
-
-    fixture = TestBed.createComponent(AppComponent);
-    harness = await RouterTestingHarness.create();
-    fixtureNativeElement = fixture.nativeElement;
-
-    app = fixture.componentInstance;
-
-    fixture.detectChanges();
   });
 
+  function createApp(): void {
+    fixture = TestBed.createComponent(AppComponent);
+    fixtureNativeElement = fixture.nativeElement;
+    app = fixture.componentInstance;
+    fixture.detectChanges();
+  }
+
   it('should create the app', () => {
+    createApp();
     expect(app).toBeTruthy();
   });
 
   describe('Given we are not logged in', () => {
     beforeEach(async () => {
-      await harness.navigateByUrl('/');
+      createApp();
+      const router = TestBed.inject(Router);
+      await router.navigateByUrl('/');
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
     });
 
     it('should render login by default', () => {
       const loginEl = fixtureNativeElement.querySelector('app-login');
       expect(loginEl).not.toBeNull();
+    });
+  });
+
+  describe('Given we are logged in', () => {
+    beforeEach(async () => {
+      TestBed.inject(AuthService).setJwtToken('test-jwt-token');
+      createApp();
+      const router = TestBed.inject(Router);
+      await router.navigateByUrl('/');
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+    });
+
+    it('should render the home component', () => {
+      const homeEl = fixtureNativeElement.querySelector('app-home');
+      expect(homeEl).not.toBeNull();
     });
   });
 });

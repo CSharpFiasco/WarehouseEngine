@@ -1,19 +1,20 @@
-@use 'sass:map';
 @use '@angular/material' as mat;
 @use '../../app-theme';
 
 // Define the dark theme.
-$primary: mat.m2-define-palette(mat.$m2-pink-palette);
-$accent:  mat.m2-define-palette(mat.$m2-blue-grey-palette);
-$theme: mat.m2-define-dark-theme((
+@include mat.theme((
   color: (
-    primary: $primary,
-    accent: $accent,
+    theme-type: dark,
+    primary: mat.$rose-palette,
+    tertiary: mat.$blue-palette,
   ),
-  typography: mat.m2-define-typography-config(),
+  typography: (
+    plain-family: (Roboto, sans-serif),
+    brand-family: (Roboto, sans-serif),
+  ),
+  density: (
+    scale: 0,
+  ),
 ));
 
-@include mat.all-component-themes(map.merge($theme, (
-  typography: mat.m2-define-typography-config()
-)));
-@include app-theme.theme($theme);
+@include app-theme.theme();

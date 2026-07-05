@@ -20,6 +20,6 @@ export class AppComponent {
   constructor() {
     const themeService = inject(ThemeService);
 
-    themeService.setTheme('indigo-pink');
+    themeService.setTheme('azure-blue');
   }
 }

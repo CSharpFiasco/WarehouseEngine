@@ -32,8 +32,8 @@
                             },
                             {
                                 "inject": false,
-                                "input": "src/styles/custom-themes/deeppurple-amber.scss",
-                                "bundleName": "deeppurple-amber"
+                                "input": "src/styles/custom-themes/magenta-violet.scss",
+                                "bundleName": "magenta-violet"
                             },
                             {
                                 "inject": false,
@@ -42,8 +42,8 @@
                             },
                             {
                                 "inject": false,
-                                "input": "src/styles/custom-themes/purple-green.scss",
-                                "bundleName": "purple-green"
+                                "input": "src/styles/custom-themes/cyan-orange.scss",
+                                "bundleName": "cyan-orange"
                             },
                             "src/styles.scss"
                         ],

@@ -1,1 +1,1 @@
-export type Theme = 'deeppurple-amber' | 'azure-blue' | 'pink-bluegrey' | 'purple-green';
+export type Theme = 'magenta-violet' | 'azure-blue' | 'pink-bluegrey' | 'cyan-orange';

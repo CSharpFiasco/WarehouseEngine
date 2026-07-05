@@ -9,7 +9,7 @@ import type { Theme } from '../../types/default-theme';
 export class ThemeService {
   private readonly styleManager: StyleManagerService = inject(StyleManagerService);
 
-  private readonly defaultTheme: Theme = 'indigo-pink';
+  private readonly defaultTheme: Theme = 'azure-blue';
   private readonly currentThemeSubject = new BehaviorSubject<Theme>(this.defaultTheme);
   public readonly currentTheme$ = this.currentThemeSubject.asObservable();
 

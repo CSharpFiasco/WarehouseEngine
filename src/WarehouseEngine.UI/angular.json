@@ -37,8 +37,8 @@
                             },
                             {
                                 "inject": false,
-                                "input": "src/styles/custom-themes/indigo-pink.scss",
-                                "bundleName": "indigo-pink"
+                                "input": "src/styles/custom-themes/azure-blue.scss",
+                                "bundleName": "azure-blue"
                             },
                             {
                                 "inject": false,

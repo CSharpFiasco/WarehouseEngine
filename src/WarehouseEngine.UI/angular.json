@@ -27,8 +27,8 @@
                         "styles": [
                             {
                                 "inject": false,
-                                "input": "src/styles/custom-themes/pink-bluegrey.scss",
-                                "bundleName": "pink-bluegrey"
+                                "input": "src/styles/custom-themes/rose-red.scss",
+                                "bundleName": "rose-red"
                             },
                             {
                                 "inject": false,

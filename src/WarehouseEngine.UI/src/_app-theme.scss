@@ -1,7 +1,10 @@
-@use "./app/pages/login/login.component.theme" as login;
-@use "./app/components/sidenav/sidenav.component.theme" as sidenav;
+@use "@angular/material" as mat;
 
 @mixin theme() {
-  @include login.theme();
-  @include sidenav.theme();
+  :root {
+    @include mat.toolbar-overrides((
+      container-background-color:var(--mat-sys-primary-container),
+      container-text-color: var(--mat-sys-on-primary-container),
+    ));
+  }
 }

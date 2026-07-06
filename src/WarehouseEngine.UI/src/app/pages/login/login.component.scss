@@ -5,6 +5,8 @@ $mat-required-field-height: 22.4px;
   justify-content: center;
   align-items: center;
   height: 100%;
+
+  background: var(--mat-sys-surface);
 }
 
 #credentials-form {
@@ -12,12 +14,15 @@ $mat-required-field-height: 22.4px;
   padding-bottom: calc(2rem - $mat-required-field-height);
   max-width: 330px;
   width: 100%;
+  background: var(--mat-sys-primary-container);
 
   mat-card-title {
+    color: var(--mat-sys-on-surface) !important;
     padding-bottom: 1rem;
   }
 
   mat-form-field {
     display: block;
   }
+
 }

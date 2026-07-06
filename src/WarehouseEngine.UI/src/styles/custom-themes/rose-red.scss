@@ -4,7 +4,7 @@
 // Define the dark theme.
 @include mat.theme((
   color: (
-    theme-type: dark,
+    theme-type: light,
     primary: mat.$rose-palette,
     tertiary: mat.$red-palette,
   ),

@@ -2,13 +2,13 @@
 
 @mixin theme() {
   app-login {
-    background: var(--mat-sys-primary);
+    background: var(--mat-sys-surface);
 
     #credentials-form {
       mat-card-title {
-        color: var(--mat-sys-on-primary) !important;
+        color: var(--mat-sys-on-surface) !important;
       }
-      background: var(--mat-sys-tertiary);
+      background: var(--mat-sys-primary-container);
     }
   }
 }

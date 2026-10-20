@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^21.2.19",
-    "@angular/cli": "^21.2.19",
+    "@angular/cli": "^22.2.3",
     "@angular/compiler-cli": "^21.2.18",
     "@eslint/eslintrc": "^3.3.6",
     "@eslint/js": "^9.9.1",
@@ -47,7 +47,7 @@
     "@types/jasmine": "^6.0.0",
     "@vitest/browser-playwright": "^4.1.6",
     "@web/test-runner": "^0.20.2",
-    "angular-eslint": "^21.4.0",
+    "angular-eslint": "^22.6.0",
     "eslint": "^9.39.5",
     "eslint-plugin-unused-imports": "^4.4.1",
     "jasmine-core": "^6.3.0",

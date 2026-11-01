@@ -1,0 +1,5 @@
+{
+  "appHost": {
+    "path": "src/WarehouseEngine.AppHost/WarehouseEngine.AppHost.csproj"
+  }
+}

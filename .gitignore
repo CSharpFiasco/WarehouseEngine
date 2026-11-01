@@ -398,3 +398,7 @@ FodyWeavers.xsd
 **/appsettings.Local.json
 
 /_/src/Testcontainers
+
+.agents
+# Playwright CLI output (may contain credentials)
+.playwright-cli/

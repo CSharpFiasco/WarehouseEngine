@@ -8,10 +8,12 @@
     <File Path="README.MD" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/WarehouseEngine.AppHost/WarehouseEngine.AppHost.csproj" />
     <Project Path="src/WarehouseEngine.Api/WarehouseEngine.Api.csproj" />
     <Project Path="src/WarehouseEngine.Application/WarehouseEngine.Application.csproj" />
     <Project Path="src/WarehouseEngine.Domain/WarehouseEngine.Domain.csproj" />
     <Project Path="src/WarehouseEngine.Infrastructure/WarehouseEngine.Infrastructure.csproj" />
+    <Project Path="src/WarehouseEngine.MigrationService/WarehouseEngine.MigrationService.csproj" />
     <Project Path="src/WarehouseEngine.UI/WarehouseEngine.UI.esproj">
       <Build />
       <Deploy />

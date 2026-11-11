@@ -63,6 +63,12 @@ The main CI workflow collects Cobertura coverage with the MTP-compatible
 
 ## Setup Requirements
 
+### .NET SDK
+All workflows use `actions/setup-dotnet@v6` to install the SDK specified in
+[`global.json`](../global.json), currently .NET SDK 11.0.100. Update that file
+when changing the SDK version so local development and CI stay aligned.
+Changes to the SDK pin or API workflow also trigger API Build and Test.
+
 ### Environment
 - Requires GitHub Actions runners with:
   - .NET 11.0 support

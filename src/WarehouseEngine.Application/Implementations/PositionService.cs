@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OneOf;
 using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
+using WarehouseEngine.Application.Results;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.ValidationResults;
 
@@ -18,7 +18,7 @@ public class PositionService : IPositionService
         _idGenerator = idGenerator;
     }
 
-    public async Task<OneOf<PositionResponseDto, EntityDoesNotExistResult>> GetByIdAsync(Guid id)
+    public async Task<ServiceResult<PositionResponseDto, EntityDoesNotExistResult>> GetByIdAsync(Guid id)
     {
         Position? position = await _context.Position.AsNoTracking()
             .SingleOrDefaultAsync(p => p.Id == id);
@@ -28,7 +28,7 @@ public class PositionService : IPositionService
             : new EntityDoesNotExistResult(typeof(Position));
     }
 
-    public async Task<OneOf<PositionResponseDto, EntityAlreadyExistsResult>> AddAsync(PostPositionDto position)
+    public async Task<ServiceResult<PositionResponseDto, EntityAlreadyExistsResult>> AddAsync(PostPositionDto position)
     {
         if (position.Id is not null)
         {

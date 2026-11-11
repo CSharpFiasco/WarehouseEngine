@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using WarehouseEngine.Api.Extensions.ErrorTypeExtensions;
 using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
+using WarehouseEngine.Domain.ErrorTypes;
 
 namespace WarehouseEngine.Api.Endpoints;
 
@@ -12,17 +13,15 @@ public class VendorEndpoints
 
     public static void Map(WebApplication app)
     {
-        app.MapGet("/api/v{version:apiVersion}/vendor/{id}", [Authorize] async (ILogger<VendorEndpoints> logger, IVendorService vendorService, Guid id) =>
+        app.MapGet("/api/v{version:apiVersion}/vendor/{id}", [Authorize] async Task<Results<Ok<VendorResponseDto>, ProblemHttpResult>> (ILogger<VendorEndpoints> logger, IVendorService vendorService, Guid id) =>
         {
             var vendor = await vendorService.GetByIdAsync(id);
 
-            return vendor.Match<Results<Ok<VendorResponseDto>, ProblemHttpResult>>(
-                vendor => TypedResults.Ok(vendor),
-                invalidResult =>
-                {
-                    logger.LogWarning("Record not found. {message}", invalidResult.GetMessage());
-                    return TypedResults.Problem(statusCode: 404, detail: invalidResult.GetMessage());
-                });
+            return vendor switch
+            {
+                VendorResponseDto response => TypedResults.Ok(response),
+                EntityErrorType invalidResult => NotFoundProblem(logger, invalidResult, LogLevel.Warning),
+            };
         })
         .Produces<VendorResponseDto>(200)
         .ProducesProblem(404)
@@ -47,17 +46,15 @@ public class VendorEndpoints
         .WithName("GetVendorCount")
         .WithTags("Vendor");
 
-        app.MapPost("/api/v{version:apiVersion}/vendor", [Authorize] async (ILogger<VendorEndpoints> logger, IVendorService vendorService, PostVendorDto vendorDto, HttpContext httpContext) =>
+        app.MapPost("/api/v{version:apiVersion}/vendor", [Authorize] async Task<Results<Ok<VendorResponseDto>, ProblemHttpResult>> (ILogger<VendorEndpoints> logger, IVendorService vendorService, PostVendorDto vendorDto, HttpContext httpContext) =>
         {
             var vendor = await vendorService.AddAsync(vendorDto, httpContext.User.Identity?.Name ?? "Unknown");
 
-            return vendor.Match<Results<Ok<VendorResponseDto>, ProblemHttpResult>>(
-                vendor => TypedResults.Ok(vendor),
-                entityExists =>
-                {
-                    logger.LogWarning("Entity already exists. {message}", entityExists.GetMessage());
-                    return TypedResults.Problem(statusCode: 409, detail: entityExists.GetMessage());
-                });
+            return vendor switch
+            {
+                VendorResponseDto response => TypedResults.Ok(response),
+                EntityAlreadyExists entityExists => ConflictProblem(logger, entityExists),
+            };
         })
         .Produces<VendorResponseDto>(200)
         .ProducesProblem(409)
@@ -74,22 +71,32 @@ public class VendorEndpoints
         .WithName("DeleteVendor")
         .WithTags("Vendor");
 
-        app.MapPut("/api/v{version:apiVersion}/vendor/{id}", [Authorize] async (ILogger<VendorEndpoints> logger, IVendorService vendorService, Guid id, UpdateVendorDto vendorDto) =>
+        app.MapPut("/api/v{version:apiVersion}/vendor/{id}", [Authorize] async Task<Results<Ok<VendorResponseDto>, ProblemHttpResult>> (ILogger<VendorEndpoints> logger, IVendorService vendorService, Guid id, UpdateVendorDto vendorDto) =>
         {
             var result = await vendorService.UpdateAsync(id, vendorDto);
 
-            return result.Match<Results<Ok<VendorResponseDto>, ProblemHttpResult>>(
-                vendor => TypedResults.Ok(vendor),
-                invalidResult =>
-                {
-                    logger.LogError("Record not found. {message}", invalidResult.GetMessage());
-                    return TypedResults.Problem(statusCode: 404, detail: invalidResult.GetMessage());
-                });
+            return result switch
+            {
+                VendorResponseDto response => TypedResults.Ok(response),
+                EntityErrorType invalidResult => NotFoundProblem(logger, invalidResult, LogLevel.Error),
+            };
         })
         .Produces<VendorResponseDto>(200)
         .ProducesProblem(404)
         .ProducesValidationProblem()
         .WithName("UpdateVendor")
         .WithTags("Vendor");
+    }
+
+    private static ProblemHttpResult NotFoundProblem(ILogger<VendorEndpoints> logger, EntityErrorType error, LogLevel logLevel)
+    {
+        logger.Log(logLevel, "Record not found. {message}", error.GetMessage());
+        return TypedResults.Problem(statusCode: 404, detail: error.GetMessage());
+    }
+
+    private static ProblemHttpResult ConflictProblem(ILogger<VendorEndpoints> logger, EntityAlreadyExists error)
+    {
+        logger.LogWarning("Entity already exists. {message}", error.GetMessage());
+        return TypedResults.Problem(statusCode: 409, detail: error.GetMessage());
     }
 }

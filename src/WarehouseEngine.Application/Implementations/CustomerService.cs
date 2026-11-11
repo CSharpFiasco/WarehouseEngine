@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OneOf;
 using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
+using WarehouseEngine.Application.Results;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.ErrorTypes;
 using WarehouseEngine.Domain.ValidationResults;
@@ -18,7 +18,7 @@ public class CustomerService : ICustomerService
         _idGenerator = idGenerator;
     }
 
-    public async Task<OneOf<CustomerResponseDto, EntityErrorType>> GetByIdAsync(Guid id)
+    public async Task<ServiceResult<CustomerResponseDto, EntityErrorType>> GetByIdAsync(Guid id)
     {
         Customer? entity = await _context.Customer
             .AsNoTracking()
@@ -41,7 +41,7 @@ public class CustomerService : ICustomerService
             .CountAsync();
     }
 
-    public async Task<OneOf<CustomerResponseDto, EntityAlreadyExists, InvalidShippingResult>>
+    public async Task<CustomerCreationResult>
         AddAsync(PostCustomerDto customer, string username)
     {
         if (customer.Id is not null)
@@ -69,7 +69,7 @@ public class CustomerService : ICustomerService
         return (CustomerResponseDto)entity;
     }
 
-    public async Task<OneOf<CustomerResponseDto, EntityErrorType>> UpdateAsync(Guid id, Customer entity)
+    public async Task<ServiceResult<CustomerResponseDto, EntityErrorType>> UpdateAsync(Guid id, Customer entity)
     {
         Customer? entityToUpdate = await _context.Customer
             .AsTracking()

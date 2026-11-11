@@ -1,5 +1,6 @@
 ﻿using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
+using WarehouseEngine.Domain.ValidationResults;
 using WarehouseEngine.Infrastructure.DataContext;
 
 namespace WarehouseEngine.Application.Tests.Implementations;
@@ -49,8 +50,7 @@ public class PositionServiceTests : IClassFixture<TestDatabaseFixture>
         var sut = new PositionService(context, _idGenerator.Object);
         var result = await sut.GetByIdAsync(nonExistentId);
 
-        Assert.False(result.IsT0); // Not a PositionResponseDto
-        Assert.True(result.IsT1);  // Is EntityDoesNotExistResult
+        Assert.True(result is EntityDoesNotExistResult);
     }
 
     [Fact]

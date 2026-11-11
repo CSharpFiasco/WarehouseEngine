@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OneOf;
 using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
+using WarehouseEngine.Application.Results;
 using WarehouseEngine.Domain.ErrorTypes;
 
 namespace WarehouseEngine.Application.Implementations;
 
 public class WarehouseQueries(IWarehouseEngineContext context) : IWarehouseQueries
 {
-    public async Task<OneOf<WarehouseResponseDto, EntityErrorType>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ServiceResult<WarehouseResponseDto, EntityErrorType>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var warehouse = await context.Warehouse
             .AsNoTracking()

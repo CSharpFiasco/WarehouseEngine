@@ -32,12 +32,12 @@
 
 ### Build Process (VALIDATED - Takes ~12-24 seconds)
 ```bash
-# Build entire solution (ALWAYS run from repository root)
-dotnet build
+# Build entire solution with multithreaded MSBuild (ALWAYS run from repository root)
+dotnet build -mt
 
 # Clean build if needed
 dotnet clean
-dotnet build
+dotnet build -mt
 ```
 
 ### Testing (VALIDATED - Takes ~20+ seconds for full test suite)

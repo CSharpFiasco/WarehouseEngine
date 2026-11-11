@@ -57,54 +57,42 @@ public sealed class WarehouseEngineFactory : WebApplicationFactory<Program>, IAs
     private static void SeedDatabase(WarehouseEngineContext context)
     {
         context.Item.AddRange(
-            new Item { Id = ItemId1, Description = "Test", Sku = "Sku1" },
-            new Item { Id = ItemId2, Description = "Test", Sku = "Sku2" }
+            Item.Create(ItemId1, "Sku1", "Test"),
+            Item.Create(ItemId2, "Sku2", "Test")
         );
 
         context.Customer.AddRange(
-            new Customer
-            {
-                Id = CustomerId1,
-                Name = "Customer1",
-                DateCreated = DateTime.MinValue,
-                CreatedBy = string.Empty,
-                ShippingAddress = new Address
+            Customer.Create(CustomerId1, "Customer1",
+                new Address
                 {
-                    Address1 = string.Empty,
-                    City = string.Empty,
+                    Address1 = "123 Main St",
+                    City = "Tulsa",
                     State = "OK",
-                    ZipCode = string.Empty
-                }
-            },
-            new Customer
-            {
-                Id = CustomerId2,
-                Name = "Customer2",
-                DateCreated = DateTime.MinValue,
-                CreatedBy = string.Empty,
-                ShippingAddress = new Address
+                    ZipCode = "74101"
+                }, DateTime.MinValue, "Seed"),
+            Customer.Create(CustomerId2, "Customer2",
+                new Address
                 {
-                    Address1 = string.Empty,
-                    City = string.Empty,
+                    Address1 = "456 Main St",
+                    City = "Tulsa",
                     State = "OK",
-                    ZipCode = string.Empty
-                }
-            }
+                    ZipCode = "74101"
+                }, DateTime.MinValue, "Seed")
         );
 
         context.Vendor.AddRange(
-            new Vendor { Id = VendorId1, Name = "Test Vendor 1" },
-            new Vendor { Id = VendorId2, Name = "Test Vendor 2" }
+            Vendor.Create(VendorId1, "Test Vendor 1"),
+            Vendor.Create(VendorId2, "Test Vendor 2")
         );
 
         context.Position.AddRange(
-            new Position { Id = PositionId1, Name = "Test Position 1" },
-            new Position { Id = PositionId2, Name = "Test Position 2" }
+            Position.Create(PositionId1, "Test Position 1"),
+            Position.Create(PositionId2, "Test Position 2")
         );
 
         context.Warehouse.AddRange(
-            new Warehouse { Id = WarehouseId1, Name = "Warehouse 1" },
-            new Warehouse { Id = WarehouseId2, Name = "Warehouse 2" }
+            Warehouse.Create(WarehouseId1, "Warehouse 1"),
+            Warehouse.Create(WarehouseId2, "Warehouse 2")
         );
     }
 }

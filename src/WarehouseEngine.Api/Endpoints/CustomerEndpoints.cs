@@ -58,6 +58,7 @@ internal class CustomerEndpoints
         })
         .Produces<CustomerResponseDto>(200)
         .ProducesProblem(400)
+        .ProducesValidationProblem()
         .WithName("CreateCustomer")
         .WithTags("Customer");
     }

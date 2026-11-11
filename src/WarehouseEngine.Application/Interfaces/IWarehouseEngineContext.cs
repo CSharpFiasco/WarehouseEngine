@@ -19,4 +19,5 @@ public interface IWarehouseEngineContext
     DbSet<WarehouseItem> WarehouseItem { get; set; }
 
     Task<int> SaveChangesAsync();
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

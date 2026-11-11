@@ -8,19 +8,21 @@ namespace WarehouseEngine.Domain.Entities;
 [Index("WarehouseItemId", Name = "IX_PurchaseOrderWarehouseItem02")]
 public partial class PurchaseOrderWarehouseItem
 {
-    [Key]
-    public Guid PurchaseOrderId { get; set; }
+    private PurchaseOrderWarehouseItem() { }
 
     [Key]
-    public Guid WarehouseItemId { get; set; }
+    public Guid PurchaseOrderId { get; private set; }
 
-    public int Quantity { get; set; }
+    [Key]
+    public Guid WarehouseItemId { get; private set; }
+
+    public int Quantity { get; private set; }
 
     [ForeignKey("PurchaseOrderId")]
     [InverseProperty("PurchaseOrderWarehouseItem")]
-    public virtual PurchaseOrder? PurchaseOrder { get; set; }
+    public virtual PurchaseOrder? PurchaseOrder { get; private set; }
 
     [ForeignKey("WarehouseItemId")]
     [InverseProperty("PurchaseOrderWarehouseItem")]
-    public virtual WarehouseItem? WarehouseItem { get; set; }
+    public virtual WarehouseItem? WarehouseItem { get; private set; }
 }

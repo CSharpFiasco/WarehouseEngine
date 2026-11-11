@@ -22,11 +22,7 @@ public class PositionServiceTests : IClassFixture<TestDatabaseFixture>
         await using var _ = await context.Database.BeginTransactionAsync(TestContext.Current.CancellationToken);
 
         var positionId = Guid.NewGuid();
-        var position = new Position
-        {
-            Id = positionId,
-            Name = "Test Position"
-        };
+        var position = Position.Create(positionId, "Test Position");
 
         await context.AddAsync(position, TestContext.Current.CancellationToken);
         await context.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -108,9 +104,9 @@ public class PositionServiceTests : IClassFixture<TestDatabaseFixture>
 
         // Add some positions
         context.Position.AddRange(
-            new Position { Id = Guid.NewGuid(), Name = "Position 1" },
-            new Position { Id = Guid.NewGuid(), Name = "Position 2" },
-            new Position { Id = Guid.NewGuid(), Name = "Position 3" }
+            Position.Create(Guid.NewGuid(), "Position 1"),
+            Position.Create(Guid.NewGuid(), "Position 2"),
+            Position.Create(Guid.NewGuid(), "Position 3")
         );
         await context.SaveChangesAsync(TestContext.Current.CancellationToken);
 

@@ -267,7 +267,7 @@ public class VendorEndpointTests
         using var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Authorization = authHeader;
 
-        var updatedVendor = new Vendor { Id = WarehouseEngineFactory.VendorId1, Name = "Updated Vendor Name" };
+        var updatedVendor = new UpdateVendorDto { Name = "Updated Vendor Name" };
         var json = JsonSerializer.Serialize(updatedVendor);
         using var content = new StringContent(json, Encoding.UTF8, "application/json");
 

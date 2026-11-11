@@ -55,7 +55,7 @@ public class Program
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IVendorService, VendorService>();
         services.AddScoped<IPositionService, PositionService>();
-        services.AddScoped<IWarehouseService, WarehouseService>();
+        services.AddScoped<IWarehouseQueries, WarehouseQueries>();
         services.AddTransient<IIdGenerator, SequentialIdGenerator>();
 
         services.AddAuthentication(options =>

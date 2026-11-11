@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Exceptions;
 
@@ -28,6 +29,7 @@ public class PostVendorDto
     [JsonIgnore]
     public Guid? Id { get; set; }
 
+    [StringLength(Vendor.MaxNameLength)]
     public string? Name { get; init; }
 
     public static explicit operator Vendor(PostVendorDto dto)
@@ -41,11 +43,6 @@ public class PostVendorDto
             throw new EntityConversionException<Vendor, PostVendorDto>("Id is empty");
         }
 
-        return new Vendor
-        {
-            Id = dto.Id.Value,
-            Name = dto.Name
-        };
+        return Vendor.Create(dto.Id.Value, dto.Name);
     }
 }
-

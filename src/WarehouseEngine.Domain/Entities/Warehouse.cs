@@ -5,17 +5,17 @@ namespace WarehouseEngine.Domain.Entities;
 
 public partial class Warehouse
 {
-    public Warehouse()
+    private Warehouse()
     {
         WarehouseItem = new HashSet<WarehouseItem>();
     }
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    [StringLength(32)]
-    public required string Name { get; set; }
+    [StringLength(MaxNameLength)]
+    public string Name { get; private set; } = null!;
 
     [InverseProperty("Warehouse")]
     public virtual ICollection<WarehouseItem> WarehouseItem { get; init; }

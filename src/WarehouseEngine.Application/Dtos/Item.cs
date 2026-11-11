@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Exceptions;
 
@@ -29,13 +25,7 @@ public class ItemResponseDto
 
     public static explicit operator Item(ItemResponseDto v)
     {
-        return new Item
-        {
-            Id = v.Id,
-            Sku = v.Sku,
-            Description = v.Description,
-            IsActive = v.IsActive
-        };
+        return Item.Create(v.Id, v.Sku, v.Description, v.IsActive);
     }
 }
 
@@ -43,7 +33,11 @@ public class PostItemDto
 {
     [JsonIgnore]
     public Guid? Id { get; set; }
+    [Required]
+    [StringLength(Item.MaxSkuLength)]
     public required string Sku { get; set; }
+    [Required]
+    [StringLength(Item.MaxDescriptionLength)]
     public required string Description { get; set; }
     public bool IsActive { get; set; }
 
@@ -63,12 +57,6 @@ public class PostItemDto
             throw new EntityConversionException<Item, PostItemDto>("Item should should have Id when created");
         }
 
-        return new Item
-        {
-            Id = dto.Id.Value,
-            Sku = dto.Sku,
-            Description = dto.Description,
-            IsActive = dto.IsActive
-        };
+        return Item.Create(dto.Id.Value, dto.Sku, dto.Description, dto.IsActive);
     }
 }

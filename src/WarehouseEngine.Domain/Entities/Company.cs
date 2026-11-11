@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace WarehouseEngine.Domain.Entities;
 
 public partial class Company
 {
+    private Company() { }
+
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    [StringLength(80)]
-    public required string Name { get; set; }
+    [StringLength(MaxNameLength)]
+    public string Name { get; private set; } = null!;
 }

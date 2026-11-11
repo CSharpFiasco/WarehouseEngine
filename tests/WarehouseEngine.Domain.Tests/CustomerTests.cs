@@ -1,81 +1,122 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
 using WarehouseEngine.Domain.Entities;
-using WarehouseEngine.Domain.Exceptions;
 using WarehouseEngine.Domain.ValueObjects;
 
 namespace WarehouseEngine.Domain.Tests;
+
 public class CustomerTests
 {
-    private readonly ITestOutputHelper _output;
-    public CustomerTests(ITestOutputHelper output)
+    private static Address ShippingAddress => new()
     {
-        _output = output;
+        Address1 = "123 Main St",
+        City = "Tulsa",
+        State = "OK",
+        ZipCode = "74101"
+    };
+
+    [Fact]
+    public void Create_ValidInputs_PreservesIdentityAddressesAndAudit()
+    {
+        var id = Guid.NewGuid();
+        var created = DateTime.UtcNow;
+        var shipping = ShippingAddress;
+        var billing = shipping with { Address1 = "456 Main St" };
+
+        var customer = Customer.Create(id, " Customer ", shipping, created, "Creator", billing);
+
+        Assert.Equal(id, customer.Id);
+        Assert.Equal(" Customer ", customer.Name);
+        Assert.Equal(created, customer.DateCreated);
+        Assert.Equal("Creator", customer.CreatedBy);
+        Assert.Same(shipping, customer.ShippingAddress);
+        Assert.Same(billing, customer.BillingAddress);
+        Assert.Null(customer.DateModified);
+        Assert.Null(customer.ModifiedBy);
+        Assert.Empty(customer.Contact);
+        Assert.Empty(customer.Order);
     }
 
     [Fact]
-    public void GivenIdIsGiven_WhenDeserialized_ThenSerializationIsSuccessful()
+    public void Create_OptionalBillingAddress_RemainsNull()
     {
-        //SETUP
-        var json = """
-            {
-                "Id": "d3b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b",
-                "Name": "Test Customer",
-                "ShippingAddress": {
-                    "Address1": "123 Main St",
-                    "City": "Anytown",
-                    "State": "NY",
-                    "ZipCode": "12345"
-                },
-                "DateCreated": "2021-01-01T00:00:00",
-                "CreatedBy": "Test User"
-            }
-            """;
-        _output.WriteLine(json);
+        var customer = Customer.Create(Guid.NewGuid(), "Customer", ShippingAddress, DateTime.MinValue, "Creator");
 
-        //ATTEMPT
-        var customer = JsonSerializer.Deserialize<Customer>(json);
-        var errors = new List<ValidationResult>();
-        var isValid = Validator.TryValidateObject(customer!, new ValidationContext(customer!), errors, true);
+        Assert.Null(customer.BillingAddress);
+    }
 
-
-        //VERIFY
-        Assert.NotNull(customer);
-        Assert.Empty(errors);
-        Assert.True(isValid);
-        Assert.Equal("d3b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b", customer.Id.ToString());
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void Create_MissingNameOrCreator_RejectsInput(string? text)
+    {
+        Assert.ThrowsAny<ArgumentException>(() =>
+            Customer.Create(Guid.NewGuid(), text!, ShippingAddress, DateTime.MinValue, "Creator"));
+        Assert.ThrowsAny<ArgumentException>(() =>
+            Customer.Create(Guid.NewGuid(), "Customer", ShippingAddress, DateTime.MinValue, text!));
     }
 
     [Fact]
-    public void GivenNameIsNull_WhenDeserialized_ThenSerializationIsNotSuccessful()
+    public void Create_NameAndCreatorLimits_AreEnforced()
     {
-        //SETUP
-        var json = """
-            {
-                "Id": "d3b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b",
-                "Name": null,
-                "ShippingAddress": {
-                    "Address1": "123 Main St",
-                    "City": "Anytown",
-                    "State": "NY",
-                    "ZipCode": "12345"
-                },
-                "DateCreated": "2021-01-01T00:00:00",
-                "CreatedBy": "Test User"
-            }
-            """;
-        _output.WriteLine(json);
+        var customer = Customer.Create(Guid.NewGuid(), new string('N', 80), ShippingAddress,
+            DateTime.MinValue, new string('U', 80));
+        Assert.Equal(80, customer.Name.Length);
+        Assert.Equal(80, customer.CreatedBy.Length);
 
-        //ATTEMPT
-        var customer = JsonSerializer.Deserialize<Customer>(json);
-        var errors = new List<ValidationResult>();
-        var isValid = Validator.TryValidateObject(customer!, new ValidationContext(customer!), errors, true);
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Customer.Create(Guid.NewGuid(), new string('N', 81), ShippingAddress, DateTime.MinValue, "Creator"));
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Customer.Create(Guid.NewGuid(), "Customer", ShippingAddress, DateTime.MinValue, new string('U', 81)));
+    }
 
+    [Fact]
+    public void Create_InvalidAddresses_RejectsInput()
+    {
+        Assert.Throws<ArgumentNullException>(() =>
+            Customer.Create(Guid.NewGuid(), "Customer", null!, DateTime.MinValue, "Creator"));
+        Assert.Throws<ArgumentException>(() =>
+            Customer.Create(Guid.NewGuid(), "Customer", ShippingAddress with { City = " " }, DateTime.MinValue, "Creator"));
+        Assert.Throws<ArgumentException>(() =>
+            Customer.Create(Guid.NewGuid(), "Customer", ShippingAddress, DateTime.MinValue, "Creator",
+                ShippingAddress with { State = "Invalid" }));
+    }
 
-        //VERIFY
-        Assert.NotNull(customer);
-        Assert.False(isValid);
-        var error = Assert.Single(errors);
-        Assert.Equal("The Name field is required.", error.ErrorMessage);
+    [Fact]
+    public void UpdateDetails_InvalidProposedAddress_LeavesAllFieldsUnchanged()
+    {
+        var shipping = ShippingAddress;
+        var customer = Customer.Create(Guid.NewGuid(), "Original", shipping, DateTime.MinValue, "Creator", shipping);
+
+        Assert.Throws<ArgumentException>(() =>
+            customer.UpdateDetails("Changed", shipping with { ZipCode = "" }, shipping with { City = "Changed" }));
+
+        Assert.Equal("Original", customer.Name);
+        Assert.Same(shipping, customer.BillingAddress);
+        Assert.Same(shipping, customer.ShippingAddress);
+    }
+
+    [Fact]
+    public void UpdateDetails_ValidChange_PreservesIdentityAndCreationAudit()
+    {
+        var customer = Customer.Create(Guid.NewGuid(), "Original", ShippingAddress, DateTime.MinValue, "Creator");
+        var id = customer.Id;
+        var shipping = ShippingAddress with { City = "Dallas" };
+
+        customer.UpdateDetails("Changed", null, shipping);
+        customer.RecordModification(DateTime.UnixEpoch, "Modifier");
+
+        Assert.Equal(id, customer.Id);
+        Assert.Equal("Changed", customer.Name);
+        Assert.Same(shipping, customer.ShippingAddress);
+        Assert.Null(customer.BillingAddress);
+        Assert.Equal(DateTime.MinValue, customer.DateCreated);
+        Assert.Equal("Creator", customer.CreatedBy);
+        Assert.Equal(DateTime.UnixEpoch, customer.DateModified);
+        Assert.Equal("Modifier", customer.ModifiedBy);
+
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            customer.RecordModification(DateTime.UtcNow, new string('U', 81)));
+        Assert.Equal(DateTime.UnixEpoch, customer.DateModified);
+        Assert.Equal("Modifier", customer.ModifiedBy);
     }
 }

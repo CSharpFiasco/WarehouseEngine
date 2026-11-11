@@ -51,6 +51,7 @@ internal class PositionEndpoints
         })
         .Produces<PositionResponseDto>(200)
         .ProducesProblem(400)
+        .ProducesValidationProblem()
         .WithName("CreatePosition")
         .WithTags("Position");
     }

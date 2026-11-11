@@ -47,39 +47,27 @@ public sealed class TestDatabaseFixture
     private static void SeedDatabase(WarehouseEngineContext context)
     {
         context.Item.AddRange(
-            new Item { Id = ItemId1, Description = "Test", Sku = "Sku1" },
-            new Item { Id = ItemId2, Description = "Test", Sku = "Sku2" }
+            Item.Create(ItemId1, "Sku1", "Test"),
+            Item.Create(ItemId2, "Sku2", "Test")
             );
 
         context.Customer.AddRange(
-            new Customer
-            {
-                Id = CustomerId1,
-                Name = string.Empty,
-                DateCreated = DateTime.MinValue,
-                CreatedBy = string.Empty,
-                ShippingAddress = new Address
+            Customer.Create(CustomerId1, "Customer1",
+                new Address
                 {
-                    Address1 = string.Empty,
-                    City = string.Empty,
+                    Address1 = "123 Main St",
+                    City = "Tulsa",
                     State = "OK",
-                    ZipCode = string.Empty
-                }
-            },
-            new Customer
-            {
-                Id = CustomerId2,
-                Name = string.Empty,
-                DateCreated = DateTime.MinValue,
-                CreatedBy = string.Empty,
-                ShippingAddress = new Address
+                    ZipCode = "74101"
+                }, DateTime.MinValue, "Seed"),
+            Customer.Create(CustomerId2, "Customer2",
+                new Address
                 {
-                    Address1 = string.Empty,
-                    City = string.Empty,
+                    Address1 = "456 Main St",
+                    City = "Tulsa",
                     State = "OK",
-                    ZipCode = string.Empty
-                }
-            }
+                    ZipCode = "74101"
+                }, DateTime.MinValue, "Seed")
         );
     }
 

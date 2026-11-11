@@ -48,16 +48,16 @@ jobs:
         dotnet build tests/WarehouseEngine.Api.Integration.Tests/WarehouseEngine.Api.Integration.Tests.csproj --configuration Release --no-restore
       
     - name: Run Domain tests
-      run: dotnet test tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      run: dotnet test --project tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-build --coverlet --coverlet-output-format cobertura
       
     - name: Run Infrastructure tests (with SQL Server)
-      run: dotnet test tests/WarehouseEngine.Application.Tests/WarehouseEngine.Application.Tests.csproj --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      run: dotnet test --project tests/WarehouseEngine.Application.Tests/WarehouseEngine.Application.Tests.csproj --configuration Release --no-build --coverlet --coverlet-output-format cobertura
       env:
         ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=WarehouseEngineTest;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;"
       continue-on-error: true  # Allow this to fail gracefully if it can't connect to SQL Server
       
     - name: Run API Integration tests
-      run: dotnet test tests/WarehouseEngine.Api.Integration.Tests/WarehouseEngine.Api.Integration.Tests.csproj --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+      run: dotnet test --project tests/WarehouseEngine.Api.Integration.Tests/WarehouseEngine.Api.Integration.Tests.csproj --configuration Release --no-build --coverlet --coverlet-output-format cobertura
       continue-on-error: true  # Allow this to fail if Docker is not available
       
     - name: Publish API
@@ -90,4 +90,4 @@ jobs:
         dotnet build tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-restore
       
     - name: Run Domain tests only (basic build)
-      run: dotnet test tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-build --verbosity normal
+      run: dotnet test --project tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-build

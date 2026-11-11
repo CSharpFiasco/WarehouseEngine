@@ -54,7 +54,8 @@ The main CI workflow includes a SQL Server 2022 service for Infrastructure tests
 - Build continues even if some tests fail to provide maximum feedback
 
 ### Code Coverage
-All test runs collect XPlat Code Coverage for local analysis.
+The main CI workflow collects Cobertura coverage with the MTP-compatible
+`coverlet.MTP` extension (`--coverlet --coverlet-output-format cobertura`).
 
 ### Artifact Management
 - API builds are uploaded as artifacts with 7-day retention
@@ -90,6 +91,6 @@ To test the build locally:
 ```bash
 dotnet restore
 dotnet build src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release
-dotnet test tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj
+dotnet test --project tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj
 dotnet publish src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --output ./dist
 ```

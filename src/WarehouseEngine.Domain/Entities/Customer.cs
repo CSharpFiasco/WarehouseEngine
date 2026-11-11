@@ -1,15 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
-using WarehouseEngine.Domain.Exceptions;
 using WarehouseEngine.Domain.ValueObjects;
 
 namespace WarehouseEngine.Domain.Entities;
 
 public partial class Customer
 {
-    public Customer()
+    private Customer()
     {
         Order = new HashSet<Order>();
         Contact = new HashSet<Contact>();
@@ -17,33 +15,32 @@ public partial class Customer
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    [StringLength(80)]
+    [StringLength(MaxNameLength)]
     [Required]
-    public required string Name { get; set; }
+    public string Name { get; private set; } = null!;
 
-    public Address? BillingAddress { get; set; }
+    public Address? BillingAddress { get; private set; }
 
     [DisallowNull]
-    public required Address ShippingAddress { get; set; }
+    public Address ShippingAddress { get; private set; } = null!;
 
-    public required DateTime DateCreated { get; set; }
+    public DateTime DateCreated { get; private set; }
 
-    [StringLength(80)]
-    public required string CreatedBy { get; set; }
+    [StringLength(MaxUserNameLength)]
+    public string CreatedBy { get; private set; } = null!;
 
-    public DateTime? DateModified { get; set; }
+    public DateTime? DateModified { get; private set; }
 
-    [StringLength(80)]
-    public string? ModifiedBy { get; set; }
+    [StringLength(MaxUserNameLength)]
+    public string? ModifiedBy { get; private set; }
 
     [InverseProperty("Customer")]
-    public virtual ICollection<Order> Order { get; init; }
+    public virtual ICollection<Order> Order { get; private set; }
 
     [ForeignKey("CustomerId")]
     [InverseProperty("Customer")]
-    public virtual ICollection<Contact> Contact { get; init; }
+    public virtual ICollection<Contact> Contact { get; private set; }
 }
-
 

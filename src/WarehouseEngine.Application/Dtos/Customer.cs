@@ -11,6 +11,7 @@ public class CustomerResponseDto
     public required Guid Id { get; init; }
 
     [Required]
+    [StringLength(Customer.MaxNameLength)]
     public required string Name { get; init; }
 
     public Address? BillingAddress { get; init; }
@@ -50,6 +51,7 @@ public class PostCustomerDto
     public Guid? Id { get; set; }
 
     [Required]
+    [StringLength(Customer.MaxNameLength)]
     public required string Name { get; init; }
 
     public Address? BillingAddress { get; init; }
@@ -90,14 +92,7 @@ public class PostCustomerDto
             throw new EntityConversionException<Customer, PostCustomerDto>("Shipping address is null");
         }
 
-        return new Customer
-        {
-            Id = dto.Id.Value,
-            Name = dto.Name,
-            BillingAddress = dto.BillingAddress,
-            ShippingAddress = dto.ShippingAddress,
-            DateCreated = dto.DateCreated.Value,
-            CreatedBy = dto.CreatedBy
-        };
+        return Customer.Create(dto.Id.Value, dto.Name, dto.ShippingAddress,
+            dto.DateCreated.Value, dto.CreatedBy, dto.BillingAddress);
     }
 }

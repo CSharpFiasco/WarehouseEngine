@@ -63,9 +63,10 @@ public class VendorService : IVendorService
         return (VendorResponseDto)entity;
     }
 
-    public async Task<OneOf<VendorResponseDto, EntityErrorType>> UpdateAsync(Guid id, Vendor entity)
+    public async Task<OneOf<VendorResponseDto, EntityErrorType>> UpdateAsync(Guid id, UpdateVendorDto vendor)
     {
         Vendor? entityToUpdate = await _context.Vendor
+            .AsTracking()
             .SingleOrDefaultAsync(v => id == v.Id);
         
         if (entityToUpdate is null)
@@ -73,9 +74,8 @@ public class VendorService : IVendorService
             return new EntityDoesNotExist();
         }
 
-        entityToUpdate.Name = entity.Name;
+        entityToUpdate.Rename(vendor.Name);
 
-        _context.Vendor.Update(entityToUpdate);
         await _context.SaveChangesAsync();
 
         return (VendorResponseDto)entityToUpdate;

@@ -30,14 +30,14 @@ jobs:
         dotnet-version: '11.0.x'
         
     - name: Restore API dependencies
-      run: dotnet restore src/WarehouseEngine.Api/WarehouseEngine.Api.csproj
+      run: dotnet restore src/WarehouseEngine.Api/WarehouseEngine.Api.csproj -mt
       
     - name: Build API project
-      run: dotnet build src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore
+      run: dotnet build src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore -mt
       
     - name: Run API-related tests
       run: |
-        dotnet test --project tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release
+        dotnet test --project tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release -mt
         
     - name: Publish API
       run: dotnet publish src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-build --output ./api-dist

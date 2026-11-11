@@ -73,7 +73,8 @@ public class PostVendorDto
 ### VendorService Implementation
 - Follows the same pattern as CustomerService
 - Uses Entity Framework for data access
-- Implements proper error handling with OneOf pattern
+- Implements error handling with native C# 15 `ServiceResult<TSuccess, TError>` unions and endpoint pattern matching
+- Vendor, customer, item, position, and warehouse endpoints handle each union case explicitly using switch expressions without a default branch; non-exhaustive matches fail the API build (`CS8509` is treated as an error).
 - Uses IIdGenerator for ID generation
 
 ## Integration Tests

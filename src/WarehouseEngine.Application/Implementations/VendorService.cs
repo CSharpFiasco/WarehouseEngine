@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OneOf;
 using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
+using WarehouseEngine.Application.Results;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.ErrorTypes;
 
@@ -18,7 +18,7 @@ public class VendorService : IVendorService
         _idGenerator = idGenerator;
     }
 
-    public async Task<OneOf<VendorResponseDto, EntityErrorType>> GetByIdAsync(Guid id)
+    public async Task<ServiceResult<VendorResponseDto, EntityErrorType>> GetByIdAsync(Guid id)
     {
         Vendor? entity = await _context.Vendor
             .AsNoTracking()
@@ -43,7 +43,7 @@ public class VendorService : IVendorService
         return await _context.Vendor.CountAsync();
     }
 
-    public async Task<OneOf<VendorResponseDto, EntityAlreadyExists>> AddAsync(PostVendorDto vendor, string username)
+    public async Task<ServiceResult<VendorResponseDto, EntityAlreadyExists>> AddAsync(PostVendorDto vendor, string username)
     {
         if (vendor.Id is not null)
         {
@@ -63,7 +63,7 @@ public class VendorService : IVendorService
         return (VendorResponseDto)entity;
     }
 
-    public async Task<OneOf<VendorResponseDto, EntityErrorType>> UpdateAsync(Guid id, UpdateVendorDto vendor)
+    public async Task<ServiceResult<VendorResponseDto, EntityErrorType>> UpdateAsync(Guid id, UpdateVendorDto vendor)
     {
         Vendor? entityToUpdate = await _context.Vendor
             .AsTracking()

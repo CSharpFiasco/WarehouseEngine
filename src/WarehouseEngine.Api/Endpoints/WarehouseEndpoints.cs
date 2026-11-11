@@ -14,16 +14,14 @@ internal class WarehouseEndpoints
 {
     public static void Map(WebApplication app)
     {
-        app.MapGet("/api/v{version:apiVersion}/warehouse/{id}", [Authorize] async (ILogger<WarehouseEndpoints> logger, IWarehouseQueries warehouseQueries, Guid id, CancellationToken cancellationToken) =>
+        app.MapGet("/api/v{version:apiVersion}/warehouse/{id}", [Authorize] async Task<Results<Ok<WarehouseResponseDto>, ProblemHttpResult>> (ILogger<WarehouseEndpoints> logger, IWarehouseQueries warehouseQueries, Guid id, CancellationToken cancellationToken) =>
         {
             var warehouse = await warehouseQueries.GetByIdAsync(id, cancellationToken);
-            return warehouse.Match<Results<Ok<WarehouseResponseDto>, ProblemHttpResult>>(
-                    warehouse => TypedResults.Ok(warehouse),
-                    invalidResult =>
-                    {
-                        logger.LogError("Record not found. {message}", invalidResult.GetMessage());
-                        return TypedResults.Problem(statusCode: 404, detail: invalidResult.GetMessage());
-                    });
+            return warehouse switch
+            {
+                WarehouseResponseDto response => TypedResults.Ok(response),
+                EntityErrorType invalidResult => NotFoundProblem(logger, invalidResult),
+            };
         })
         .Produces<WarehouseResponseDto>(200)
         .WithName("GetWarehouseById")
@@ -66,5 +64,11 @@ internal class WarehouseEndpoints
         .ProducesProblem(409)
         .WithName("CreateWarehouse")
         .WithTags("Warehouse");
+    }
+
+    private static ProblemHttpResult NotFoundProblem(ILogger<WarehouseEndpoints> logger, EntityErrorType error)
+    {
+        logger.LogError("Record not found. {message}", error.GetMessage());
+        return TypedResults.Problem(statusCode: 404, detail: error.GetMessage());
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OneOf;
 using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
+using WarehouseEngine.Application.Results;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.ValidationResults;
 
@@ -17,7 +17,7 @@ public class ItemService : IItemService
         _idGenerator = idGenerator;
     }
 
-    public async Task<OneOf<ItemResponseDto, EntityDoesNotExistResult>> GetByIdAsync(Guid id)
+    public async Task<ServiceResult<ItemResponseDto, EntityDoesNotExistResult>> GetByIdAsync(Guid id)
     {
         Item? item = await _context.Item.AsNoTracking()
             .SingleOrDefaultAsync(i => i.Id == id);
@@ -27,7 +27,7 @@ public class ItemService : IItemService
             : new EntityDoesNotExistResult(typeof(Item));
     }
 
-    public async Task<OneOf<ItemResponseDto, EntityAlreadyExistsResult>> AddAsync(PostItemDto item)
+    public async Task<ServiceResult<ItemResponseDto, EntityAlreadyExistsResult>> AddAsync(PostItemDto item)
     {
         if (item.Id is not null)
         {
@@ -45,7 +45,7 @@ public class ItemService : IItemService
         return (ItemResponseDto)itemToAdd;
     }
 
-    public async Task<OneOf<ItemResponseDto, EntityDoesNotExistResult>> UpdateAsync(Guid id, PostItemDto item)
+    public async Task<ServiceResult<ItemResponseDto, EntityDoesNotExistResult>> UpdateAsync(Guid id, PostItemDto item)
     {
         Item? entityToUpdate = await _context.Item.AsTracking().SingleOrDefaultAsync(i => id == i.Id);
         if (entityToUpdate is null)

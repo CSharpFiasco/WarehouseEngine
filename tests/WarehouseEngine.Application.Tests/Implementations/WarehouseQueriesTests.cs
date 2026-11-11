@@ -66,7 +66,7 @@ public class WarehouseQueriesTests(TestDatabaseFixture fixture) : IClassFixture<
     {
         await using var context = fixture.CreateContext();
         using var cancellation = new CancellationTokenSource();
-        cancellation.Cancel();
+        await cancellation.CancelAsync();
         var queries = new WarehouseQueries(context);
 
         await Assert.ThrowsAnyAsync<OperationCanceledException>(() => queries.GetByIdAsync(Guid.NewGuid(), cancellation.Token));

@@ -72,6 +72,7 @@ public class CustomerService : ICustomerService
     public async Task<OneOf<CustomerResponseDto, EntityErrorType>> UpdateAsync(Guid id, Customer entity)
     {
         Customer? entityToUpdate = await _context.Customer
+            .AsTracking()
             .SingleOrDefaultAsync(e => id == e.Id);
         if (entityToUpdate is null)
         {
@@ -79,11 +80,8 @@ public class CustomerService : ICustomerService
             return new EntityDoesNotExist();
         }
 
-        entityToUpdate.BillingAddress = entity.BillingAddress;
-        entityToUpdate.ShippingAddress = entity.ShippingAddress;
-        entityToUpdate.Name = entity.Name;
+        entityToUpdate.UpdateDetails(entity.Name, entity.BillingAddress, entity.ShippingAddress);
 
-        _context.Customer.Update(entityToUpdate);
         await _context.SaveChangesAsync();
 
         return (CustomerResponseDto)entityToUpdate;

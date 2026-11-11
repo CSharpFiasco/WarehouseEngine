@@ -1,33 +1,32 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 using WarehouseEngine.Domain.ValueObjects;
 
 namespace WarehouseEngine.Domain.Entities;
 
 public partial class Contact
 {
-    public Contact()
+    private Contact()
     {
         Customer = new HashSet<Customer>();
     }
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    [StringLength(80)]
-    public string? FirstName { get; set; }
+    [StringLength(MaxNameLength)]
+    public string? FirstName { get; private set; }
 
-    [StringLength(80)]
-    public string? LastName { get; set; }
+    [StringLength(MaxNameLength)]
+    public string? LastName { get; private set; }
 
-    [StringLength(60)]
-    public string? Email { get; set; }
+    [StringLength(MaxEmailLength)]
+    public string? Email { get; private set; }
 
-    public Address? Address { get; set; }
+    public Address? Address { get; private set; }
 
     [ForeignKey("ContactId")]
     [InverseProperty("Contact")]
-    public virtual ICollection<Customer> Customer { get; init; }
+    public virtual ICollection<Customer> Customer { get; private set; }
 }

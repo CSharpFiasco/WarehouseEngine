@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using WarehouseEngine.Domain.Exceptions;
 
 namespace WarehouseEngine.Domain.Entities;
 
 public partial class Item
 {
-    public Item()
+    private Item()
     {
         WarehouseItem = new HashSet<WarehouseItem>();
         Vendor = new HashSet<Vendor>();
@@ -15,28 +14,28 @@ public partial class Item
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
     [Required]
-    [StringLength(12)]
-    public required string Sku { get; set; }
+    [StringLength(MaxSkuLength)]
+    public string Sku { get; private set; } = null!;
 
     [Required]
-    [StringLength(120)]
-    public required string Description { get; set; }
+    [StringLength(MaxDescriptionLength)]
+    public string Description { get; private set; } = null!;
 
-    public bool IsActive { get; set; }
-
-    [JsonIgnore]
-    public DateTime? DateCreated { get; set; }
+    public bool IsActive { get; private set; }
 
     [JsonIgnore]
-    public string? CreatedBy { get; set; }
+    public DateTime? DateCreated { get; private set; }
+
+    [JsonIgnore]
+    public string? CreatedBy { get; private set; }
 
     [InverseProperty("Item")]
-    public virtual ICollection<WarehouseItem> WarehouseItem { get; init; }
+    public virtual ICollection<WarehouseItem> WarehouseItem { get; private set; }
 
     [ForeignKey("ItemId")]
     [InverseProperty("Item")]
-    public virtual ICollection<Vendor> Vendor { get; init; }
+    public virtual ICollection<Vendor> Vendor { get; private set; }
 }

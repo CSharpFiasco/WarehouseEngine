@@ -8,7 +8,7 @@ namespace WarehouseEngine.Domain.Entities;
 [Index("ItemId", Name = "IX_WarehouseItem02")]
 public partial class WarehouseItem
 {
-    public WarehouseItem()
+    private WarehouseItem()
     {
         OrderWarehouseItem = new HashSet<OrderWarehouseItem>();
         OrderWarehouseItemOutOfStock = new HashSet<OrderWarehouseItemOutOfStock>();
@@ -17,31 +17,31 @@ public partial class WarehouseItem
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    public required Guid WarehouseId { get; set; }
+    public Guid WarehouseId { get; private set; }
 
-    public required Guid ItemId { get; set; }
+    public Guid ItemId { get; private set; }
 
-    public int Quantity { get; set; }
+    public int Quantity { get; private set; }
 
     [Column(TypeName = "decimal(15, 3)")]
-    public decimal? Price { get; set; }
+    public decimal? Price { get; private set; }
 
     [ForeignKey("ItemId")]
     [InverseProperty("WarehouseItem")]
-    public virtual Item? Item { get; set; }
+    public virtual Item? Item { get; private set; }
 
     [ForeignKey("WarehouseId")]
     [InverseProperty("WarehouseItem")]
-    public virtual Warehouse? Warehouse { get; set; }
+    public virtual Warehouse? Warehouse { get; private set; }
 
     [InverseProperty("WarehouseItem")]
-    public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; init; }
+    public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; private set; }
 
     [InverseProperty("WarehouseItem")]
-    public virtual ICollection<OrderWarehouseItemOutOfStock> OrderWarehouseItemOutOfStock { get; init; }
+    public virtual ICollection<OrderWarehouseItemOutOfStock> OrderWarehouseItemOutOfStock { get; private set; }
 
     [InverseProperty("WarehouseItem")]
-    public virtual ICollection<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; init; }
+    public virtual ICollection<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; private set; }
 }

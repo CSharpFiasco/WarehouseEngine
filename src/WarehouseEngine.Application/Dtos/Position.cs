@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.Exceptions;
 
@@ -20,11 +21,7 @@ public class PositionResponseDto
 
     public static explicit operator Position(PositionResponseDto dto)
     {
-        return new Position
-        {
-            Id = dto.Id,
-            Name = dto.Name
-        };
+        return Position.Create(dto.Id, dto.Name);
     }
 }
 
@@ -32,6 +29,8 @@ public class PostPositionDto
 {
     [JsonIgnore]
     public Guid? Id { get; set; }
+    [Required]
+    [StringLength(Position.MaxNameLength)]
     public required string Name { get; set; }
 
     /// <summary>
@@ -50,10 +49,6 @@ public class PostPositionDto
             throw new EntityConversionException<Position, PostPositionDto>("Position should have Id when created");
         }
 
-        return new Position
-        {
-            Id = dto.Id.Value,
-            Name = dto.Name
-        };
+        return Position.Create(dto.Id.Value, dto.Name);
     }
 }

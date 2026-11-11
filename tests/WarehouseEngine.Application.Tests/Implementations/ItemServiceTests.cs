@@ -24,12 +24,7 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
 
         Guid newGuidId = Guid.NewGuid();
 
-        var item = new Item
-        {
-            Id = newGuidId,
-            Description = "Test",
-            Sku = newSku
-        };
+        var item = Item.Create(newGuidId, newSku, "Test");
 
         await context.AddAsync(item, TestContext.Current.CancellationToken);
         await context.SaveChangesAsync(TestContext.Current.CancellationToken);
@@ -97,5 +92,9 @@ public class ItemServiceTests : IClassFixture<TestDatabaseFixture>
         Assert.Equal("TestSku", itemSaved.Sku);
         Assert.Equal("TestDescriptionUpdateAsync", itemSaved.Description);
         Assert.False(itemSaved.IsActive);
+        var persisted = await context.Item.SingleAsync(i => i.Id == item.Id, TestContext.Current.CancellationToken);
+        Assert.Equal(itemSaved.Sku, persisted.Sku);
+        Assert.Equal(itemSaved.Description, persisted.Description);
+        Assert.Equal(itemSaved.IsActive, persisted.IsActive);
     }
 }

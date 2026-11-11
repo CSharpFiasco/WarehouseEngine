@@ -47,15 +47,12 @@ public class ItemService : IItemService
 
     public async Task<OneOf<ItemResponseDto, EntityDoesNotExistResult>> UpdateAsync(Guid id, PostItemDto item)
     {
-        Item? entityToUpdate = await _context.Item.SingleOrDefaultAsync(i => id == i.Id);
+        Item? entityToUpdate = await _context.Item.AsTracking().SingleOrDefaultAsync(i => id == i.Id);
         if (entityToUpdate is null)
             return new EntityDoesNotExistResult(typeof(Item));
 
-        entityToUpdate.IsActive = item.IsActive;
-        entityToUpdate.Sku = item.Sku;
-        entityToUpdate.Description = item.Description;
+        entityToUpdate.UpdateDetails(item.Sku, item.Description, item.IsActive);
 
-        _context.Item.Update(entityToUpdate);
         await _context.SaveChangesAsync();
 
         return (ItemResponseDto)entityToUpdate;

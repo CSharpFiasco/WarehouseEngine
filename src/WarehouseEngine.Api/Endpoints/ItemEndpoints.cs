@@ -51,6 +51,7 @@ internal class ItemEndpoints
         })
         .Produces<ItemResponseDto>(200)
         .ProducesProblem(400)
+        .ProducesValidationProblem()
         .WithName("CreateItem")
         .WithTags("Item");
     }

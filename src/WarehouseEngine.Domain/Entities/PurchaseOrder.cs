@@ -5,23 +5,23 @@ namespace WarehouseEngine.Domain.Entities;
 
 public partial class PurchaseOrder
 {
-    public PurchaseOrder()
+    private PurchaseOrder()
     {
         PurchaseOrderWarehouseItem = new HashSet<PurchaseOrderWarehouseItem>();
     }
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
     [Column(TypeName = "date")]
-    public DateTime OrderDate { get; set; }
+    public DateTime OrderDate { get; private set; }
 
-    [StringLength(255)]
-    public required string OrderNumber { get; set; }
+    [StringLength(MaxOrderNumberLength)]
+    public string OrderNumber { get; private set; } = null!;
 
-    public byte Status { get; set; }
+    public byte Status { get; private set; }
 
     [InverseProperty("PurchaseOrder")]
-    public virtual ICollection<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; init; }
+    public virtual ICollection<PurchaseOrderWarehouseItem> PurchaseOrderWarehouseItem { get; private set; }
 }

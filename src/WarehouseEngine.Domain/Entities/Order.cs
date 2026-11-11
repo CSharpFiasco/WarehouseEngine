@@ -6,7 +6,7 @@ namespace WarehouseEngine.Domain.Entities;
 
 public partial class Order
 {
-    public Order()
+    private Order()
     {
         OrderWarehouseItem = new HashSet<OrderWarehouseItem>();
         OrderWarehouseItemOutOfStock = new HashSet<OrderWarehouseItemOutOfStock>();
@@ -14,21 +14,21 @@ public partial class Order
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    public Guid CustomerId { get; set; }
+    public Guid CustomerId { get; private set; }
 
-    public byte Status { get; set; }
+    public byte Status { get; private set; }
 
-    public required Address ShippingAddress { get; set; }
+    public Address ShippingAddress { get; private set; } = null!;
 
     [ForeignKey("CustomerId")]
     [InverseProperty("Order")]
-    public virtual Customer? Customer { get; set; }
+    public virtual Customer? Customer { get; private set; }
 
     [InverseProperty("Order")]
-    public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; init; }
+    public virtual ICollection<OrderWarehouseItem> OrderWarehouseItem { get; private set; }
 
     [InverseProperty("Order")]
-    public virtual ICollection<OrderWarehouseItemOutOfStock> OrderWarehouseItemOutOfStock { get; init; }
+    public virtual ICollection<OrderWarehouseItemOutOfStock> OrderWarehouseItemOutOfStock { get; private set; }
 }

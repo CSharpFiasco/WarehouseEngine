@@ -1,6 +1,5 @@
 ﻿using OneOf;
 using WarehouseEngine.Application.Dtos;
-using WarehouseEngine.Domain.Entities;
 using WarehouseEngine.Domain.ErrorTypes;
 
 namespace WarehouseEngine.Application.Interfaces;
@@ -12,5 +11,5 @@ public interface IVendorService
     Task<OneOf<VendorResponseDto, EntityErrorType>> GetByIdAsync(Guid id);
     Task<IEnumerable<VendorResponseDto>> GetAllAsync();
     Task<int> GetCount();
-    Task<OneOf<VendorResponseDto, EntityErrorType>> UpdateAsync(Guid id, Vendor entity);
+    Task<OneOf<VendorResponseDto, EntityErrorType>> UpdateAsync(Guid id, UpdateVendorDto vendor);
 }

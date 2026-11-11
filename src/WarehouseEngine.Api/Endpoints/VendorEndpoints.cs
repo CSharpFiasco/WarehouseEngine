@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using WarehouseEngine.Api.Extensions.ErrorTypeExtensions;
 using WarehouseEngine.Application.Dtos;
 using WarehouseEngine.Application.Interfaces;
-using WarehouseEngine.Domain.Entities;
 
 namespace WarehouseEngine.Api.Endpoints;
 
@@ -62,6 +61,7 @@ public class VendorEndpoints
         })
         .Produces<VendorResponseDto>(200)
         .ProducesProblem(409)
+        .ProducesValidationProblem()
         .WithName("CreateVendor")
         .WithTags("Vendor");
 
@@ -76,9 +76,7 @@ public class VendorEndpoints
 
         app.MapPut("/api/v{version:apiVersion}/vendor/{id}", [Authorize] async (ILogger<VendorEndpoints> logger, IVendorService vendorService, Guid id, UpdateVendorDto vendorDto) =>
         {
-            vendorDto.Id = id;
-            var vendor = (Vendor)vendorDto;
-            var result = await vendorService.UpdateAsync(id, vendor);
+            var result = await vendorService.UpdateAsync(id, vendorDto);
 
             return result.Match<Results<Ok<VendorResponseDto>, ProblemHttpResult>>(
                 vendor => TypedResults.Ok(vendor),
@@ -90,6 +88,7 @@ public class VendorEndpoints
         })
         .Produces<VendorResponseDto>(200)
         .ProducesProblem(404)
+        .ProducesValidationProblem()
         .WithName("UpdateVendor")
         .WithTags("Vendor");
     }

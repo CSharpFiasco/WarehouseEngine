@@ -38,7 +38,7 @@ jobs:
       
     - name: Run API-related tests
       run: |
-        dotnet test tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --verbosity normal
+        dotnet test --project tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release
         
     - name: Publish API
       run: dotnet publish src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-build --output ./api-dist

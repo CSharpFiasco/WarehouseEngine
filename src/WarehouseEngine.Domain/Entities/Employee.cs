@@ -8,45 +8,51 @@ namespace WarehouseEngine.Domain.Entities;
 [Index("SupervisorEmployeeId", Name = "IX_Employee02")]
 public partial class Employee
 {
-    public Employee()
+    private Employee()
     {
         InverseSupervisorEmployee = new HashSet<Employee>();
     }
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; set; }
+    public Guid Id { get; private set; }
 
-    [StringLength(30)]
-    public required string FirstName { get; set; }
+    [StringLength(MaxNameLength)]
+    public string FirstName { get; private set; } = null!;
 
-    [StringLength(30)]
-    public string? MiddleName { get; set; }
+    [StringLength(MaxNameLength)]
+    public string? MiddleName { get; private set; }
 
-    [StringLength(30)]
-    public required string LastName { get; set; }
+    [StringLength(MaxNameLength)]
+    public string LastName { get; private set; } = null!;
 
-    [StringLength(32)]
-    public required string UserName { get; set; }
+    [StringLength(MaxUserNameLength)]
+    public string UserName { get; private set; } = null!;
 
-    public Guid PositionId { get; set; }
+    public Guid PositionId { get; private set; }
 
-    public Guid SupervisorEmployeeId { get; set; }
+    public Guid SupervisorEmployeeId { get; private set; }
 
-    [MaxLength(32)]
-    public byte[]? SocialSecurityNumberHash { get; set; }
+    private byte[]? _socialSecurityNumberHash;
 
-    [StringLength(4)]
-    public string? SocialSecuritySerialNumber { get; set; }
+    [MaxLength(MaxHashLength)]
+    public byte[]? SocialSecurityNumberHash
+    {
+        get => _socialSecurityNumberHash?.ToArray();
+        private set => _socialSecurityNumberHash = value;
+    }
+
+    [StringLength(MaxSerialNumberLength)]
+    public string? SocialSecuritySerialNumber { get; private set; }
 
     [ForeignKey("PositionId")]
     [InverseProperty("Employee")]
-    public virtual Position? Position { get; set; }
+    public virtual Position? Position { get; private set; }
 
     [ForeignKey("SupervisorEmployeeId")]
     [InverseProperty("InverseSupervisorEmployee")]
-    public virtual required Employee SupervisorEmployee { get; set; }
+    public virtual Employee SupervisorEmployee { get; private set; } = null!;
 
     [InverseProperty("SupervisorEmployee")]
-    public virtual ICollection<Employee> InverseSupervisorEmployee { get; init; }
+    public virtual ICollection<Employee> InverseSupervisorEmployee { get; private set; }
 }

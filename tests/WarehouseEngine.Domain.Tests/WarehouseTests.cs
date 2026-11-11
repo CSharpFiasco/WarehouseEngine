@@ -1,63 +1,53 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
-using WarehouseEngine.Domain.Entities;
+﻿using WarehouseEngine.Domain.Entities;
 
 namespace WarehouseEngine.Domain.Tests;
 public class WarehouseTests
 {
-    private readonly ITestOutputHelper _output;
-    public WarehouseTests(ITestOutputHelper output)
+    [Fact]
+    public void Create_ValidInputs_PreservesIdentityAndName()
     {
-        _output = output;
+        var id = Guid.NewGuid();
+        var warehouse = Warehouse.Create(id, " Test Warehouse ");
+
+        Assert.Equal(id, warehouse.Id);
+        Assert.Equal(" Test Warehouse ", warehouse.Name);
+        Assert.Empty(warehouse.WarehouseItem);
     }
 
     [Fact]
-    public void GivenIdIsGiven_WhenDeserialized_ThenSerializationIsSuccessful()
+    public void Create_NameAtMaximumLength_Succeeds()
     {
-        //SETUP
-        var json = """
-            {
-                "Id": "d3b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b",
-                "Name": "Test Warehouse"
-            }
-            """;
-        _output.WriteLine(json);
+        var name = new string('W', 32);
 
-        //ATTEMPT
-        var warehouse = JsonSerializer.Deserialize<Warehouse>(json);
-        var errors = new List<ValidationResult>();
-        var isValid = Validator.TryValidateObject(warehouse!, new ValidationContext(warehouse!), errors, true);
+        var warehouse = Warehouse.Create(Guid.NewGuid(), name);
 
+        Assert.Equal(name, warehouse.Name);
+    }
 
-        //VERIFY
-        Assert.NotNull(warehouse);
-        Assert.Empty(errors);
-        Assert.True(isValid);
-        Assert.Equal("d3b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b", warehouse.Id.ToString());
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void Create_MissingName_ThrowsArgumentException(string? name)
+    {
+        var exception = Assert.ThrowsAny<ArgumentException>(() => Warehouse.Create(Guid.NewGuid(), name!));
+
+        Assert.Equal("name", exception.ParamName);
     }
 
     [Fact]
-    public void GivenNameExceedsMaxLength_WhenDeserialized_ThenValidationFails()
+    public void Create_NameExceedsMaximumLength_ThrowsArgumentOutOfRangeException()
     {
-        //SETUP
-        var json = """
-            {
-                "Id": "d3b3b3b3-3b3b-3b3b-3b3b-3b3b3b3b3b3b",
-                "Name": "This name is way too long and exceeds the thirty two character limit"
-            }
-            """;
-        _output.WriteLine(json);
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => Warehouse.Create(Guid.NewGuid(), new string('W', 33)));
 
-        //ATTEMPT
-        var warehouse = JsonSerializer.Deserialize<Warehouse>(json);
-        var errors = new List<ValidationResult>();
-        var isValid = Validator.TryValidateObject(warehouse!, new ValidationContext(warehouse!), errors, true);
+        Assert.Equal("name", exception.ParamName);
+    }
 
+    [Fact]
+    public void Create_EmptyId_ThrowsArgumentException()
+    {
+        var exception = Assert.Throws<ArgumentException>(() => Warehouse.Create(Guid.Empty, "Test Warehouse"));
 
-        //VERIFY
-        Assert.NotNull(warehouse);
-        Assert.False(isValid);
-        var error = Assert.Single(errors);
-        Assert.Contains("Name", error.ErrorMessage!);
+        Assert.Equal("id", exception.ParamName);
     }
 }

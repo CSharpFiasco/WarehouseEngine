@@ -8,7 +8,7 @@ This repository includes several GitHub Actions workflows for continuous integra
 **Triggers:** Push/PR to `main` or `develop` branches
 
 **What it does:**
-- Sets up .NET 9.0 environment
+- Sets up .NET 11.0 environment
 - Provides SQL Server service for database tests
 - Builds all core projects (excluding Database project which requires .NET Framework)
 - Runs all test suites:
@@ -65,7 +65,7 @@ The main CI workflow collects Cobertura coverage with the MTP-compatible
 
 ### Environment
 - Requires GitHub Actions runners with:
-  - .NET 9.0 support
+  - .NET 11.0 support
   - Docker support (for API Integration tests)
   - SQL Server service support
 

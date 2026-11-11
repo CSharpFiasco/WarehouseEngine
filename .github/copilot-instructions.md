@@ -2,14 +2,14 @@
 
 ## Repository Overview
 
-**WarehouseEngine** is a full-stack warehouse management system built with .NET 9 and Angular 18. It follows a database-first approach using Entity Framework Core and implements Clean Architecture principles with Domain, Application, Infrastructure, and API layers.
+**WarehouseEngine** is a full-stack warehouse management system built with .NET 11 and Angular 18. It follows a database-first approach using Entity Framework Core and implements Clean Architecture principles with Domain, Application, Infrastructure, and API layers.
 
 ### High-Level Architecture
-- **Backend**: ASP.NET Core Web API (.NET 9) with JWT authentication, Entity Framework Core, SQL Server
+- **Backend**: ASP.NET Core Web API (.NET 11) with JWT authentication, Entity Framework Core, SQL Server
 - **Frontend**: Angular 18 with NgRx state management, Angular Material UI, TypeScript/SCSS
 - **Database**: SQL Server with Entity Framework Core (database-first approach)
 - **Testing**: xUnit for .NET, Jasmine/Karma for Angular, integration tests with Testcontainers
-- **Target Runtime**: .NET 9, Angular 18
+- **Target Runtime**: .NET 11, Angular 18
 
 ## Build and Development Instructions
 
@@ -109,7 +109,7 @@ WarehouseEngine.sln (root solution file)
 - **DbContext**: `WarehouseEngine.Infrastructure.DataContext.WarehouseEngineContext`
 - **Entities**: Company, Customer, Employee, Item, Order, Vendor, Warehouse, etc.
 - **Connection String**: Must be in appsettings.local.json (never commit this file)
-- **Database Provider**: SQL Server with EF Core 9.0.3
+- **Database Provider**: SQL Server with EF Core 11.0.0
 
 ### Key Ports and URLs
 - **API**: https://localhost:7088 (HTTPS), http://localhost:5220 (HTTP)

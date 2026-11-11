@@ -81,7 +81,7 @@ public class Program
         });
 
         // Using ..Configure<JsonOptions> rather than .AddJsonOptions() according to docs
-        //https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/include-metadata?view=aspnetcore-10.0&tabs=minimal-apis#mvc-json-options-and-global-json-options
+        //https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/include-metadata?view=aspnetcore-11.0&tabs=minimal-apis#mvc-json-options-and-global-json-options
         services.Configure<JsonOptions>(options =>
         {
             options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -113,7 +113,7 @@ public class Program
                 document.Components ??= new OpenApiComponents();
                 document.Components.SecuritySchemes = securitySchemes;
 
-                // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/customize-openapi?view=aspnetcore-10.0#use-document-transformers
+                // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/customize-openapi?view=aspnetcore-11.0#use-document-transformers
                 // Apply it as a requirement for all operations
                 foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations ?? []))
                 {
@@ -132,9 +132,9 @@ public class Program
             options.AddSchemaTransformer((schema, context, cancellationToken) =>
             {
                 var type = context.JsonTypeInfo.Type;
-                if (ExampleDictionary.Examples.TryGetValue(type, out var exampleValue))
+                if (ExampleDictionary.Examples.TryGetValue(type, out var exampleValue) && exampleValue is not null)
                 {
-                    schema.Example = exampleValue;
+                    schema.Examples = [exampleValue];
                 }
 
                 return Task.CompletedTask;

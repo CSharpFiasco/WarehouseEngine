@@ -19,13 +19,13 @@ jobs:
         dotnet-version: '11.0.x'
         
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore -mt
       
     - name: Build solution
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore -mt
       
     - name: Build API project specifically
-      run: dotnet build src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore
+      run: dotnet build src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore -mt
       
     - name: Check that API can be published
       run: dotnet publish src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-build --output ./publish-output

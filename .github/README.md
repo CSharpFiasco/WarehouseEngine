@@ -13,7 +13,7 @@ This repository includes several GitHub Actions workflows for continuous integra
 - Builds all core projects (excluding Database project which requires .NET Framework)
 - Runs all test suites:
   - Domain tests (always runs)
-  - Infrastructure tests (with SQL Server, allows failures)
+  - Application tests (with SQL Server, failures fail the job)
   - API Integration tests (allows failures if Docker issues)
 - Publishes the API project
 - Collects code coverage reports
@@ -46,10 +46,17 @@ This repository includes several GitHub Actions workflows for continuous integra
 ## Features
 
 ### SQL Server Integration
-The main CI workflow includes a SQL Server 2022 service for Infrastructure tests that require database connectivity.
+The main CI workflow includes a SQL Server 2025 service for Application tests that require database connectivity.
+The test fixture reads `ConnectionStrings__DefaultConnection`, which the workflow
+sets to connect to this service. A configured connection always uses SQL Server,
+regardless of the operating system. Without that setting, Windows uses LocalDB,
+macOS uses SQLite, and other platforms fail with a configuration error.
+
+Use a dedicated test database: the fixture deletes and recreates the database
+before seeding it.
 
 ### Error Handling
-- Infrastructure tests allow failures (SQL Server connectivity issues)
+- Application test failures fail the job, including SQL Server connectivity issues
 - API Integration tests allow failures (Docker environment issues)
 - Build continues even if some tests fail to provide maximum feedback
 
@@ -88,7 +95,7 @@ The build excludes the `WarehouseEngine.Database` project as it requires .NET Fr
 ## Troubleshooting
 
 ### Common Issues
-1. **Infrastructure tests failing**: Check SQL Server service health
+1. **Application tests failing**: Check SQL Server service health and ensure `ConnectionStrings__DefaultConnection` targets a dedicated test database. LocalDB is Windows-only.
 2. **API Integration tests failing**: Usually Docker-related, workflow continues
 3. **Database project build errors**: Expected and excluded from CI
 

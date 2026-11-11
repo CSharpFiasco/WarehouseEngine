@@ -6,11 +6,7 @@ namespace WarehouseEngine.Application.Tests.Fixtures;
 
 public sealed class TestDatabaseFixture
 {
-    /*
-     * TODO: Pull from environment variables against an instance of SQL Server 2022
-     * VS 2022 uses SQL Serveer 2019
-     */
-    private readonly string ConnectionString = """Server=(localdb)\mssqllocaldb;Database=WarehouseTestDatabase;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False;Application Name="Warehouse Engine Integration Tests";""";
+    private readonly DbContextOptions<WarehouseEngineContext> _options;
 
     private static readonly Lock _lock = new();
     private static bool _databaseInitialized = false;
@@ -23,10 +19,7 @@ public sealed class TestDatabaseFixture
 
     public TestDatabaseFixture()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        {
-            ConnectionString = "Data Source=.\\warehousetest.db";
-        }
+        _options = CreateOptions(Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection"));
 
         lock (_lock)
         {
@@ -71,23 +64,34 @@ public sealed class TestDatabaseFixture
         );
     }
 
-    /// <summary>
-    ///     When we test infrastructure, we test against Visual Studio's SQL Server 2019 instance.
-    /// </summary>
-    public WarehouseEngineContext CreateContext()
+    internal static DbContextOptions<WarehouseEngineContext> CreateOptions(string? connectionString)
     {
         var builder = new DbContextOptionsBuilder<WarehouseEngineContext>();
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        if (!string.IsNullOrWhiteSpace(connectionString))
         {
-            builder.UseSqlite(ConnectionString);
+            builder.UseSqlServer(connectionString);
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            builder.UseSqlServer("""Server=(localdb)\mssqllocaldb;Database=WarehouseTestDatabase;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False;Application Name="Warehouse Engine Integration Tests";""");
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            builder.UseSqlite("Data Source=.\\warehousetest.db");
         }
         else
         {
-            builder.UseSqlServer(ConnectionString);
+            throw new InvalidOperationException(
+                "Set ConnectionStrings__DefaultConnection to a SQL Server connection string for a dedicated test database on this platform.");
         }
 
-        return new WarehouseEngineContext(builder.Options);
+        return builder.Options;
+    }
+
+    public WarehouseEngineContext CreateContext()
+    {
+        return new WarehouseEngineContext(_options);
     }
 
 }

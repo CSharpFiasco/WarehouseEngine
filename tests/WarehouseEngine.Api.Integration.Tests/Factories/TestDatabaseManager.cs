@@ -8,8 +8,7 @@ namespace WarehouseEngine.Api.Integration.Tests.Factories;
 
 public class TestDatabaseManager : IAsyncLifetime
 {
-    private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder()
-        .WithImage("mcr.microsoft.com/mssql/server:2025-CTP2.1-ubuntu-22.04")
+    private readonly MsSqlContainer _msSqlContainer = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2025-CU10-GDR1-ubuntu-24.04")
         .WithEnvironment("ACCEPT_EULA", "Y")
         .WithWaitStrategy(Wait.ForUnixContainer().UntilCommandIsCompleted("/opt/mssql-tools18/bin/sqlcmd", "-C", "-Q", "SELECT 1;"))
         .WithPortBinding(54965, 1433)

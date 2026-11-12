@@ -1,6 +1,11 @@
 # WarehouseEngineUI
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.7.
+This project uses Angular 22, Angular CLI 22, NgRx 22, and TypeScript 6.0.
+
+## Prerequisites
+
+Use Node.js `^22.22.3`, `^24.15.0`, or `>=26.0.0` and install dependencies with `npm ci`.
+TypeScript must remain on 6.0.x to satisfy Angular's compiler compatibility requirements.
 
 ## Development server
 
@@ -16,7 +21,12 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm test -- --watch=false` to execute the unit tests with Vitest in Chromium via Playwright.
+If Chromium is not installed, run `npx playwright install chromium` first.
+
+Run `npm run lint` to check TypeScript and Angular templates with ESLint.
+The configuration uses native flat configs. Angular's migration preserves existing eager
+change detection; the lint configuration does not require switching components to OnPush.
 
 ## Running end-to-end tests
 

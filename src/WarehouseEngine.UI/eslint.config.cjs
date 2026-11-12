@@ -1,15 +1,7 @@
 const unusedImports = require("eslint-plugin-unused-imports");
 const js = require("@eslint/js");
-
-const {
-    FlatCompat,
-} = require("@eslint/eslintrc");
-
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
-});
+const tseslint = require("typescript-eslint");
+const angular = require("angular-eslint");
 
 module.exports = [{
     ignores: ["projects/**/*"],
@@ -17,21 +9,21 @@ module.exports = [{
     plugins: {
         "unused-imports": unusedImports,
     },
-}, ...compat.extends(
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/strict",
-    "plugin:@angular-eslint/recommended",
-    "plugin:@angular-eslint/template/process-inline-templates",
-).map(config => ({
+}, ...[
+    js.configs.recommended,
+    ...tseslint.configs.recommended,
+    ...tseslint.configs.strict,
+    ...angular.configs.tsRecommended,
+].map(config => ({
     ...config,
     files: ["**/*.ts"],
+    processor: angular.processInlineTemplates,
 })), {
     files: ["**/*.ts"],
 
     languageOptions: {
-        ecmaVersion: 5,
-        sourceType: "script",
+        ecmaVersion: "latest",
+        sourceType: "module",
 
         parserOptions: {
             project: ["tsconfig.(app|spec).json"],
@@ -62,7 +54,8 @@ module.exports = [{
         "@typescript-eslint/strict-boolean-expressions": "warn",
         "@angular-eslint/prefer-output-readonly": "error",
         "@angular-eslint/no-pipe-impure": "error",
-        "@angular-eslint/no-conflicting-lifecycle": "warn",
+        "@angular-eslint/contextual-lifecycle": "warn",
+        "@angular-eslint/prefer-on-push-component-change-detection": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
 
@@ -73,10 +66,10 @@ module.exports = [{
             argsIgnorePattern: "^_",
         }],
     },
-}, ...compat.extends(
-    "plugin:@angular-eslint/template/recommended",
-    "plugin:@angular-eslint/template/accessibility",
-).map(config => ({
+}, ...[
+    ...angular.configs.templateRecommended,
+    ...angular.configs.templateAccessibility,
+].map(config => ({
     ...config,
     files: ["**/*.html"],
 })), {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -9,10 +9,11 @@ import { ThemeService } from '../../services/theme/theme.service';
 import type { Theme } from '../../types/default-theme';
 
 @Component({
-    selector: 'app-top-nav',
-    templateUrl: './top-nav.component.html',
-    styleUrls: ['./top-nav.component.scss'],
-    imports: [CommonModule, MatIconModule, MatToolbarModule, MatMenuModule, MatButtonModule]
+  selector: 'app-top-nav',
+  templateUrl: './top-nav.component.html',
+  styleUrls: ['./top-nav.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, MatIconModule, MatToolbarModule, MatMenuModule, MatButtonModule],
 })
 export class TopNavComponent {
   private readonly layoutStore = inject(LayoutStore);

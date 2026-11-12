@@ -1,4 +1,4 @@
-import { Component, inject, type Signal } from '@angular/core';
+import { Component, inject, type Signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
@@ -6,10 +6,11 @@ import { LayoutStore } from '../../store/layout/layout.store';
 import { AuthStore } from '../../store/auth/auth.store';
 
 @Component({
-    selector: 'app-sidenav',
-    templateUrl: './sidenav.component.html',
-    styleUrls: ['./sidenav.component.scss'],
-    imports: [MatSidenavModule, MatListModule, RouterModule]
+  selector: 'app-sidenav',
+  templateUrl: './sidenav.component.html',
+  styleUrls: ['./sidenav.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatSidenavModule, MatListModule, RouterModule],
 })
 export class SidenavComponent {
   private readonly layoutStore = inject(LayoutStore);

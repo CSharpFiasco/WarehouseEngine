@@ -1,0 +1,58 @@
+name: UI Build and Test
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/ui-ci.yml'
+      - 'src/WarehouseEngine.UI/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/ui-ci.yml'
+      - 'src/WarehouseEngine.UI/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ui-build-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/WarehouseEngine.UI
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: src/WarehouseEngine.UI/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Lint UI
+        run: npm run lint
+
+      - name: Test UI
+        run: npm test -- --watch=false
+
+      - name: Build UI
+        run: npm run build
+
+      - name: Upload UI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-build
+          path: src/WarehouseEngine.UI/dist/warehouse-engine.ui/
+          if-no-files-found: error
+          retention-days: 7

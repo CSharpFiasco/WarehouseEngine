@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ThemeService } from './services/theme/theme.service';
 import { TopNavComponent } from './components/top-nav/top-nav.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
@@ -8,10 +8,11 @@ import { AuthStore } from './store/auth/auth.store';
 import { LoginComponent } from './pages/login/login.component';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    imports: [TopNavComponent, SidenavComponent, MatProgressSpinnerModule, RouterOutlet, LoginComponent]
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TopNavComponent, SidenavComponent, MatProgressSpinnerModule, RouterOutlet, LoginComponent],
 })
 export class AppComponent {
   private readonly authStore = inject(AuthStore);

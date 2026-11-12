@@ -1,4 +1,4 @@
-import { computed, inject, InjectionToken } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { signalStore, withHooks, withComputed, withMethods, withState, patchState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';

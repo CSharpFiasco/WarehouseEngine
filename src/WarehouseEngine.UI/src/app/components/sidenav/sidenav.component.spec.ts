@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SidenavComponent } from './sidenav.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { signal } from '@angular/core';
 import { LayoutStore } from '../../store/layout/layout.store';
@@ -36,7 +35,7 @@ describe('SidenavComponent', () => {
         { provide: AuthStore, useValue: mockAuthStore },
         provideRouter(routes),
       ],
-      imports: [NoopAnimationsModule, SidenavComponent],
+      imports: [SidenavComponent],
     });
     fixture = TestBed.createComponent(SidenavComponent);
     component = fixture.componentInstance;

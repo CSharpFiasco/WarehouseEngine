@@ -21,6 +21,6 @@ export class WarehouseService {
 
   #authHeaders(): HttpHeaders {
     const token = this.authService.getJwtToken();
-    return new HttpHeaders(token ? { Authorization: `Bearer ${token}` } : {});
+    return new HttpHeaders(token != null ? { Authorization: `Bearer ${token}` } : {});
   }
 }

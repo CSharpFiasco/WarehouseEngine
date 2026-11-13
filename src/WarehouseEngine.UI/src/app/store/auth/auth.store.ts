@@ -42,7 +42,7 @@ export const AuthStore = signalStore(
   withHooks({
     onInit(store, authService = inject(AuthService)) {
       const token = authService.getJwtToken();
-      if (token) {
+      if (token != null) {
         patchState(store, {
           authState: {
             type: 'logged in',

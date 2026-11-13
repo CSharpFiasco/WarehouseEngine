@@ -55,7 +55,7 @@ module.exports = [{
         "@angular-eslint/prefer-output-readonly": "error",
         "@angular-eslint/no-pipe-impure": "error",
         "@angular-eslint/contextual-lifecycle": "warn",
-        "@angular-eslint/prefer-on-push-component-change-detection": "off",
+        "@angular-eslint/prefer-on-push-component-change-detection": "error",
         "@typescript-eslint/no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",
 

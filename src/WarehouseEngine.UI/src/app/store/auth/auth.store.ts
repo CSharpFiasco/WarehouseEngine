@@ -62,25 +62,25 @@ export const AuthStore = signalStore(
       pipe(
         tap(() => patchState(store, { authState: { type: 'logging in' } })),
         switchMap(({ username, password }) => loginService.login$(username, password)),
-        tap((response: JwtTokenResponse) => {
+        tap(async (response: JwtTokenResponse) => {
           const newState = getJwtStateByJwtResponse(response);
 
           if (response.type === 'Success') {
             authService.setJwtToken(response.jwt);
             patchState(store, { authState: newState });
-            router.navigate(['/']);
+            await router.navigate(['/']);
           } else {
             authService.unsetJwtToken();
             patchState(store, { authState: newState });
-            router.navigate(['/login']);
+            await router.navigate(['/login']);
           }
         })
       )
     ),
-    logout(): void {
+    logout: async (): Promise<void> => {
       authService.unsetJwtToken();
       patchState(store, { authState: { type: 'logged out' } });
-      router.navigate(['/login']);
+      await router.navigate(['/login']);
     },
   }),
   )

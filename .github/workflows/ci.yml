@@ -34,17 +34,17 @@ jobs:
         global-json-file: global.json
         
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore -mt
       
     - name: Build core projects (excluding Database project)
       run: |
-        dotnet build src/WarehouseEngine.Domain/WarehouseEngine.Domain.csproj --configuration Release --no-restore
-        dotnet build src/WarehouseEngine.Application/WarehouseEngine.Application.csproj --configuration Release --no-restore
-        dotnet build src/WarehouseEngine.Infrastructure/WarehouseEngine.Infrastructure.csproj --configuration Release --no-restore
-        dotnet build src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore
-        dotnet build tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-restore
-        dotnet build tests/WarehouseEngine.Application.Tests/WarehouseEngine.Application.Tests.csproj --configuration Release --no-restore
-        dotnet build tests/WarehouseEngine.Api.Integration.Tests/WarehouseEngine.Api.Integration.Tests.csproj --configuration Release --no-restore
+        dotnet build -mt src/WarehouseEngine.Domain/WarehouseEngine.Domain.csproj --configuration Release --no-restore
+        dotnet build -mt src/WarehouseEngine.Application/WarehouseEngine.Application.csproj --configuration Release --no-restore
+        dotnet build -mt src/WarehouseEngine.Infrastructure/WarehouseEngine.Infrastructure.csproj --configuration Release --no-restore
+        dotnet build -mt src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore
+        dotnet build -mt tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-restore
+        dotnet build -mt tests/WarehouseEngine.Application.Tests/WarehouseEngine.Application.Tests.csproj --configuration Release --no-restore
+        dotnet build -mt tests/WarehouseEngine.Api.Integration.Tests/WarehouseEngine.Api.Integration.Tests.csproj --configuration Release --no-restore
       
     - name: Run Domain tests
       run: dotnet test --project tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-build --coverlet --coverlet-output-format cobertura
@@ -76,15 +76,15 @@ jobs:
         global-json-file: global.json
         
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore -mt
       
     - name: Build core projects only
       run: |
-        dotnet build src/WarehouseEngine.Domain/WarehouseEngine.Domain.csproj --configuration Release --no-restore
-        dotnet build src/WarehouseEngine.Application/WarehouseEngine.Application.csproj --configuration Release --no-restore
-        dotnet build src/WarehouseEngine.Infrastructure/WarehouseEngine.Infrastructure.csproj --configuration Release --no-restore
-        dotnet build src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore
-        dotnet build tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-restore
+        dotnet build -mt src/WarehouseEngine.Domain/WarehouseEngine.Domain.csproj --configuration Release --no-restore
+        dotnet build -mt src/WarehouseEngine.Application/WarehouseEngine.Application.csproj --configuration Release --no-restore
+        dotnet build -mt src/WarehouseEngine.Infrastructure/WarehouseEngine.Infrastructure.csproj --configuration Release --no-restore
+        dotnet build -mt src/WarehouseEngine.Api/WarehouseEngine.Api.csproj --configuration Release --no-restore
+        dotnet build -mt tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-restore
       
     - name: Run Domain tests only (basic build)
-      run: dotnet test --project tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-build
+      run: dotnet test -mt --project tests/WarehouseEngine.Domain.Tests/WarehouseEngine.Domain.Tests.csproj --configuration Release --no-build
